@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K线捕手</title>
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --card: #fff;
+      --text: #20242a;
+      --muted: #8f96a0;
+      --brand: #ea2f22;
+      --brand-deep: #d92318;
+      --brand-soft: #fff2ef;
+      --line: #edf1f5;
+      --blue: #1f6fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 175, 160, .22), transparent 24%),
+        linear-gradient(180deg, #fcfcfd, #eef2f6);
+      color: var(--text);
+    }
+    .wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .phone {
+      width: min(393px, 100%);
+      padding: 10px;
+      border-radius: 54px;
+      background: linear-gradient(180deg, #555963, #111317);
+      box-shadow: 0 28px 80px rgba(16, 20, 30, .28);
+    }
+    .screen {
+      position: relative;
+      aspect-ratio: 1179 / 2556;
+      border-radius: 46px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 34px;
+      background: #090a0d;
+      border-radius: 999px;
+      z-index: 5;
+    }
+    .safe {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    .safe::-webkit-scrollbar { display: none; }
+    body.flat .wrap { min-height: 100vh; display: block; padding: 0; }
+    body.flat .phone {
+      width: min(393px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    body.flat .screen {
+      aspect-ratio: auto;
+      min-height: 100vh;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+    }
+    body.flat .island { display: none; }
+    body.flat .safe {
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+    }
+    .status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 22px;
+      color: #fff;
+      background: linear-gradient(180deg, #ef3a2c, #e12b1f);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .icons { display: flex; gap: 8px; align-items: center; }
+    .pill, .battery { border: 2px solid #fff; border-radius: 999px; height: 10px; }
+    .pill { width: 18px; }
+    .battery { width: 24px; position: relative; }
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #fff;
+      border-radius: 1px;
+    }
+    .header {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px 12px;
+      color: #fff;
+      background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .header-spacer {
+      width: 36px;
+      height: 36px;
+    }
+    .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(180deg, #fff8f3, #fff4ec);
+      border-bottom: 1px solid rgba(210, 132, 59, .12);
+      color: #a0521a;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .history-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(210, 132, 59, .22);
+      background: rgba(255,255,255,.82);
+      color: #9e4c14;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .history-btn::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 0 4px rgba(234,47,34,.08);
+    }
+    .history-panel {
+      display: none;
+      margin: 12px 14px 0;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 26px rgba(20, 28, 45, .07);
+    }
+    .history-panel.open { display: block; }
+    .history-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .history-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #404754;
+    }
+    .month-nav { display: flex; align-items: center; gap: 10px; }
+    .month-label { font-size: 13px; font-weight: 700; color: #535b66; }
+    .month-btn {
+      width: 28px; height: 28px; border-radius: 999px; border: 1px solid #ebeef3;
+      background: #f8fafc; color: #6f7782; cursor: pointer; font-weight: 700;
+    }
+    .calendar-wrap.collapsed .history-head,
+    .calendar-wrap.collapsed .weekdays,
+    .calendar-wrap.collapsed .calendar { display: none; }
+    .calendar-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid #ebeef3;
+      background: #f8fafc;
+      color: #6f7782;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .weekdays, .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .weekdays { margin-bottom: 10px; }
+    .weekday { text-align: center; color: #9aa1ab; font-size: 12px; font-weight: 600; }
+    .day {
+      min-height: 42px;
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fbfcfe, #f6f8fb);
+      color: #525965;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .day.muted { opacity: .25; cursor: default; }
+    .day.disabled {
+      color: #b7bec8;
+      background: #f5f7fa;
+      border-color: #eff2f6;
+      cursor: not-allowed;
+    }
+    .day.today { border-color: rgba(234,47,34,.24); color: #cf2c21; }
+    .day.today::before {
+      content: "今";
+      position: absolute;
+      right: 6px;
+      top: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #cf2c21;
+    }
+    .day.selected {
+      background: linear-gradient(180deg, #ef3a2c, #db2418);
+      border-color: rgba(234,47,34,.22);
+      color: #fff;
+    }
+    .day.selected.today::before { color: #fff; }
+    .day.has-record::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 7px;
+      transform: translateX(-50%);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--brand);
+    }
+    .day.selected.has-record::after { background: #fff; }
+    .selected-date {
+      margin: 12px 0 10px;
+      color: #69707b;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .list, .history-list { display: grid; gap: 12px; }
+    .main { padding: 16px 14px 28px; }
+    .main.hidden { display: none; }
+    .card {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 16px 14px 14px;
+      border: 1px solid rgba(255,255,255,.76);
+      box-shadow: 0 10px 24px rgba(20, 28, 45, .06);
+      overflow: hidden;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .stock-name {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.05;
+    }
+    .diag-btn {
+      height: 24px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ef3a2c, #db2418);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: 0 6px 12px rgba(234,47,34,.18);
+    }
+    .stock-code {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .push-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand-deep);
+      font-size: 13px;
+      font-weight: 400;
+      white-space: nowrap;
+      flex: none;
+    }
+    .push-time::before {
+      content: "";
+      width: 8px; height: 8px; border-radius: 50%;
+      background: linear-gradient(180deg, #ff7e73, #e2281d);
+      box-shadow: 0 0 0 4px rgba(234,47,34,.1);
+    }
+    .history-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #f5f6f8;
+      color: #9aa1ab;
+      border: 1px solid #eceff3;
+      font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+      flex: none;
+    }
+    .history-time::before {
+      content: "";
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #c4cad2;
+      box-shadow: 0 0 0 3px rgba(196,202,210,.16);
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px 8px 7px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #fbfcfd, #f4f7fb);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .metric-label {
+      margin-bottom: 6px;
+      color: #8d949d;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .metric-value {
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .analysis {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 8px;
+      overflow: hidden;
+      font-size: 14px;
+      color: #7e858e;
+    }
+    .analysis-copy {
+      display: flex;
+      align-items: flex-start;
+      min-width: 0;
+      overflow: hidden;
+      line-height: 1.5;
+    }
+    .analysis-label {
+      flex: none;
+      white-space: nowrap;
+      color: #69707b;
+    }
+    .analysis-text {
+      min-width: 0;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      white-space: normal;
+      text-overflow: ellipsis;
+      line-height: 1.45;
+    }
+    .detail {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .gesture {
+      width: 140px;
+      height: 5px;
+      margin: 16px auto 8px;
+      border-radius: 999px;
+      background: rgba(18, 20, 24, .9);
+    }
+    .empty {
+      padding: 16px 12px;
+      text-align: center;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbfcfe, #f6f8fb);
+      border: 1px solid var(--line);
+      color: #9097a2;
+      font-size: 13px;
+    }
+    .history-list .card {
+      padding: 14px 12px 12px;
+      border-radius: 18px;
+    }
+    .history-list .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .history-list .name-row {
+      gap: 6px;
+    }
+    .history-list .stock-name {
+      font-size: 17px;
+    }
+    .history-list .history-time {
+      flex: none;
+      margin-left: 0;
+    }
+    .history-list .diag-btn {
+      height: 22px;
+      padding: 0 8px;
+      font-size: 10px;
+    }
+    .history-list .metrics {
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .history-list .metric {
+      padding: 7px 7px 6px;
+      border-radius: 12px;
+    }
+    .history-list .metric-label {
+      font-size: 9px;
+      margin-bottom: 4px;
+    }
+    .history-list .metric-value {
+      font-size: 13px;
+    }
+    .history-list .analysis {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+    .history-list .detail {
+      font-size: 13px;
+      align-self: center;
+    }
+    @media (max-width: 540px) {
+      .wrap { padding: 0; }
+      .phone {
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .screen {
+        aspect-ratio: auto;
+        min-height: 100vh;
+        border-radius: 0;
+      }
+      .island { top: 10px; }
+      .safe { min-height: 100vh; }
+      .main { padding: 14px 12px 24px; }
+      .card {
+        padding: 14px 12px 12px;
+        border-radius: 18px;
+      }
+      .card-head { gap: 8px; margin-bottom: 12px; }
+      .stock-name { font-size: 17px; }
+      .diag-btn { height: 22px; padding: 0 8px; font-size: 10px; }
+      .stock-code { font-size: 13px; }
+      .push-time, .history-time { font-size: 12px; }
+      .metrics { gap: 6px; margin-bottom: 8px; }
+      .metric { padding: 7px 7px 6px; border-radius: 12px; }
+      .metric-label { font-size: 9px; margin-bottom: 4px; }
+      .metric-value { font-size: 13px; }
+      .analysis { gap: 6px; font-size: 13px; }
+      .detail { font-size: 13px; }
+      .gesture { display: none; }
+      .history-panel {
+        margin: 10px 12px 0;
+        padding: 12px;
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body class="flat">
+  <div class="wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="island"></div>
+        <div class="safe">
+          <div class="status">
+            <span>10:41</span>
+            <div class="icons"><span class="pill"></span><span class="battery"></span></div>
+          </div>
+          <div class="header">
+            <button class="back-btn" id="backBtn" type="button" aria-label="返回">&lt;</button>
+            <div class="title">K线捕手</div>
+            <div class="header-spacer" aria-hidden="true"></div>
+          </div>
+          <div class="toolbar">
+            <span><strong>今日筛选</strong> 04/23</span>
+            <button class="history-btn" id="historyBtn" type="button">按时间查看历史</button>
+          </div>
+          <section class="history-panel" id="historyPanel">
+            <div class="calendar-wrap" id="calendarWrap">
+              <button class="calendar-toggle" id="calendarToggle" type="button">收起日历</button>
+              <div class="history-head">
+                <div class="history-title">历史推送记录</div>
+                <div class="month-nav">
+                  <button class="month-btn" id="prevMonth" type="button">&lt;</button>
+                  <div class="month-label" id="monthLabel">2026年4月</div>
+                  <button class="month-btn" id="nextMonth" type="button">&gt;</button>
+                </div>
+              </div>
+              <div class="weekdays">
+                <div class="weekday">日</div><div class="weekday">一</div><div class="weekday">二</div><div class="weekday">三</div><div class="weekday">四</div><div class="weekday">五</div><div class="weekday">六</div>
+              </div>
+              <div class="calendar" id="calendar"></div>
+            </div>
+            <div class="selected-date" id="selectedDateLabel">2026-04-23 历史记录</div>
+            <div class="history-list" id="historyList"></div>
+          </section>
+          <main class="main">
+            <div class="list" id="mainList"></div>
+            <div class="gesture"></div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const TODAY = "2026-04-23";
+    const state = { month: "2026-04", selectedDate: TODAY, historyMode: false, calendarCollapsed: false };
+    const db = {
+      items: [
+        { name: "北方华创", code: "002371.SZ", time: "09:42 推送", price: "318.60", pe: "35.82", cap: "1260亿", analysis: "半导体设备龙头，盘中量能释放明显，短线资金关注度持续提升。" },
+        { name: "中际旭创", code: "300308.SZ", time: "09:35 推送", price: "168.24", pe: "42.15", cap: "1355亿", analysis: "高速光模块核心标的，AI算力链景气度延续，板块联动性强。" },
+        { name: "沪电股份", code: "002463.SZ", time: "09:28 推送", price: "38.56", pe: "29.74", cap: "738亿", analysis: "高端PCB景气修复，订单预期较强，短波形态突破后延续性较好。" },
+        { name: "新易盛", code: "300502.SZ", time: "09:18 推送", price: "92.10", pe: "47.63", cap: "652亿", analysis: "算力硬件链条核心个股，资金回流迹象明确，弹性和辨识度兼具。" },
+        { name: "寒武纪", code: "688256.SH", time: "09:12 推送", price: "211.78", pe: "--", cap: "883亿", analysis: "国产AI芯片代表，异动后承接较稳，适合观察强势延续信号。" },
+        { name: "沪硅产业", code: "688126.SH", time: "09:08 推送", price: "18.42", pe: "56.13", cap: "508亿", analysis: "半导体材料方向活跃，量价配合改善，短线具备继续观察价值。" },
+        { name: "澜起科技", code: "688008.SH", time: "09:05 推送", price: "64.88", pe: "39.27", cap: "742亿", analysis: "存储接口芯片龙头，板块联动性强，早盘启动节奏较快。" },
+        { name: "工业富联", code: "601138.SH", time: "09:01 推送", price: "27.36", pe: "22.48", cap: "5432亿", analysis: "AI服务器链核心权重股，资金承接稳定，适合做强弱观察。" }
+      ],
+      history: {
+        "2026-04-23": [{ time: "09:42", code: "002371.SZ" }, { time: "09:35", code: "300308.SZ" }, { time: "09:28", code: "002463.SZ" }, { time: "09:18", code: "300502.SZ" }, { time: "09:12", code: "688256.SH" }, { time: "09:08", code: "688126.SH" }, { time: "09:05", code: "688008.SH" }, { time: "09:01", code: "601138.SH" }],
+        "2026-04-22": [{ time: "14:16", code: "688256.SH" }, { time: "10:54", code: "002371.SZ" }, { time: "10:21", code: "300308.SZ" }, { time: "09:47", code: "688008.SH" }],
+        "2026-04-21": [{ time: "10:08", code: "002463.SZ" }, { time: "09:53", code: "601138.SH" }, { time: "09:16", code: "300502.SZ" }],
+        "2026-04-18": [{ time: "13:25", code: "300502.SZ" }, { time: "11:02", code: "688126.SH" }],
+        "2026-04-17": [{ time: "10:33", code: "300308.SZ" }, { time: "09:41", code: "688256.SH" }],
+        "2026-04-10": [{ time: "09:51", code: "300502.SZ" }, { time: "09:23", code: "002371.SZ" }],
+        "2026-03-29": [{ time: "14:02", code: "688256.SH" }, { time: "10:36", code: "688008.SH" }]
+      }
+    };
+
+    const els = {
+      historyBtn: document.getElementById("historyBtn"),
+      historyPanel: document.getElementById("historyPanel"),
+      calendarWrap: document.getElementById("calendarWrap"),
+      calendarToggle: document.getElementById("calendarToggle"),
+      prevMonth: document.getElementById("prevMonth"),
+      nextMonth: document.getElementById("nextMonth"),
+      monthLabel: document.getElementById("monthLabel"),
+      calendar: document.getElementById("calendar"),
+      selectedDateLabel: document.getElementById("selectedDateLabel"),
+      backBtn: document.getElementById("backBtn"),
+      main: document.querySelector(".main"),
+      mainList: document.getElementById("mainList"),
+      historyList: document.getElementById("historyList")
+    };
+
+    function findByCode(code) {
+      return db.items.find((x) => x.code === code) || {};
+    }
+    function monthLabel(key) {
+      const [y, m] = key.split("-");
+      return `${y}年${Number(m)}月`;
+    }
+    function shiftMonth(key, delta) {
+      const [y, m] = key.split("-").map(Number);
+      const d = new Date(y, m - 1 + delta, 1);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    }
+    function renderCard(item, historyMode = false, shortTime = "") {
+      if (historyMode) {
+        return `
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <div class="name-row">
+                <div class="stock-name">${item.name}</div>
+                <button class="diag-btn" type="button">算法诊股</button>
+              </div>
+              <div class="stock-code">${item.code}</div>
+            </div>
+            <div class="history-time"><span>${shortTime} 推送</span></div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">最新价</div><div class="metric-value">${item.price}</div></div>
+            <div class="metric"><div class="metric-label">市盈(TTM)</div><div class="metric-value">${item.pe}</div></div>
+            <div class="metric"><div class="metric-label">市值</div><div class="metric-value">${item.cap}</div></div>
+          </div>
+          <div class="analysis">
+            <div class="analysis-copy"><span class="analysis-label">AI分析：</span><span class="analysis-text">${item.analysis}</span></div>
+            <a class="detail" href="javascript:void(0)">查看详情 &gt;</a>
+          </div>
+        </article>`;
+      }
+      return `
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <div class="name-row">
+                <div class="stock-name">${item.name}</div>
+                <button class="diag-btn" type="button">算法诊股</button>
+              </div>
+              <div class="stock-code">${item.code}</div>
+            </div>
+            <div class="push-time">${item.time}</div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="metric-label">最新价</div><div class="metric-value">${item.price}</div></div>
+            <div class="metric"><div class="metric-label">市盈(TTM)</div><div class="metric-value">${item.pe}</div></div>
+            <div class="metric"><div class="metric-label">市值</div><div class="metric-value">${item.cap}</div></div>
+          </div>
+          <div class="analysis">
+            <div class="analysis-copy"><span class="analysis-label">AI分析：</span><span class="analysis-text">${item.analysis}</span></div>
+            <a class="detail" href="javascript:void(0)">查看详情 &gt;</a>
+          </div>
+        </article>`;
+    }
+    function renderMain() {
+      els.mainList.innerHTML = db.items.map((item) => renderCard(item, false)).join("");
+    }
+    function renderHistoryList() {
+      const rows = db.history[state.selectedDate] || [];
+      els.selectedDateLabel.textContent = state.selectedDate ? `${state.selectedDate} 历史记录` : "暂无历史记录";
+      if (!rows.length) {
+        els.historyList.innerHTML = `<div class="empty">该日期暂无推送记录</div>`;
+        return;
+      }
+      els.historyList.innerHTML = rows.map((row) => renderCard(findByCode(row.code), true, row.time)).join("");
+    }
+    function renderCalendar() {
+      const available = new Set(Object.keys(db.history));
+      const [y, m] = state.month.split("-").map(Number);
+      els.monthLabel.textContent = monthLabel(state.month);
+      const firstDay = new Date(y, m - 1, 1).getDay();
+      const days = new Date(y, m, 0).getDate();
+      const html = [];
+      for (let i = 0; i < firstDay; i++) html.push(`<button class="day muted" disabled></button>`);
+      for (let d = 1; d <= days; d++) {
+        const key = `${state.month}-${String(d).padStart(2, "0")}`;
+        const has = available.has(key);
+        const cls = ["day"];
+        if (!has) cls.push("disabled");
+        if (has) cls.push("has-record");
+        if (key === TODAY) cls.push("today");
+        if (key === state.selectedDate) cls.push("selected");
+        html.push(`<button class="${cls.join(" ")}" data-date="${key}" ${has ? "" : "disabled"}>${d}</button>`);
+      }
+      els.calendar.innerHTML = html.join("");
+      els.calendar.querySelectorAll("[data-date]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.selectedDate = btn.dataset.date;
+          state.calendarCollapsed = true;
+          renderCalendar();
+          renderHistoryList();
+          renderCalendarVisibility();
+        });
+      });
+    }
+    function renderCalendarVisibility() {
+      els.calendarWrap.classList.toggle("collapsed", state.calendarCollapsed);
+      els.calendarToggle.textContent = state.calendarCollapsed ? "展开日历" : "收起日历";
+    }
+    function ensureSelectedDate() {
+      const dates = Object.keys(db.history).sort();
+      if (!dates.includes(state.selectedDate)) state.selectedDate = dates[dates.length - 1] || "";
+      if (state.selectedDate) state.month = state.selectedDate.slice(0, 7);
+    }
+    function renderAll() {
+      ensureSelectedDate();
+      renderMain();
+      renderCalendar();
+      renderHistoryList();
+      renderCalendarVisibility();
+      els.historyPanel.classList.toggle("open", state.historyMode);
+      els.main.classList.toggle("hidden", state.historyMode);
+      els.historyBtn.textContent = state.historyMode ? "返回当前列表" : "按时间查看历史";
+    }
+    els.backBtn.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "./index.html?v=20260423";
+      }
+    });
+    els.historyBtn.addEventListener("click", () => {
+      state.historyMode = !state.historyMode;
+      if (!state.historyMode) state.calendarCollapsed = false;
+      renderAll();
+    });
+    els.calendarToggle.addEventListener("click", () => {
+      state.calendarCollapsed = !state.calendarCollapsed;
+      renderCalendarVisibility();
+    });
+    els.prevMonth.addEventListener("click", () => { state.month = shiftMonth(state.month, -1); renderCalendar(); });
+    els.nextMonth.addEventListener("click", () => { state.month = shiftMonth(state.month, 1); renderCalendar(); });
+    renderAll();
+  </script>
+</body>
+</html>

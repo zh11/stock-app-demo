@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首页</title>
+  <style>
+    :root {
+      --brand: #ef2d1f;
+      --brand-deep: #d91f13;
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #20242a;
+      --muted: #8d94a0;
+      --line: #edf1f5;
+      --blue: #2b7cff;
+      --shadow: 0 12px 28px rgba(25, 32, 48, 0.08);
+      --font: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 196, 175, 0.18), transparent 25%),
+        linear-gradient(180deg, #fbfbfc, #f2f5f9);
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .phone {
+      width: min(393px, 100%);
+      padding: 10px;
+      border-radius: 54px;
+      background: linear-gradient(180deg, #555963, #111317);
+      box-shadow: 0 28px 80px rgba(16, 20, 30, 0.28);
+    }
+
+    .screen {
+      position: relative;
+      aspect-ratio: 1179 / 2556;
+      border-radius: 46px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 34px;
+      background: #090a0d;
+      border-radius: 999px;
+      z-index: 5;
+    }
+
+    .safe {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+
+    .safe::-webkit-scrollbar { display: none; }
+
+    body.flat .wrap {
+      min-height: 100vh;
+      display: block;
+      padding: 0;
+    }
+
+    body.flat .phone {
+      width: min(393px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    body.flat .screen {
+      aspect-ratio: auto;
+      min-height: 100vh;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+    }
+
+    body.flat .island { display: none; }
+
+    body.flat .safe {
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    body.flat .page {
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 6px;
+      background: linear-gradient(180deg, var(--brand), var(--brand));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .signal,
+    .wifi,
+    .battery {
+      position: relative;
+      display: inline-block;
+    }
+
+    .signal {
+      width: 18px;
+      height: 12px;
+      border-bottom: 3px solid #fff;
+      border-left: 3px solid #fff;
+      border-right: 3px solid #fff;
+      border-radius: 0 0 3px 3px;
+    }
+
+    .wifi {
+      width: 16px;
+      height: 12px;
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+    }
+
+    .battery {
+      width: 24px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 3px;
+      width: 2px;
+      height: 4px;
+      background: #fff;
+      border-radius: 1px;
+    }
+
+    .hero {
+      padding: 10px 14px 12px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+      color: #fff;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .logo-image {
+      display: block;
+      width: 92px;
+      height: auto;
+    }
+
+    .search {
+      height: 42px;
+      padding: 0 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      color: #8b93a0;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .search .accent {
+      color: #7da3ff;
+      font-style: italic;
+      font-weight: 800;
+      margin: 0 4px;
+    }
+
+    .top-action {
+      min-width: 34px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .top-action .icon {
+      display: block;
+      margin: 0 auto 3px;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #fff;
+      border-radius: 7px;
+    }
+
+    .banner {
+      aspect-ratio: 1179 / 375;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.02)),
+        url("./banner.jpg") center top / 100% auto no-repeat;
+      border-bottom: 1px solid rgba(255,255,255,.28);
+    }
+
+    .section {
+      padding: 12px 12px 0;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px 6px;
+      padding: 14px 2px 0;
+      background: var(--card);
+    }
+
+    .tool {
+      text-align: center;
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffb8ab, #ff7966 62%, #ff5a47 100%);
+      box-shadow: inset 0 8px 14px rgba(255,255,255,.28);
+      position: relative;
+    }
+
+    .tool-icon::after {
+      content: "";
+      position: absolute;
+      inset: 15px;
+      border: 2px solid rgba(255,255,255,.92);
+      border-radius: 8px;
+    }
+
+    .tool-label {
+      color: #505763;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .dual-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .feature-card {
+      min-width: 0;
+      padding: 14px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 84% 12%, rgba(255,120,120,.14), rgba(255,120,120,0) 28%),
+        linear-gradient(180deg, #fff6f5, #ffe9e6);
+      box-shadow: var(--shadow);
+      border: 1px solid #ffe4df;
+    }
+
+    .feature-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .feature-title {
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .feature-title .accent { color: var(--brand); }
+
+    .feature-bell {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #1f2023;
+      border-radius: 11px 11px 9px 9px;
+      position: relative;
+      flex: none;
+    }
+
+    .feature-bell::after {
+      content: "";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 0 3px rgba(239,45,31,.14);
+    }
+
+    .feature-preview {
+      min-height: 150px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #ffe1dd;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .preview-text {
+      color: #30343a;
+      font-size: 15px;
+      line-height: 1.4;
+      min-height: 60px;
+    }
+
+    .preview-time {
+      color: var(--brand);
+      font-size: 14px;
+    }
+
+    .preview-stock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .preview-stock .tag {
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #ffd5d1;
+      background: #fff7f6;
+      color: #444950;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .more-link {
+      display: block;
+      margin-top: 10px;
+      text-align: right;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .strength-card {
+      margin-top: 14px;
+      padding: 16px 16px 18px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 82% 50%, rgba(255,115,115,.22), rgba(255,115,115,0) 30%),
+        linear-gradient(120deg, #fff7f6, #ffe6e0 44%, #ffd6cc);
+      box-shadow: var(--shadow);
+      border: 1px solid #ffe1dc;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .strength-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .strength-title {
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .strength-head .more-link {
+      margin: 0;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .rating-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .rating-row {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: #4f2c20;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .stars {
+      color: #ff6619;
+      letter-spacing: 3px;
+      font-size: 18px;
+    }
+
+    .flame {
+      position: absolute;
+      right: 8px;
+      bottom: -6px;
+      width: 116px;
+      height: 140px;
+      background:
+        radial-gradient(circle at 38% 28%, rgba(255,255,255,.68), rgba(255,255,255,0) 38%),
+        linear-gradient(180deg, #ff9f8f, #ff6c4c 45%, #ff5b34 72%, #ff7d45 100%);
+      clip-path: polygon(50% 0%, 66% 18%, 76% 40%, 68% 50%, 92% 78%, 64% 70%, 48% 100%, 36% 72%, 14% 84%, 24% 58%, 8% 42%, 26% 18%);
+      filter: drop-shadow(0 14px 20px rgba(255,100,70,.2));
+    }
+
+    .community-card {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 20px 20px 0 0;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .community-feed {
+      display: grid;
+      gap: 14px;
+    }
+
+    .community-post {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .community-post:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .community-post-head {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 40% 36%, #ffffff 0 16%, transparent 18%),
+        radial-gradient(circle at 52% 52%, #3a3f47 0 24%, transparent 26%),
+        linear-gradient(180deg, #f1f3f8, #dce2eb);
+      overflow: hidden;
+    }
+
+    .avatar.brand {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #fff4f1, #ffe2da);
+      color: #f05c3b;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.15;
+      text-align: center;
+      border: 1px solid #ffd8cf;
+    }
+
+    .community-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .badge {
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f6a348, #ef7f10);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      display: inline-grid;
+      place-items: center;
+    }
+
+    .community-time {
+      margin-top: 4px;
+      color: #b1b7c0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .community-post-body {
+      margin: 10px 0 0 64px;
+      color: #2f343b;
+      font-size: 15px;
+      line-height: 1.72;
+      word-break: break-word;
+    }
+
+    .community-post-foot {
+      margin: 10px 0 0 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #9ba2ad;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .community-post-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .community-post-action.like { color: #f2a11b; }
+
+    .more-dots {
+      color: #9aa2ad;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .bottom-nav {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      padding: 8px 6px 6px;
+      width: 100%;
+      background: rgba(255,255,255,.97);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #757d88;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 5px;
+      border: 2px solid currentColor;
+      border-radius: 7px;
+    }
+
+    .nav-item.active { color: var(--brand); }
+
+    .home-indicator {
+      width: 124px;
+      height: 4px;
+      margin: 6px auto 6px;
+      border-radius: 999px;
+      background: #0f1115;
+    }
+
+    @media (max-width: 540px) {
+      .wrap { padding: 0; }
+      .phone {
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .screen {
+        aspect-ratio: auto;
+        min-height: 100vh;
+        border-radius: 0;
+      }
+      .island { top: 10px; }
+      .safe { min-height: 100vh; }
+      .page { min-height: 100vh; box-shadow: none; }
+      .hero-top { gap: 6px; }
+      .logo-image { width: 82px; }
+      .search { height: 40px; padding: 0 9px; font-size: 12px; }
+      .top-action { min-width: 30px; font-size: 9px; }
+      .top-action .icon { width: 20px; height: 20px; }
+      .tool-grid { gap: 12px 4px; }
+      .tool-icon { width: 44px; height: 44px; }
+      .feature-card,
+      .strength-card,
+      .community-card { padding-left: 12px; padding-right: 12px; }
+      .preview-text { font-size: 14px; }
+      .rating-row { grid-template-columns: 86px 1fr; font-size: 14px; }
+      .stars { letter-spacing: 2px; font-size: 17px; }
+      .community-post-head { grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; }
+      .avatar { width: 46px; height: 46px; }
+      .community-name { font-size: 16px; }
+      .community-post-body,
+      .community-post-foot { margin-left: 56px; }
+      .community-post-body { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="island"></div>
+        <div class="safe">
+          <div class="page">
+            <div class="status">
+              <span>10:41</span>
+              <div class="status-icons">
+                <span class="signal"></span>
+                <span class="wifi"></span>
+                <span class="battery"></span>
+              </div>
+            </div>
+
+            <header class="hero">
+              <div class="hero-top">
+                <div class="logo">
+                  <img class="logo-image" src="./logo.png" alt="躺客" />
+                </div>
+                <div class="search">🔍 <span class="accent">AI</span> 搜索</div>
+                <div class="top-action"><span class="icon"></span>排行榜</div>
+                <div class="top-action"><span class="icon"></span>奖励</div>
+                <div class="top-action"><span class="icon"></span>分享</div>
+              </div>
+            </header>
+
+            <section class="banner" aria-label="首页横幅"></section>
+
+            <section class="section">
+              <div class="tool-grid">
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">诊股示范</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">傻瓜炒股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">范例实盘</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">见基本面</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">模拟操盘</div></div>
+              </div>
+
+              <div class="dual-cards">
+                <article class="feature-card">
+                  <div class="feature-head">
+                    <div class="feature-title">K<span class="accent">线</span>捕手</div>
+                    <span class="feature-bell"></span>
+                  </div>
+                  <div class="feature-preview">
+                    <div class="preview-text"><span class="preview-time">12-23&nbsp;&nbsp;09:50</span> 国内领先的半导体设备供应商，量价结构持续改善，具备进一步观察价值...</div>
+                    <div class="preview-stock">
+                      <span>优股:</span>
+                      <span class="tag">股票名称(代码)</span>
+                    </div>
+                  </div>
+                  <a class="more-link" href="./kline.html?v=20260423">更多&gt;</a>
+                </article>
+
+                <article class="feature-card">
+                  <div class="feature-head">
+                    <div class="feature-title"><span class="accent">AI</span>异动筛股</div>
+                    <span class="feature-bell"></span>
+                  </div>
+                  <div class="feature-preview">
+                    <div class="preview-text"><span class="preview-time">12-23&nbsp;&nbsp;09:50</span> 国内领先的半导体设备供应商，量价结构持续改善，具备进一步观察价值...</div>
+                    <div class="preview-stock">
+                      <span>优股:</span>
+                      <span class="tag">股票名称(代码)</span>
+                    </div>
+                  </div>
+                  <a class="more-link" href="./ai.html?v=20260423">更多&gt;</a>
+                </article>
+              </div>
+
+              <article class="strength-card">
+                <div class="strength-head">
+                  <div class="strength-title">科技强度</div>
+                  <a class="more-link" href="javascript:void(0)">更多&gt;</a>
+                </div>
+                <div class="rating-list">
+                  <div class="rating-row"><span>人工智能:</span><span class="stars">★★★★★</span></div>
+                  <div class="rating-row"><span>芯片半导体:</span><span class="stars">★★★★☆</span></div>
+                  <div class="rating-row"><span>算力产业:</span><span class="stars">★★★☆☆</span></div>
+                </div>
+                <div class="flame"></div>
+              </article>
+
+              <article class="community-card">
+                <div class="section-head">
+                  <div class="section-title">交流社区</div>
+                  <a class="more-link" href="javascript:void(0)">更多&gt;</a>
+                </div>
+                <div class="community-feed">
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar brand">万旅密<br />飞课堂</div>
+                      <div>
+                        <div class="community-name">助教-小客 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 09:34</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      今日大盘3200附近承压，关注AI算力和低空经济两条主线的轮动机会。宁德时代、比亚迪昨日放量，新能源链条短线可留意，注意控制仓位。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 31</span>
+                        <span class="community-post-action like">👍 58</span>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar"></div>
+                      <div>
+                        <div class="community-name">躺客研究员 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 11:18</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      半导体设备方向热度回升，北方华创、中微公司量价配合更强。若午后指数企稳，可优先看板块龙头的回踩承接，不追高，重节奏。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 24</span>
+                        <span class="community-post-action like">👍 42</span>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar brand">策略<br />观察</div>
+                      <div>
+                        <div class="community-name">盘前观察员 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 13:06</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      科技强度仍维持高位，AI异动筛股和K线捕手今天命中率不错。下午如果市场情绪继续修复，可以留意算力、液冷和光模块的强势分支。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 19</span>
+                        <span class="community-post-action like">👍 37</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </article>
+            </section>
+
+            <nav class="bottom-nav">
+              <div class="nav-item active"><div class="nav-icon"></div>首页</div>
+              <div class="nav-item"><div class="nav-icon"></div>自选</div>
+              <div class="nav-item"><div class="nav-icon"></div>资讯</div>
+              <div class="nav-item"><div class="nav-icon"></div>入会</div>
+              <div class="nav-item"><div class="nav-icon"></div>我</div>
+            </nav>
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
