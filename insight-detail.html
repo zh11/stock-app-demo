@@ -141,7 +141,7 @@
 
     .headline {
       margin: 0;
-      font-size: 26px;
+      font-size: 18px;
       line-height: 1.52;
       font-weight: 500;
       letter-spacing: .2px;
@@ -164,39 +164,52 @@
     .stock-info {
       min-width: 0;
       display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stock-main {
+      display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      font-size: 18px;
     }
 
     .stock-label {
-      font-size: 18px;
+      font-size: 16px;
       color: #22262d;
     }
 
     .stock-chip {
       display: inline-flex;
       align-items: center;
-      min-height: 44px;
-      padding: 0 16px;
+      min-height: 36px;
+      padding: 0 14px;
       border-radius: 4px;
       border: 1px solid #ffd7cf;
       background: #fff8f6;
-      font-size: 17px;
+      font-size: 16px;
       color: #2a2d33;
     }
 
+    .stock-code {
+      font-size: 14px;
+      color: #8a92a0;
+      line-height: 1.4;
+      padding-left: 52px;
+    }
+
     .diag-btn {
-      min-width: 112px;
-      height: 44px;
+      height: 24px;
+      padding: 0 10px;
       border: none;
-      border-radius: 8px;
-      background: #ff6a61;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ef3a2c, #db2418);
       color: #fff;
-      font-size: 17px;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(255, 106, 97, 0.18);
+      box-shadow: 0 8px 18px rgba(239, 58, 44, 0.22);
     }
 
     .section {
@@ -263,7 +276,7 @@
       border: 1px solid #ffccb8;
       background: #fff8f1;
       color: #333841;
-      font-size: 18px;
+      font-size: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -284,7 +297,7 @@
       }
 
       .headline {
-        font-size: 24px;
+        font-size: 18px;
       }
 
       .stock-row {
@@ -292,18 +305,22 @@
       }
 
       .stock-info {
-        font-size: 17px;
+        gap: 6px;
       }
 
       .stock-chip {
-        min-height: 42px;
+        min-height: 36px;
         font-size: 16px;
       }
 
+      .stock-code {
+        padding-left: 52px;
+      }
+
       .diag-btn {
-        min-width: 104px;
-        height: 42px;
-        font-size: 16px;
+        height: 24px;
+        padding: 0 10px;
+        font-size: 11px;
       }
 
       .section-copy,
@@ -345,14 +362,16 @@
 
           <div class="stock-row">
             <div class="stock-info">
-              <span class="stock-label">优股：</span>
-              <span class="stock-chip" id="stockChip"></span>
+              <div class="stock-main">
+                <span class="stock-label">优股：</span>
+                <span class="stock-chip" id="stockChip"></span>
+              </div>
+              <div class="stock-code" id="stockCode"></div>
             </div>
             <button class="diag-btn" type="button">算法诊股</button>
           </div>
 
           <section class="section">
-            <h2 class="section-title"><span class="accent" id="summaryPrefix">短期机会</span>提示 <span class="muted">(模型生成，仅供参考)</span></h2>
             <div class="summary-box" id="summaryBox"></div>
           </section>
 
@@ -465,8 +484,8 @@
 
     document.getElementById("headline").textContent = `${name}${profile.headline}`;
     document.getElementById("metaTime").textContent = time;
-    document.getElementById("stockChip").textContent = `${name}(${code})`;
-    document.getElementById("summaryPrefix").textContent = source === "kline" ? "K线信号" : "短期机会";
+    document.getElementById("stockChip").textContent = name;
+    document.getElementById("stockCode").textContent = code;
     document.getElementById("summaryBox").textContent = analysisText || profile.summary;
     document.getElementById("highlights").innerHTML = profile.highlights.map((item) => `<p>${item}</p>`).join("");
     document.getElementById("analysisList").innerHTML = profile.analysis.map((item, idx) => `<p>${idx + 1}、${item}</p>`).join("");
