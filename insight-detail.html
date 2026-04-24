@@ -128,7 +128,7 @@
     }
 
     .logo-wrap img {
-      width: 80px;
+      width: 100px;
       max-width: 100%;
       display: block;
     }
@@ -183,6 +183,7 @@
     .stock-chip {
       display: inline-flex;
       align-items: center;
+      gap: 6px;
       min-height: 36px;
       padding: 0 14px;
       border-radius: 4px;
@@ -192,11 +193,9 @@
       color: #2a2d33;
     }
 
-    .stock-code {
+    .chip-code {
       font-size: 14px;
       color: #8a92a0;
-      line-height: 1.4;
-      padding-left: 52px;
     }
 
     .diag-btn {
@@ -313,10 +312,6 @@
         font-size: 16px;
       }
 
-      .stock-code {
-        padding-left: 52px;
-      }
-
       .diag-btn {
         height: 24px;
         padding: 0 10px;
@@ -364,9 +359,11 @@
             <div class="stock-info">
               <div class="stock-main">
                 <span class="stock-label">优股：</span>
-                <span class="stock-chip" id="stockChip"></span>
+                <span class="stock-chip">
+                  <span id="stockChip"></span>
+                  <span class="chip-code" id="stockCode"></span>
+                </span>
               </div>
-              <div class="stock-code" id="stockCode"></div>
             </div>
             <button class="diag-btn" type="button">算法诊股</button>
           </div>
