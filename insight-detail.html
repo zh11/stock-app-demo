@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI分析详情</title>
+  <style>
+    :root {
+      --brand: #ef2d1f;
+      --brand-deep: #dc2417;
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #21242a;
+      --muted: #8d95a2;
+      --line: #edf1f5;
+      --soft: #fff3ef;
+      --soft-deep: #ffe4dc;
+      --shadow: 0 14px 28px rgba(18, 25, 38, 0.08);
+      --blue: #245b8c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 175, 160, .22), transparent 24%),
+        linear-gradient(180deg, #fcfcfd, #eef2f6);
+      color: var(--text);
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: block;
+      padding: 0;
+    }
+
+    .phone {
+      width: min(393px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .screen {
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 22px;
+      color: #fff;
+      background: linear-gradient(180deg, #ef3a2c, #e12b1f);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .icons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill,
+    .battery {
+      border: 2px solid #fff;
+      border-radius: 999px;
+      height: 10px;
+    }
+
+    .pill { width: 18px; }
+
+    .battery {
+      width: 24px;
+      position: relative;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      background: #fff;
+      border-radius: 1px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px 18px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    }
+
+    .back-btn,
+    .header-spacer {
+      width: 36px;
+      height: 36px;
+    }
+
+    .back-btn {
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-size: 34px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-wrap img {
+      width: 160px;
+      max-width: 100%;
+      display: block;
+    }
+
+    .content {
+      background: #fff;
+      min-height: calc(100vh - 114px);
+      padding: 22px 18px 36px;
+    }
+
+    .headline {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.52;
+      font-weight: 500;
+      letter-spacing: .2px;
+    }
+
+    .meta-time {
+      margin-top: 24px;
+      color: #8b919c;
+      font-size: 14px;
+    }
+
+    .stock-row {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .stock-info {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 18px;
+    }
+
+    .stock-label {
+      font-size: 18px;
+      color: #22262d;
+    }
+
+    .stock-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 4px;
+      border: 1px solid #ffd7cf;
+      background: #fff8f6;
+      font-size: 17px;
+      color: #2a2d33;
+    }
+
+    .diag-btn {
+      min-width: 112px;
+      height: 44px;
+      border: none;
+      border-radius: 8px;
+      background: #ff6a61;
+      color: #fff;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(255, 106, 97, 0.18);
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 700;
+      color: #2a2d33;
+    }
+
+    .section-title .accent {
+      color: var(--brand);
+    }
+
+    .section-title .muted {
+      color: #9ca3ad;
+      font-weight: 400;
+    }
+
+    .summary-box {
+      background: #f2f5f8;
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      color: #666e79;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
+    .section-copy {
+      color: #3a4048;
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .section-copy p {
+      margin: 0 0 18px;
+    }
+
+    .valuation {
+      color: var(--blue);
+      font-size: 18px;
+      line-height: 1.85;
+      font-weight: 700;
+    }
+
+    .valuation p {
+      margin: 0 0 10px;
+    }
+
+    .quick-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .quick-btn {
+      min-height: 72px;
+      border-radius: 8px;
+      border: 1px solid #ffccb8;
+      background: #fff8f1;
+      color: #333841;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .risk {
+      margin-top: 22px;
+      color: #a0a6af;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    @media (max-width: 540px) {
+      .content {
+        padding: 20px 16px 34px;
+      }
+
+      .headline {
+        font-size: 24px;
+      }
+
+      .stock-row {
+        align-items: flex-start;
+      }
+
+      .stock-info {
+        font-size: 17px;
+      }
+
+      .stock-chip {
+        min-height: 42px;
+        font-size: 16px;
+      }
+
+      .diag-btn {
+        min-width: 104px;
+        height: 42px;
+        font-size: 16px;
+      }
+
+      .section-copy,
+      .valuation,
+      .summary-box {
+        font-size: 16px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="status">
+          <span id="statusTime">10:38</span>
+          <div class="icons">
+            <span class="pill"></span>
+            <span class="pill" style="width:22px;"></span>
+            <span class="battery"></span>
+          </div>
+        </div>
+
+        <header class="header">
+          <button class="back-btn" id="backBtn" type="button">&lt;</button>
+          <div class="logo-wrap">
+            <img src="./logo.png" alt="翰客" />
+          </div>
+          <div class="header-spacer"></div>
+        </header>
+
+        <main class="content">
+          <h1 class="headline" id="headline"></h1>
+          <div class="meta-time" id="metaTime"></div>
+
+          <div class="stock-row">
+            <div class="stock-info">
+              <span class="stock-label">优股：</span>
+              <span class="stock-chip" id="stockChip"></span>
+            </div>
+            <button class="diag-btn" type="button">算法诊股</button>
+          </div>
+
+          <section class="section">
+            <h2 class="section-title"><span class="accent" id="summaryPrefix">短期机会</span>提示 <span class="muted">(模型生成，仅供参考)</span></h2>
+            <div class="summary-box" id="summaryBox"></div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">看点：</h2>
+            <div class="section-copy" id="highlights"></div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">个股解析：</h2>
+            <div class="section-copy" id="analysisList"></div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">估值评价：</h2>
+            <div class="valuation">
+              <p>XXX</p>
+              <p>XXX</p>
+              <p>XXX</p>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="quick-grid">
+              <div class="quick-btn">基本信息</div>
+              <div class="quick-btn">概念分析</div>
+              <div class="quick-btn">财务评分</div>
+              <div class="quick-btn">主力持仓</div>
+              <div class="quick-btn">主营结构</div>
+              <div class="quick-btn">最新研报</div>
+              <div class="quick-btn">AI风险扫描</div>
+            </div>
+          </section>
+
+          <div class="risk">风险提示: 本页内容仅作展示使用，不构成任何投资建议。模型生成内容可能存在滞后、偏差或遗漏，投资需谨慎。</div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const profileMap = {
+      "北方华创": {
+        industry: "半导体设备",
+        headline: "受益于先进制程扩产与国产替代共振，设备订单释放与盈利修复预期同步升温",
+        summary: "公司处于半导体设备核心环节，刻蚀、薄膜沉积与清洗等产品线受益于晶圆厂扩产和国产替代推进。近期成交活跃度与产业催化同步抬升，短中期都具备较强的市场辨识度。",
+        highlights: [
+          "AI算力与先进制程资本开支延续，高端设备环节订单预期持续改善，龙头公司更容易获得资金和产业双重关注。",
+          "国产替代逻辑反复强化，设备验证、导入和交付节奏若持续推进，市场会进一步提升对业绩兑现的预期。",
+          "从交易层面看，量价配合改善后更容易形成趋势跟踪效应，适合作为板块强弱的观察窗口。 "
+        ],
+        analysis: [
+          "公司产品覆盖半导体核心工艺环节，收入结构相对完整，在设备国产化进程中具备平台型优势。",
+          "如果下游晶圆厂维持扩产与技术升级节奏，公司订单、交付与盈利能力有望形成连续验证。",
+          "市场通常会把它视为设备主线的情绪锚点，板块走强时弹性与稳定性兼具，适合做核心标的观察。"
+        ]
+      },
+      "中际旭创": {
+        industry: "光模块",
+        headline: "受益于高速光模块升级与算力资本开支延续，景气度与订单能见度同步提升",
+        summary: "公司处于高速光模块核心位置，受益于海外算力需求与交换升级趋势。随着板块关注度回暖，市场对订单兑现和业绩弹性的预期持续强化。",
+        highlights: [
+          "算力基础设施扩张仍在延续，高速率光模块需求有望保持高景气。",
+          "龙头厂商在客户结构、产品迭代和交付能力方面具备领先优势。",
+          "若板块共振走强，个股更容易出现趋势延续和资金回流。 "
+        ],
+        analysis: [
+          "公司在高速光模块环节具备较强竞争力，订单兑现通常是市场关注的核心。",
+          "随着新一轮算力资本开支落地，市场会重点交易产能释放与利润率修复逻辑。",
+          "从交易风格上看，适合作为AI硬件链的高弹性代表进行跟踪。"
+        ]
+      }
+    };
+
+    function getParam(key, fallback = "") {
+      return decodeURIComponent(params.get(key) || fallback);
+    }
+
+    function getProfile(name) {
+      return profileMap[name] || {
+        industry: "科技成长",
+        headline: "受益于产业催化与资金回流共振，景气预期与市场关注度同步提升",
+        summary: `${name}在所处赛道中具备一定辨识度，近期量价结构与板块关注度均有改善。若后续产业催化继续发酵，个股的短线弹性和中期跟踪价值都值得继续观察。`,
+        highlights: [
+          `${name}所处方向近期有催化支撑，市场会优先关注龙头和高弹性标的表现。`,
+          "从交易角度看，量价改善叠加情绪回暖，容易形成持续性观察机会。",
+          "若板块继续获得增量资金关注，个股有望受益于估值与情绪的同步修复。"
+        ],
+        analysis: [
+          `${name}在对应产业链中具备一定代表性，适合作为板块强弱和资金偏好的观察样本。`,
+          "若后续产业数据、订单兑现或政策催化持续验证，市场对基本面的预期会进一步强化。",
+          "对于趋势跟踪视角而言，重点可关注量价配合、板块联动和回撤承接情况。"
+        ]
+      };
+    }
+
+    function normalizeTime(timeText) {
+      if (!timeText) return "04/23 09:42";
+      return timeText.replace(" 推送", "");
+    }
+
+    const source = getParam("src", "ai");
+    const name = getParam("name", "北方华创");
+    const code = getParam("code", "002371.SZ");
+    const time = normalizeTime(getParam("time", "04/23 09:42"));
+    const analysisText = getParam("analysis", "");
+    const profile = getProfile(name);
+
+    document.getElementById("headline").textContent = `${name}${profile.headline}`;
+    document.getElementById("metaTime").textContent = time;
+    document.getElementById("stockChip").textContent = `${name}(${code})`;
+    document.getElementById("summaryPrefix").textContent = source === "kline" ? "K线信号" : "短期机会";
+    document.getElementById("summaryBox").textContent = analysisText || profile.summary;
+    document.getElementById("highlights").innerHTML = profile.highlights.map((item) => `<p>${item}</p>`).join("");
+    document.getElementById("analysisList").innerHTML = profile.analysis.map((item, idx) => `<p>${idx + 1}、${item}</p>`).join("");
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.href = source === "kline" ? "./kline.html?v=20260424" : "./ai.html?v=20260424";
+    });
+  </script>
+</body>
+</html>
