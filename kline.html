@@ -632,7 +632,26 @@
       const d = new Date(y, m - 1 + delta, 1);
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     }
+
+    function buildDetailHref(item, historyMode = false, shortTime = "") {
+      const displayDate = historyMode
+        ? state.selectedDate.slice(5).replace("-", "/")
+        : TODAY.slice(5).replace("-", "/");
+      const displayTime = historyMode
+        ? shortTime
+        : String(item.time || "").replace(" 推送", "");
+      const query = new URLSearchParams({
+        src: "kline",
+        name: item.name || "",
+        code: item.code || "",
+        time: `${displayDate} ${displayTime}`,
+        analysis: item.analysis || ""
+      });
+      return `./insight-detail.html?${query.toString()}`;
+    }
+
     function renderCard(item, historyMode = false, shortTime = "") {
+      const detailHref = buildDetailHref(item, historyMode, shortTime);
       if (historyMode) {
         return `
         <article class="card">
@@ -653,7 +672,7 @@
           </div>
           <div class="analysis">
             <div class="analysis-copy"><span class="analysis-label">AI分析：</span><span class="analysis-text">${item.analysis}</span></div>
-            <a class="detail" href="javascript:void(0)">查看详情 &gt;</a>
+            <a class="detail" href="${detailHref}">查看详情 &gt;</a>
           </div>
         </article>`;
       }
@@ -676,7 +695,7 @@
           </div>
           <div class="analysis">
             <div class="analysis-copy"><span class="analysis-label">AI分析：</span><span class="analysis-text">${item.analysis}</span></div>
-            <a class="detail" href="javascript:void(0)">查看详情 &gt;</a>
+            <a class="detail" href="${detailHref}">查看详情 &gt;</a>
           </div>
         </article>`;
     }
