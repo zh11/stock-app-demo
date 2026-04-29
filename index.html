@@ -404,6 +404,60 @@
       position: relative;
     }
 
+    .guide-card {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(255, 246, 244, 0.98), rgba(255, 235, 230, 0.96)),
+        linear-gradient(180deg, #fff7f4, #ffefe9);
+      border: 1px solid #ffe3dc;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .guide-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(55deg, rgba(255,255,255,0) 0 12%, rgba(255,255,255,.24) 12% 18%, rgba(255,255,255,0) 18% 30%),
+        linear-gradient(125deg, rgba(255,255,255,0) 0 46%, rgba(255,255,255,.18) 46% 54%, rgba(255,255,255,0) 54% 100%);
+      pointer-events: none;
+    }
+
+    .guide-head {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .guide-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #b25951;
+      letter-spacing: .2px;
+    }
+
+    .guide-panel {
+      position: relative;
+      z-index: 1;
+      padding: 16px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid #fbe4de;
+      color: #555d69;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .guide-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
     .strength-head {
       display: flex;
       align-items: center;
@@ -752,6 +806,15 @@
                   <div class="rating-row"><span>算力产业:</span><span class="stars">★★★☆☆</span></div>
                 </div>
                 <div class="flame"></div>
+              </article>
+
+              <article class="guide-card">
+                <div class="guide-head">
+                  <div class="guide-title">平台指南</div>
+                </div>
+                <div class="guide-panel">
+                  平台结合证券信息汇总、证券投资大数据进行算法诊股，填补了成长股高效估值空白，是《无问炒股》一书的实操工具；加上AI赋能...<a class="guide-link" href="javascript:void(0)">更多&gt;</a>
+                </div>
               </article>
 
               <article class="community-card">
