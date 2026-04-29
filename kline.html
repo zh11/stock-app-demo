@@ -746,9 +746,7 @@
         btn.addEventListener("click", () => {
           state.selectedDate = btn.dataset.date;
           state.calendarCollapsed = true;
-          renderCalendar();
-          renderHistoryList();
-          renderCalendarVisibility();
+          renderAll();
         });
       });
     }
