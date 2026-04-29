@@ -262,16 +262,67 @@
       margin: 0 auto 8px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 30%, #ffb8ab, #ff7966 62%, #ff5a47 100%);
-      box-shadow: inset 0 8px 14px rgba(255,255,255,.28);
+      box-shadow: inset 0 6px 10px rgba(255,255,255,.24);
       position: relative;
+    }
+
+    .tool-icon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.92);
     }
 
     .tool-icon::after {
       content: "";
       position: absolute;
-      inset: 15px;
-      border: 2px solid rgba(255,255,255,.92);
-      border-radius: 8px;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      transform: translate(-50%, -50%);
+    }
+
+    .tool:nth-child(2) .tool-icon::after,
+    .tool:nth-child(7) .tool-icon::after {
+      width: 2px;
+      height: 10px;
+    }
+
+    .tool:nth-child(3) .tool-icon::after,
+    .tool:nth-child(8) .tool-icon::after {
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255,255,255,.95);
+      border-top-color: transparent;
+      border-left-color: transparent;
+      background: transparent;
+      border-radius: 4px;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .tool:nth-child(4) .tool-icon::after,
+    .tool:nth-child(9) .tool-icon::after {
+      width: 12px;
+      height: 2px;
+      box-shadow: 0 -4px 0 rgba(255,255,255,.95), 0 4px 0 rgba(255,255,255,.95);
+    }
+
+    .tool:nth-child(5) .tool-icon::after,
+    .tool:nth-child(10) .tool-icon::after {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,.95);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.18);
     }
 
     .tool-label {
@@ -581,6 +632,22 @@
       border: 1px solid #ffd8cf;
     }
 
+    .avatar.soft {
+      background:
+        radial-gradient(circle at 34% 34%, #ffffff 0 11%, transparent 12%),
+        radial-gradient(circle at 58% 50%, #ffd1c6 0 24%, transparent 25%),
+        linear-gradient(180deg, #fff6f3, #ffd8cf);
+      border: 1px solid #ffe0d7;
+    }
+
+    .avatar.sunset {
+      background:
+        radial-gradient(circle at 34% 34%, #ffffff 0 11%, transparent 12%),
+        radial-gradient(circle at 56% 50%, #ffb399 0 24%, transparent 25%),
+        linear-gradient(180deg, #fff1ea, #ffc4b1);
+      border: 1px solid #ffd6ca;
+    }
+
     .community-name {
       display: flex;
       align-items: center;
@@ -758,7 +825,7 @@
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">诊股示范</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">傻瓜炒股</div></div>
-                <div class="tool"><div class="tool-icon"></div><div class="tool-label">范例实盘</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">范例操盘</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">见基本面</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">模拟操盘</div></div>
               </div>
@@ -825,7 +892,7 @@
                 <div class="community-feed">
                   <article class="community-post">
                     <div class="community-post-head">
-                      <div class="avatar brand">万旅密<br />飞课堂</div>
+                      <div class="avatar soft"></div>
                       <div>
                         <div class="community-name">助教-小客 <span class="badge">V</span></div>
                         <div class="community-time">04/07 09:34</div>
@@ -867,7 +934,7 @@
 
                   <article class="community-post">
                     <div class="community-post-head">
-                      <div class="avatar brand">策略<br />观察</div>
+                      <div class="avatar sunset"></div>
                       <div>
                         <div class="community-name">盘前观察员 <span class="badge">V</span></div>
                         <div class="community-time">04/07 13:06</div>
@@ -893,7 +960,7 @@
               <div class="nav-item active"><div class="nav-icon"></div>首页</div>
               <div class="nav-item"><div class="nav-icon"></div>自选</div>
               <div class="nav-item"><div class="nav-icon"></div>资讯</div>
-              <div class="nav-item"><div class="nav-icon"></div>入会</div>
+              <div class="nav-item"><div class="nav-icon"></div>商城</div>
               <div class="nav-item"><div class="nav-icon"></div>我</div>
             </nav>
             <div class="home-indicator"></div>

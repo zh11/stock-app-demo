@@ -163,6 +163,11 @@
       font-size: 13px;
       font-weight: 600;
     }
+    .toolbar-date {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+    }
     .history-btn {
       display: inline-flex;
       align-items: center;
@@ -289,6 +294,9 @@
       color: #69707b;
       font-size: 12px;
       font-weight: 600;
+    }
+    .selected-date:empty {
+      display: none;
     }
     .list, .history-list {
       display: grid;
@@ -625,7 +633,7 @@
             <div class="header-spacer" aria-hidden="true"></div>
           </div>
           <div class="toolbar">
-            <span><strong>今日筛选</strong> 04/23</span>
+            <span class="toolbar-date" id="toolbarDate"><strong>今日筛选</strong>&nbsp;04/23</span>
             <button class="history-btn" id="historyBtn" type="button">按时间查看历史</button>
           </div>
           <section class="history-panel" id="historyPanel">
@@ -715,6 +723,7 @@
       monthLabel: document.getElementById("monthLabel"),
       calendar: document.getElementById("calendar"),
       selectedDateLabel: document.getElementById("selectedDateLabel"),
+      toolbarDate: document.getElementById("toolbarDate"),
       main: document.querySelector(".main"),
       mainList: document.getElementById("mainList"),
       historyList: document.getElementById("historyList")
@@ -810,7 +819,10 @@
 
     function renderHistoryList() {
       const rows = db[state.tab].history[state.selectedDate] || [];
-      els.selectedDateLabel.textContent = state.selectedDate ? `${state.selectedDate} 历史记录` : "暂无历史记录";
+      const showInlineDate = !(state.historyMode && state.selectedDate && state.selectedDate !== TODAY);
+      els.selectedDateLabel.textContent = showInlineDate
+        ? (state.selectedDate ? `${state.selectedDate} 历史记录` : "暂无历史记录")
+        : "";
       if (!rows.length) {
         els.historyList.innerHTML = `<div class="empty">该日期暂无推送记录</div>`;
         return;
@@ -871,6 +883,9 @@
       els.historyPanel.classList.toggle("open", state.historyMode);
       els.main.classList.toggle("hidden", state.historyMode);
       els.historyBtn.textContent = state.historyMode ? "返回当前列表" : "按时间查看历史";
+      els.toolbarDate.innerHTML = state.historyMode && state.selectedDate && state.selectedDate !== TODAY
+        ? `${state.selectedDate} 历史记录`
+        : `<strong>今日筛选</strong>&nbsp;04/23`;
     }
 
     els.backBtn.addEventListener("click", () => {
