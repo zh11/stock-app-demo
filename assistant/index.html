@@ -1,0 +1,3711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>躺客 AI助手</title>
+<style>
+
+    :root {
+      --brand: #ef2d1f;
+      --brand-deep: #d91f13;
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #20242a;
+      --muted: #8d94a0;
+      --line: #edf1f5;
+      --blue: #2b7cff;
+      --shadow: 0 12px 28px rgba(25, 32, 48, 0.08);
+      --font: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 196, 175, 0.18), transparent 25%),
+        linear-gradient(180deg, #fbfbfc, #f2f5f9);
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .phone {
+      width: min(393px, 100%);
+      padding: 10px;
+      border-radius: 54px;
+      background: linear-gradient(180deg, #555963, #111317);
+      box-shadow: 0 28px 80px rgba(16, 20, 30, 0.28);
+    }
+
+    .screen {
+      position: relative;
+      aspect-ratio: 1179 / 2556;
+      border-radius: 46px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 34px;
+      background: #090a0d;
+      border-radius: 999px;
+      z-index: 5;
+    }
+
+    .safe {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+
+    .safe::-webkit-scrollbar { display: none; }
+
+    body.flat .wrap {
+      min-height: 100vh;
+      display: block;
+      padding: 0;
+    }
+
+    body.flat .phone {
+      width: min(393px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    body.flat .screen {
+      aspect-ratio: auto;
+      min-height: 100vh;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+    }
+
+    body.flat .island { display: none; }
+
+    body.flat .safe {
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+    }
+
+    .page {
+      width: 100%;
+      min-width: 0;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    body.flat .page {
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 6px;
+      background: linear-gradient(180deg, var(--brand), var(--brand));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .signal,
+    .wifi,
+    .battery {
+      position: relative;
+      display: inline-block;
+    }
+
+    .signal {
+      width: 18px;
+      height: 12px;
+      border-bottom: 3px solid #fff;
+      border-left: 3px solid #fff;
+      border-right: 3px solid #fff;
+      border-radius: 0 0 3px 3px;
+    }
+
+    .wifi {
+      width: 16px;
+      height: 12px;
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+    }
+
+    .battery {
+      width: 24px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 3px;
+      width: 2px;
+      height: 4px;
+      background: #fff;
+      border-radius: 1px;
+    }
+
+    .hero {
+      padding: 10px 14px 12px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+      color: #fff;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) repeat(3, 34px);
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .logo-image {
+      display: block;
+      width: 92px;
+      height: auto;
+    }
+
+    .search {
+      height: 42px;
+      padding: 0 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      color: #8b93a0;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .search .accent {
+      color: #7da3ff;
+      font-style: italic;
+      font-weight: 800;
+      margin: 0 4px;
+    }
+
+    .top-action {
+      min-width: 0;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .top-action .icon {
+      display: block;
+      margin: 0 auto 3px;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #fff;
+      border-radius: 7px;
+    }
+
+    .banner {
+      aspect-ratio: 1179 / 375;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.02)),
+        url("./home-banner.jpg") center top / 100% auto no-repeat;
+      border-bottom: 1px solid rgba(255,255,255,.28);
+    }
+
+    .section {
+      padding: 12px 12px 0;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px 6px;
+      padding: 14px 2px 0;
+      background: var(--card);
+    }
+
+    .tool {
+      text-align: center;
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffb8ab, #ff7966 62%, #ff5a47 100%);
+      box-shadow: inset 0 6px 10px rgba(255,255,255,.24);
+      position: relative;
+    }
+
+    .tool-icon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.92);
+    }
+
+    .tool-icon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      transform: translate(-50%, -50%);
+    }
+
+    .tool:nth-child(2) .tool-icon::after,
+    .tool:nth-child(7) .tool-icon::after {
+      width: 2px;
+      height: 10px;
+    }
+
+    .tool:nth-child(3) .tool-icon::after,
+    .tool:nth-child(8) .tool-icon::after {
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255,255,255,.95);
+      border-top-color: transparent;
+      border-left-color: transparent;
+      background: transparent;
+      border-radius: 4px;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .tool:nth-child(4) .tool-icon::after,
+    .tool:nth-child(9) .tool-icon::after {
+      width: 12px;
+      height: 2px;
+      box-shadow: 0 -4px 0 rgba(255,255,255,.95), 0 4px 0 rgba(255,255,255,.95);
+    }
+
+    .tool:nth-child(5) .tool-icon::after,
+    .tool:nth-child(10) .tool-icon::after {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,.95);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.18);
+    }
+
+    .tool-label {
+      color: #505763;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .dual-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .feature-card {
+      min-width: 0;
+      display: block;
+      padding: 14px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 84% 12%, rgba(255,120,120,.14), rgba(255,120,120,0) 28%),
+        linear-gradient(180deg, #fff6f5, #ffe9e6);
+      box-shadow: var(--shadow);
+      border: 1px solid #ffe4df;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .feature-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .feature-title {
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .feature-title .accent { color: var(--brand); }
+
+    .feature-bell {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #1f2023;
+      border-radius: 11px 11px 9px 9px;
+      position: relative;
+      flex: none;
+    }
+
+    .feature-bell::after {
+      content: "";
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 0 3px rgba(239,45,31,.14);
+    }
+
+    .feature-preview {
+      min-height: 150px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #ffe1dd;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .preview-text {
+      color: #30343a;
+      font-size: 15px;
+      line-height: 1.4;
+      min-height: 60px;
+    }
+
+    .preview-time {
+      color: var(--brand);
+      font-size: 14px;
+    }
+
+    .preview-stock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .preview-stock .tag {
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #ffd5d1;
+      background: #fff7f6;
+      color: #444950;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .more-link {
+      display: block;
+      margin-top: 10px;
+      text-align: right;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .strength-card {
+      margin-top: 14px;
+      padding: 16px 16px 18px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 82% 50%, rgba(255,115,115,.22), rgba(255,115,115,0) 30%),
+        linear-gradient(120deg, #fff7f6, #ffe6e0 44%, #ffd6cc);
+      box-shadow: var(--shadow);
+      border: 1px solid #ffe1dc;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .guide-card {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(255, 246, 244, 0.98), rgba(255, 235, 230, 0.96)),
+        linear-gradient(180deg, #fff7f4, #ffefe9);
+      border: 1px solid #ffe3dc;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .guide-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(55deg, rgba(255,255,255,0) 0 12%, rgba(255,255,255,.24) 12% 18%, rgba(255,255,255,0) 18% 30%),
+        linear-gradient(125deg, rgba(255,255,255,0) 0 46%, rgba(255,255,255,.18) 46% 54%, rgba(255,255,255,0) 54% 100%);
+      pointer-events: none;
+    }
+
+    .guide-head {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .guide-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #b25951;
+      letter-spacing: .2px;
+    }
+
+    .guide-panel {
+      position: relative;
+      z-index: 1;
+      padding: 16px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid #fbe4de;
+      color: #555d69;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .guide-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .strength-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .strength-title {
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .strength-head .more-link {
+      margin: 0;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .rating-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 10px;
+    }
+
+    .rating-row {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: #4f2c20;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .stars {
+      color: #ff6619;
+      letter-spacing: 3px;
+      font-size: 18px;
+    }
+
+    .flame {
+      position: absolute;
+      right: 8px;
+      bottom: -6px;
+      width: 116px;
+      height: 140px;
+      background:
+        radial-gradient(circle at 38% 28%, rgba(255,255,255,.68), rgba(255,255,255,0) 38%),
+        linear-gradient(180deg, #ff9f8f, #ff6c4c 45%, #ff5b34 72%, #ff7d45 100%);
+      clip-path: polygon(50% 0%, 66% 18%, 76% 40%, 68% 50%, 92% 78%, 64% 70%, 48% 100%, 36% 72%, 14% 84%, 24% 58%, 8% 42%, 26% 18%);
+      filter: drop-shadow(0 14px 20px rgba(255,100,70,.2));
+    }
+
+    .community-card {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 20px 20px 0 0;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .community-feed {
+      display: grid;
+      gap: 14px;
+    }
+
+    .community-post {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .community-post:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .community-post-head {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 40% 36%, #ffffff 0 16%, transparent 18%),
+        radial-gradient(circle at 52% 52%, #3a3f47 0 24%, transparent 26%),
+        linear-gradient(180deg, #f1f3f8, #dce2eb);
+      overflow: hidden;
+    }
+
+    .avatar.brand {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #fff4f1, #ffe2da);
+      color: #f05c3b;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.15;
+      text-align: center;
+      border: 1px solid #ffd8cf;
+    }
+
+    .avatar.soft {
+      background:
+        radial-gradient(circle at 34% 34%, #ffffff 0 11%, transparent 12%),
+        radial-gradient(circle at 58% 50%, #ffd1c6 0 24%, transparent 25%),
+        linear-gradient(180deg, #fff6f3, #ffd8cf);
+      border: 1px solid #ffe0d7;
+    }
+
+    .avatar.sunset {
+      background:
+        radial-gradient(circle at 34% 34%, #ffffff 0 11%, transparent 12%),
+        radial-gradient(circle at 56% 50%, #ffb399 0 24%, transparent 25%),
+        linear-gradient(180deg, #fff1ea, #ffc4b1);
+      border: 1px solid #ffd6ca;
+    }
+
+    .community-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .badge {
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f6a348, #ef7f10);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      display: inline-grid;
+      place-items: center;
+    }
+
+    .community-time {
+      margin-top: 4px;
+      color: #b1b7c0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .community-post-body {
+      margin: 10px 0 0 64px;
+      color: #2f343b;
+      font-size: 15px;
+      line-height: 1.72;
+      word-break: break-word;
+    }
+
+    .community-post-foot {
+      margin: 10px 0 0 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #9ba2ad;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .community-post-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .community-post-action.like { color: #f2a11b; }
+
+    .more-dots {
+      color: #9aa2ad;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .bottom-nav {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      padding: 8px 6px 6px;
+      width: 100%;
+      background: rgba(255,255,255,.97);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #757d88;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 5px;
+      border: 2px solid currentColor;
+      border-radius: 7px;
+    }
+
+    .nav-item.active { color: var(--brand); }
+
+    .home-indicator {
+      width: 124px;
+      height: 4px;
+      margin: 6px auto 6px;
+      border-radius: 999px;
+      background: #0f1115;
+    }
+
+    @media (max-width: 540px) {
+      .wrap { padding: 0; }
+      .phone {
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .screen {
+        aspect-ratio: auto;
+        min-height: 100vh;
+        border-radius: 0;
+      }
+      .island { top: 10px; }
+      .safe { min-height: 100vh; }
+      .page { min-height: 100vh; box-shadow: none; }
+      .hero-top { gap: 6px; }
+      .logo-image { width: 82px; }
+      .search { height: 40px; padding: 0 9px; font-size: 12px; }
+      .top-action { min-width: 30px; font-size: 9px; }
+      .top-action .icon { width: 20px; height: 20px; }
+      .tool-grid { gap: 12px 4px; }
+      .tool-icon { width: 44px; height: 44px; }
+      .feature-card,
+      .strength-card,
+      .community-card { padding-left: 12px; padding-right: 12px; }
+      .preview-text { font-size: 14px; }
+      .rating-row { grid-template-columns: 86px 1fr; font-size: 14px; }
+      .stars { letter-spacing: 2px; font-size: 17px; }
+      .community-post-head { grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; }
+      .avatar { width: 46px; height: 46px; }
+      .community-name { font-size: 16px; }
+      .community-post-body,
+      .community-post-foot { margin-left: 56px; }
+      .community-post-body { font-size: 14px; }
+    }
+  
+
+    .ai-fab {
+      position: absolute;
+      right: 14px;
+      bottom: 80px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8413a, #f06040);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(232,65,58,.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      z-index: 200;
+      animation: fabpulse 2s infinite;
+    }
+
+    @keyframes fabpulse {
+      0%, 100% { box-shadow: 0 4px 15px rgba(232,65,58,.4); }
+      50% { box-shadow: 0 4px 25px rgba(232,65,58,.6); }
+    }
+
+    .ai-fab .fab-ico { font-size: 20px; line-height: 1; }
+
+    @media (max-width: 540px) {
+      .ai-fab { bottom: 80px; }
+    }
+
+/* AI CHAT PAGE                                                       */
+/* ================================================================ */
+.chat-page{position:absolute;top:0;left:0;width:100%;height:100%;background:#fff;z-index:1000;display:flex;flex-direction:column;overflow:hidden;border-radius:20px;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.chat-page.open{transform:translateY(0)}
+
+/* Header */
+.chat-hdr{background:linear-gradient(135deg,#e8413a,#f06040);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chat-back{font-size:22px;cursor:pointer;background:none;border:none;color:#fff;padding:4px}
+.chat-hdr-av{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.chat-hdr-info{flex:1}
+.chat-hdr-title{font-size:17px;font-weight:600}
+.chat-hdr-sub{font-size:12px;opacity:.85;margin-top:2px}
+.mode-badge{font-size:10px;padding:2px 6px;border-radius:10px;margin-left:6px}
+.mode-badge.demo{background:#fff3cd;color:#856404}
+.mode-badge.live{background:#d4edda;color:#155724}
+.chat-settings{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:4px}
+
+/* Inner tab bar */
+.ai-tabs{display:flex;background:#fff;border-bottom:1px solid #eee;flex-shrink:0}
+.ai-tab{flex:1;text-align:center;padding:10px 0;font-size:13px;color:#888;cursor:pointer;position:relative;font-weight:500;white-space:nowrap}
+.ai-tab.active{color:#e8413a;font-weight:700}
+.ai-tab.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:22px;height:3px;background:#e8413a;border-radius:2px}
+.tab-badge{display:inline-block;background:#e8413a;color:#fff;font-size:9px;min-width:14px;height:14px;line-height:14px;text-align:center;border-radius:7px;margin-left:3px;padding:0 3px;vertical-align:middle}
+
+/* Panel containers */
+.ai-panels{flex:1;overflow:hidden;position:relative}
+.ai-panel{display:none;flex-direction:column;height:100%}
+.ai-panel.active{display:flex}
+
+/* ── Shared bottom input bar (all panels) ── */
+.shared-input{padding:8px 14px;background:#fff;border-top:1px solid #eee;display:flex;gap:8px;align-items:center;flex-shrink:0;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.shared-input-field{flex:1;border:1px solid #e8e8e8;border-radius:20px;padding:9px 16px;font-size:14px;outline:none;background:#f7f7f8;color:#333;font-family:inherit}
+.shared-input-field:focus{border-color:#e8413a;background:#fff}
+.shared-input-field::placeholder{color:#bbb}
+.mic-btn{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#aaa;flex-shrink:0}
+
+/* ================================================================ */
+/* PANEL 1: AI 对话                                                  */
+/* ================================================================ */
+.chat-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f7f7f8}
+.chat-scroll::-webkit-scrollbar{width:0}
+
+/* ── 事件卡片（三个层级）── */
+
+/* Level 1: 特大事件 — 全宽大卡片（现有样式保留并增强） */
+.feat-card{background:#fff;border-radius:12px;margin:12px 14px 8px;padding:16px 14px;box-shadow:0 1px 6px rgba(0,0,0,.07);position:relative}
+.feat-card-meta{display:flex;align-items:center;margin-bottom:10px}
+.feat-level-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#fff0f0;color:#e8413a;letter-spacing:.5px}
+.feat-timestamp{font-size:11px;color:#bbb}
+.feat-badge-row{display:flex;align-items:center;gap:10px}
+.feat-more-btn{font-size:11px;color:#c79a8b;background:#fff7f4;border:none;cursor:pointer;font-weight:600;padding:2px 8px;border-radius:10px;line-height:1.2}
+.feat-more-btn[disabled]{color:#bbb;cursor:default}
+.feat-topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.feat-time-inline{font-size:11px;color:#999}
+.feat-detail-link{background:none;border:none;color:#e8413a;font-size:12px;font-weight:600;cursor:pointer;padding:0;white-space:nowrap}
+.feat-title{font-size:19px;font-weight:800;color:#111;line-height:1.38;margin-bottom:10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-sub{font-size:12px;color:#888;line-height:1.65;margin-bottom:10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-primary-card{background:#fffaf9;border:1px solid #f7e1dc;border-radius:10px;padding:12px 12px 10px}
+.feat-impacts{border-top:1px solid #f2f2f2;padding-top:2px}
+.fi-row{display:flex;align-items:flex-start;gap:7px;padding:8px 0;border-bottom:1px solid #f7f7f7;font-size:12px;color:#444;line-height:1.55}
+.fi-row:last-child{border-bottom:none;padding-bottom:0}
+.flash-icon{color:#e8413a;font-size:13px;flex-shrink:0;margin-top:1px;font-style:normal}
+.fi-bold{font-weight:700;color:#222;margin-right:3px}
+.fi-note{display:block;margin-top:5px;font-size:10px;color:#999}
+/* 自选股关联提示 — 闪电要点末尾的小胶囊 */
+.fi-stock-link{display:inline-flex;align-items:center;gap:3px;margin-top:5px;font-size:10px;color:#e8413a;background:#fff0f0;border:1px solid #fdd;border-radius:12px;padding:1px 7px;cursor:pointer;white-space:nowrap}
+.fi-stock-link::before{content:'→';margin-right:1px}
+
+/* Level 2: 重要日常事件 — 紧凑卡片 */
+.feat-card-sm{background:#fff;border-radius:10px;margin:12px 14px 8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:flex-start;gap:10px}
+.feat-sm-dot{width:8px;height:8px;border-radius:50%;background:#f39c12;flex-shrink:0;margin-top:4px}
+.feat-sm-body{flex:1;min-width:0}
+.feat-sm-title{font-size:14px;font-weight:700;color:#222;line-height:1.45;margin-bottom:4px}
+.feat-sm-desc{font-size:12px;color:#888;line-height:1.55;margin-bottom:6px}
+.feat-sm-footer{display:flex;justify-content:space-between;align-items:center}
+.feat-sm-time{font-size:11px;color:#ccc}
+.feat-sm-expand{font-size:12px;color:#e8413a;cursor:pointer;font-weight:600}
+
+/* Level 3: 无重大事件 — 一行摘要文字 */
+.feat-quiet{padding:10px 14px 4px}
+.feat-quiet-text{font-size:13px;color:#aaa;line-height:1.6}
+.feat-quiet-text strong{color:#888;font-weight:600}
+
+/* ── 快捷问题区（2联动 + 3行为，分区显示）── */
+.quick-section{background:#f7f7f8;padding:8px 14px 12px}
+.quick-block{margin-bottom:10px}
+.quick-block:last-child{margin-bottom:0}
+.quick-block-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.qb-avatar{width:26px;height:26px;border-radius:50%;background:none;padding:0;overflow:hidden;flex-shrink:0}
+.qb-avatar img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.qb-label{font-size:11px;color:#bbb;font-weight:500}
+.qb-divider{height:1px;background:#eee;margin:10px 0}
+.quick-col{display:flex;flex-direction:column;gap:7px}
+/* Event-linked buttons: slightly different tint */
+.quick-btn{background:#fff;color:#333;border:1px solid #ebebeb;border-radius:20px;padding:7px 16px;font-size:13px;cursor:pointer;text-align:left;font-family:inherit;width:fit-content;transition:all .15s}
+.quick-btn:active{background:#fff0ef;border-color:#fdd;color:#e8413a}
+.quick-btn.event-linked{background:#fffaf8;border-color:#fde8e0;color:#444}
+.quick-btn.event-linked:active{background:#fff0ef;border-color:#fdd;color:#e8413a}
+
+/* ── Chat messages ── */
+.chat-msgs{padding:10px 14px 8px}
+.msg-row{display:flex;margin-bottom:14px;animation:msgin .3s ease-out}
+@keyframes msgin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-row.user{flex-direction:row-reverse}
+.msg-av{width:34px;height:34px;border-radius:50%;background:#e8413a;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.msg-row.user .msg-av{background:#ddd;color:#888;font-size:16px}
+.msg-bub{max-width:75%;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.6;margin:0 8px;word-break:break-word}
+.msg-row.ai .msg-bub{background:#fff;color:#333;border-top-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.msg-row.user .msg-bub{background:#e8413a;color:#fff;border-top-right-radius:4px}
+.msg-bub strong{color:#e8413a}
+.msg-row.user .msg-bub strong{color:#ffe0e0}
+.typing-ind{display:flex;gap:4px;padding:4px 0}
+.typing-ind span{width:6px;height:6px;border-radius:50%;background:#ccc;animation:typanim 1.4s infinite}
+.typing-ind span:nth-child(2){animation-delay:.2s}
+.typing-ind span:nth-child(3){animation-delay:.4s}
+@keyframes typanim{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+/* ── Panel tab smooth transition ── */
+/* When the chat panel is activated by sendMsg() from another panel,
+   we briefly flash the input bar to confirm the question was received */
+@keyframes inputFlash{0%{border-color:#e8413a;background:#fff8f7}100%{border-color:#e8e8e8;background:#f7f7f8}}
+.shared-input-field.flash{animation:inputFlash .6s ease-out forwards}
+
+
+/* ── 事件卡片轮播（三级体系演示） ── */
+.event-carousel-wrap{
+  /* horizontal snap container */
+  display:flex;
+  overflow-x:scroll;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:0;
+  margin:0;
+  /* smooth height animation when switching cards of different sizes */
+  transition:height 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.event-carousel-wrap::-webkit-scrollbar{display:none}
+
+.event-slide{
+  /* each slide is exactly 100% of the viewport */
+  flex:0 0 100%;
+  scroll-snap-align:start;
+  padding:12px 14px 4px;
+  box-sizing:border-box;
+}
+
+/* Dot indicators */
+.carousel-dots{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  padding:4px 0 8px;
+}
+.cdot{
+  width:6px;height:6px;border-radius:50%;
+  background:#ddd;
+  transition:all .25s;
+  cursor:pointer;
+}
+.cdot.active{
+  width:18px;border-radius:3px;
+  background:#e8413a;
+}
+
+/* Level 2 compact card — inside a slide it doesn't need outer margin */
+.feat-card-sm-slide{
+  background:#fff;border-radius:10px;
+  padding:14px 14px;
+  box-shadow:0 1px 5px rgba(0,0,0,.07);
+}
+.feat-sm-hdr{display:flex;align-items:center;margin-bottom:8px}
+.feat-sm-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#fff8ee;color:#e67e22;letter-spacing:.5px}
+.feat-sm-ts{font-size:11px;color:#bbb}
+.feat-sm-time-inline{font-size:11px;color:#999}
+.feat-sm-title{font-size:15px;font-weight:700;color:#222;line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-sm-desc{font-size:12px;color:#666;line-height:1.65;margin-bottom:10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-sm-impacts{border-top:1px solid #f5f5f5;padding-top:8px;display:flex;flex-direction:column;gap:6px}
+.feat-sm-row{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:#555;line-height:1.5}
+.feat-sm-dot-icon{width:6px;height:6px;border-radius:50%;background:#e67e22;flex-shrink:0;margin-top:5px}
+.feat-sm-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #f5f5f5}
+.feat-sm-time{font-size:11px;color:#ccc}
+.feat-sm-expand{font-size:12px;color:#e8413a;cursor:pointer;font-weight:600}
+.feat-extra-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.feat-extra-card{display:none;background:#fffaf9;border:1px solid #f7e1dc;border-radius:10px;padding:12px 12px 10px}
+.event-expanded .feat-extra-card{display:block}
+.feat-extra-head{display:block;margin-bottom:6px}
+.feat-extra-title{font-size:14px;font-weight:700;color:#222;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-extra-time{font-size:11px;color:#999;white-space:nowrap;flex-shrink:0}
+.feat-extra-desc{font-size:12px;color:#666;line-height:1.6;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.feat-extra-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.event-extra{display:none}
+.event-expanded .event-extra{display:flex}
+
+/* Level 3 quiet card */
+.feat-quiet-slide{
+  background:#fff;border-radius:10px;
+  padding:18px 14px 14px;
+  box-shadow:0 1px 5px rgba(0,0,0,.07);
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  min-height:80px;justify-content:center;
+}
+.feat-quiet-icon{font-size:28px;margin-bottom:10px;opacity:.45}
+.feat-quiet-title{font-size:15px;font-weight:700;color:#555;margin-bottom:6px}
+.feat-quiet-sub{font-size:12px;color:#bbb;line-height:1.65}
+
+/* Quick section: make questions area dynamic */
+.quick-section{background:#f7f7f8;padding:8px 14px 12px}
+.quick-block{margin-bottom:10px}
+.quick-block:last-child{margin-bottom:0}
+.quick-block-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.qb-avatar{width:26px;height:26px;border-radius:50%;background:none;padding:0;overflow:hidden;flex-shrink:0}
+.qb-avatar img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.qb-label{font-size:11px;color:#bbb;font-weight:500}
+.qb-divider{height:1px;background:#eee;margin:10px 0}
+.quick-col{display:flex;flex-direction:column;gap:7px}
+.quick-btn{background:#fff;color:#333;border:1px solid #ebebeb;border-radius:20px;padding:7px 16px;font-size:13px;cursor:pointer;text-align:left;font-family:inherit;width:fit-content;transition:all .15s}
+.quick-btn:active{background:#fff0ef;border-color:#fdd;color:#e8413a}
+.quick-btn.event-linked{background:#fffaf8;border-color:#fde8e0;color:#444}
+.quick-btn.event-linked:active{background:#fff0ef;border-color:#fdd;color:#e8413a}
+/* hidden quick block */
+.quick-block.hidden{display:none}
+
+/* ================================================================ */
+/* PANEL 2: 特别提醒                                                  */
+/* ================================================================ */
+.remind-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f5f6fa}
+.remind-scroll::-webkit-scrollbar{width:0}
+
+/* Stock card */
+.stock-card-wrap{padding:10px 14px 0}
+.stock-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.sc-name-row{padding:12px 14px 6px}
+.sc-name{font-size:18px;font-weight:800;color:#e8413a;line-height:1.2}
+/* 卡片头部美化（mc-slide 内使用）*/
+.sc-header{
+  background:linear-gradient(135deg,#e8413a,#f06040);
+  padding:12px 14px 10px;border-radius:0;
+}
+.sc-header .sc-name{color:#fff;font-size:17px;font-weight:800;display:block;margin-bottom:2px}
+.sc-header .sc-code{color:rgba(255,255,255,.7);font-size:11px;font-weight:500}
+.sc-header-row{display:flex;justify-content:space-between;align-items:flex-end}
+.sc-header-change{
+  display:flex;flex-direction:column;align-items:flex-end;
+}
+.sc-price-change{font-size:15px;font-weight:800;line-height:1}
+.sc-price-change.up{color:#fff}
+.sc-price-change.down{color:#b2ffd8}
+.sc-change-label{font-size:10px;color:rgba(255,255,255,.65);margin-top:2px}
+.sc-summary{font-size:12px;color:#888;line-height:1.65;padding:0 14px 8px}
+.sc-divider{height:1px;background:#f5f5f5;margin:0 14px}
+.sc-timeline{padding:4px 14px 0}
+.sc-item{display:flex;align-items:flex-start;gap:8px;padding:10px 0;border-bottom:1px solid #f8f8f8}
+.sc-item:last-child{border-bottom:none}
+.sc-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:44px}
+.sc-time{font-size:10px;color:#ccc;white-space:nowrap;margin-bottom:5px;line-height:1;font-weight:500}
+.sc-dot{width:8px;height:8px;border-radius:50%;background:#e8413a}
+.sc-body{flex:1;min-width:0}
+.sc-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:5px}
+
+/* ── 🔴 红色系：今日行情信号（需要当天关注的价格异动）── */
+.tag-price-alert  {background:#fff0f0;color:#c62828}  /* 涨跌幅预警   */
+.tag-limit        {background:#ffebee;color:#b71c1c}  /* 涨停/跌停    */
+.tag-new-hl       {background:#fce4ec;color:#ad1457}  /* 创阶段新高/低 */
+
+/* ── 🟠 橙色系：公司股权风险事件 ── */
+.tag-unlock       {background:#fff3e0;color:#bf360c}  /* 今日限售解禁  */
+.tag-shareholding {background:#fbe9e7;color:#d84315}  /* 增减持计划    */
+.tag-pledge       {background:#fff8e1;color:#e65100}  /* 股权质押/解押 */
+
+/* ── 🔵 蓝色系：正式公告与报告 ── */
+.tag-notice-night {background:#e3f2fd;color:#1565c0}  /* 隔夜公告提醒  */
+.tag-notice-intra {background:#e8f4fd;color:#0d47a1}  /* 盘中发布公告  */
+.tag-notice-post  {background:#e1f0fb;color:#1976d2}  /* 盘后公告提醒  */
+.tag-report       {background:#e8eaf6;color:#283593}  /* 定期报告发布  */
+.tag-earnings     {background:#ede7f6;color:#4527a0}  /* 业绩预告/快报 */
+.tag-ma           {background:#e8f5e9;color:#1b5e20}  /* 并购重组进展  */
+.tag-dividend     {background:#f3e5f5;color:#6a1b9a}  /* 分红方案      */
+.tag-agm          {background:#e0f7fa;color:#006064}  /* 今日股东大会  */
+.tag-bond         {background:#e8f4fd;color:#01579b}  /* 可转债申购/上市 */
+.tag-buyback      {background:#e0f2f1;color:#004d40}  /* 回购进展      */
+
+/* ── 🟣 紫色系：机构行为 ── */
+.tag-dragon       {background:#f3e5f5;color:#6a1b9a}  /* 龙虎榜数据    */
+.tag-research     {background:#ede7f6;color:#4527a0}  /* 机构研报      */
+.tag-survey       {background:#e8eaf6;color:#283593}  /* 机构调研      */
+
+/* ── 🟢 绿色系：收益性事件 ── */
+.tag-xd           {background:#e8f5e9;color:#2e7d32}  /* 今日除权除息  */
+.tag-daily-summary{background:#f1f8e9;color:#33691e}  /* 自选股今日看点 */
+.tag-weekly       {background:#dcedc8;color:#558b2f}  /* 本周总结      */
+
+/* ── 🩵 青色系：资讯与新闻 ── */
+.tag-news         {background:#e0f2f1;color:#00695c}  /* 资讯通知      */
+.tag-analysis     {background:#e0f7fa;color:#006064}  /* 深度新闻解读  */
+
+/* ── 🟡 琥珀色系：宏观市场数据 ── */
+.tag-overseas     {background:#fffde7;color:#f57f17}  /* 关联外盘异动  */
+.tag-futures      {background:#fff8e1;color:#e65100}  /* 关联期货异动  */
+.tag-macro        {background:#fff3e0;color:#bf360c}  /* 今日数据发布  */
+
+/* ── 💗 粉色系：资金流向 ── */
+.tag-margin       {background:#fce4ec;color:#880e4f}  /* 融资融券变动  */
+.tag-block        {background:#fce4ec;color:#ad1457}  /* 大宗交易      */
+.tag-holders      {background:#f8bbd9;color:#880e4f}  /* 股东户数变化  */
+.sc-desc{font-size:12px;color:#555;line-height:1.55}
+.sc-nav{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-top:1px solid #f0f0f0}
+.sc-num{font-size:13px;color:#555;font-weight:600}
+.sc-hint{display:flex;align-items:center;gap:4px;font-size:10px;color:#ccc;flex:1;justify-content:center}
+.sc-arrows{display:flex;gap:6px}
+.sc-arrow{width:26px;height:26px;border-radius:50%;border:1px solid #eee;background:#fff;font-size:14px;cursor:pointer;color:#aaa;display:flex;align-items:center;justify-content:center}
+.sc-arrow:not([disabled]):active{border-color:#e8413a;color:#e8413a}
+.sc-arrow[disabled]{opacity:.3;cursor:default}
+
+/* News feed below stock card */
+.remind-feed{padding:10px 14px}
+.ri-item{background:#fff;border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:10px}
+.ri-av{width:34px;height:34px;border-radius:50%;background:#e8413a;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ri-right{flex:1;min-width:0}
+.ri-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.ri-author{font-size:12px;color:#888;font-weight:500}
+.ri-time{font-size:11px;color:#bbb}
+.ri-text{font-size:13px;color:#333;line-height:1.65}
+.ri-more{color:#e8413a}
+
+/* ================================================================ */
+/* PANEL 3: 热点预期                                                  */
+/* ================================================================ */
+.htl-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff}
+.htl-scroll::-webkit-scrollbar{width:0}
+.htl-list{padding:4px 14px}
+.htl-item{display:flex;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f5f5f5}
+.htl-item:last-child{border-bottom:none}
+.htl-date-col{width:50px;flex-shrink:0}
+.htl-date-main{font-size:14px;font-weight:700;color:#333;line-height:1.15}
+.htl-date-y{font-size:10px;color:#ccc;margin-top:2px}
+.htl-dot-col{width:22px;flex-shrink:0;display:flex;justify-content:center;padding-top:4px}
+.htl-dot{width:10px;height:10px;border-radius:50%;background:#e8413a}
+.htl-dot.past{background:#d0d0d0}
+.htl-body{flex:1}
+.htl-desc{font-size:13px;color:#333;line-height:1.55;margin-bottom:8px}
+.htl-tags{display:flex;flex-wrap:wrap;gap:5px}
+.htl-tag{font-size:11px;padding:2px 10px;border-radius:3px;display:inline-block}
+.htl-tag{background:#fff0f0;color:#e8413a}
+.htl-tag.green{background:#f0fff4;color:#27ae60}
+.htl-tag.blue{background:#e8f4fd;color:#1565c0}
+.htl-tag.purple{background:#f3e5f5;color:#6a1b9a}
+.htl-tag.amber{background:#fffde7;color:#e65100}
+.htl-tag.gray{background:#f5f5f5;color:#666}
+
+/* ================================================================ */
+/* PANEL 4: 宏观要闻                                                  */
+/* ================================================================ */
+.macro-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f5f6fa}
+.macro-scroll::-webkit-scrollbar{width:0}
+.macro-feed{padding:10px 14px}
+.mi-item{background:#fff;border-radius:10px;padding:13px 12px;margin-bottom:8px;display:flex;gap:10px}
+.mi-av{width:36px;height:36px;border-radius:50%;background:#e8413a;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mi-right{flex:1;min-width:0}
+.mi-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.mi-author{font-size:12px;color:#888;font-weight:500}
+.mi-time{font-size:11px;color:#bbb}
+.mi-text{font-size:13px;color:#333;line-height:1.7}
+.mi-label{color:#e8413a;font-weight:700}
+.mi-more{color:#e8413a}
+
+/* ── Settings ── */
+.settings-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+.settings-overlay.open{display:flex}
+.settings-card{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:400px}
+.settings-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#222}
+.sf{margin-bottom:14px}
+.sf label{display:block;font-size:13px;color:#666;margin-bottom:6px}
+.sf select,.sf input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.sf input:focus,.sf select:focus{border-color:#e8413a}
+.sf-hint{font-size:12px;color:#999;margin-top:4px}
+.settings-btns{display:flex;gap:10px;margin-top:18px}
+.settings-btns button{flex:1;padding:10px;border-radius:8px;font-size:15px;cursor:pointer;border:none;font-family:inherit}
+.btn-cancel{background:#f5f5f5;color:#666}
+.btn-save{background:linear-gradient(135deg,#e8413a,#f06040);color:#fff}
+
+@media(max-width:430px){
+  body{align-items:stretch}
+  .phone-wrap{width:100%;height:100vh;border-radius:0;box-shadow:none}
+  .tab-bar,.chat-page{border-radius:0}
+}
+
+/* ================================================================ */
+/* 事件详情页                                                         */
+/* ================================================================ */
+.detail-page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:#f5f6fa;z-index:1100;
+  display:flex;flex-direction:column;overflow:hidden;
+  border-radius:20px;
+  /* 初始状态：从右侧藏在屏幕外 */
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.detail-page.open{transform:translateX(0)}
+
+/* 顶部导航栏 */
+.detail-hdr{
+  background:linear-gradient(135deg,#e8413a,#f06040);
+  color:#fff;padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.detail-back{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.detail-hdr-title{font-size:16px;font-weight:700;color:#fff}
+
+/* 滚动内容区 */
+.detail-scroll{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:0 0 12px;
+}
+.detail-scroll::-webkit-scrollbar{width:0}
+
+/* 各区块间距 */
+.detail-section{padding:14px 14px 0}
+
+/* 区块标题 */
+.d-section-title{
+  font-size:13px;font-weight:700;color:#999;
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+/* ── 事件概要卡 ── */
+.d-event-card{
+  background:#fff;border-radius:12px;
+  padding:16px 14px;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+}
+.d-event-top{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.d-badge{
+  font-size:10px;font-weight:700;padding:2px 8px;
+  border-radius:3px;background:#fff0f0;color:#e8413a;letter-spacing:.5px;
+}
+.d-badge.daily{background:#fff8ee;color:#e67e22}
+.d-ts{font-size:11px;color:#bbb}
+.d-event-title{
+  font-size:17px;font-weight:800;color:#111;
+  line-height:1.4;margin-bottom:10px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.d-event-summary{
+  font-size:13px;color:#666;line-height:1.7;
+  padding-top:10px;border-top:1px solid #f2f2f2;
+}
+
+/* ── 2×2 宏观影响网格 ── */
+.d-macro-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.d-macro-card{
+  background:#fff;border-radius:12px;
+  padding:14px 12px;
+  box-shadow:0 1px 5px rgba(0,0,0,.06);
+  display:flex;flex-direction:column;gap:7px;
+}
+.d-macro-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:12px;font-weight:700;color:#fff;
+}
+.d-macro-label{font-size:14px;font-weight:700;color:#222}
+.d-macro-tag{
+  display:inline-block;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:3px;width:fit-content;
+}
+.d-tag-up{background:#fff0f0;color:#e8413a}
+.d-tag-down{background:#f0fff4;color:#27ae60}
+.d-macro-desc{font-size:12px;color:#777;line-height:1.6}
+
+/* ── 自选股列表 ── */
+.d-stock-list{display:flex;flex-direction:column;gap:8px}
+.d-stock-card{
+  background:#fff;border-radius:10px;
+  padding:12px 14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.d-stock-left{flex-shrink:0;width:80px}
+.d-stock-name{font-size:14px;font-weight:700;color:#222;margin-bottom:2px}
+.d-stock-name.sector-link{
+  display:inline-flex;align-items:center;gap:4px;
+  border:none;background:none;padding:0;margin:0 0 2px;
+  cursor:pointer;font:inherit;color:#222;
+}
+.d-stock-name.sector-link::after{
+  content:'>';
+  font-size:11px;color:#b8bcc5;font-weight:700;
+}
+.d-stock-code{font-size:10px;color:#bbb}
+.d-stock-right{flex:1;min-width:0}
+.d-stock-tag{
+  display:inline-block;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:3px;margin-bottom:5px;
+}
+.d-sTag-pos{background:#fff0f0;color:#e8413a}
+.d-sTag-neg{background:#f0fff4;color:#27ae60}
+.d-sTag-neu{background:#f5f5f5;color:#888}
+.d-sTag-pressure{background:#f4f5f7;color:#444}
+.d-stock-desc{font-size:12px;color:#666;line-height:1.6}
+.d-stock-related{
+  margin-top:8px;
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+.d-stock-related-pill{
+  display:inline-flex;align-items:center;
+  padding:3px 8px;border-radius:999px;
+  font-size:10px;line-height:1.2;
+  background:#fff4f2;color:#e8413a;border:1px solid #ffd7d0;
+}
+.d-stock-related-pill.pos{background:#fff4f2;color:#e8413a;border-color:#ffd7d0}
+.d-stock-related-pill.neg{background:#f2fff5;color:#27ae60;border-color:#cfeeda}
+.d-stock-related-pill.neu{background:#f5f5f5;color:#888;border-color:#e5e5e5}
+.d-stock-related-pill.pressure{background:#f4f5f7;color:#444;border-color:#d9dde3}
+.detail-ask-bar{
+  padding:10px 14px;background:#fff;border-top:1px solid #eee;
+  display:flex;gap:8px;align-items:center;flex-shrink:0;
+  padding-bottom:max(10px,env(safe-area-inset-bottom));
+}
+.detail-ask-entry{
+  flex:1;border:1px solid #e8e8e8;border-radius:20px;padding:10px 16px;
+  font-size:14px;outline:none;background:#f7f7f8;color:#333;font-family:inherit;
+}
+.detail-ask-entry:focus{border-color:#e8413a;background:#fff}
+.detail-ask-entry::placeholder{color:#bbb}
+
+.sector-detail-page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:#f5f6fa;z-index:1110;
+  display:flex;flex-direction:column;overflow:hidden;
+  border-radius:20px;
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.sector-detail-page.open{transform:translateX(0)}
+.sector-detail-hdr{
+  background:linear-gradient(135deg,#e8413a,#f06040);
+  color:#fff;padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.sector-detail-back{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.sector-detail-title{font-size:16px;font-weight:700;color:#fff}
+.sector-detail-scroll{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:14px 14px 18px;
+}
+.sector-detail-scroll::-webkit-scrollbar{width:0}
+.sector-head-card{
+  background:#fff;border-radius:12px;padding:14px;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);
+  margin-bottom:12px;
+}
+.sector-head-top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:8px;
+}
+.sector-head-name{font-size:18px;font-weight:800;color:#111}
+.sector-head-chip{
+  flex-shrink:0;
+  display:inline-flex;align-items:center;
+  padding:4px 10px;border-radius:999px;
+  font-size:11px;font-weight:700;
+}
+.sector-head-sub{font-size:12px;color:#8b8f97;line-height:1.6}
+.sector-stock-list{display:flex;flex-direction:column;gap:8px}
+.sector-stock-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 4px 2px;
+}
+.sector-stock-col{
+  font-size:12px;font-weight:700;color:#9aa0a6;letter-spacing:.2px;
+}
+.sector-stock-sort{
+  border:none;background:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:4px;
+  padding:0;font:inherit;color:#9aa0a6;font-weight:700;
+}
+.sector-stock-sort::after{
+  content:'↓';
+  font-size:11px;line-height:1;color:#b0b5bc;
+}
+.sector-stock-sort.asc::after{content:'↑'}
+.sector-stock-sort.desc::after{content:'↓'}
+.sector-stock-row{
+  background:#fff;border-radius:10px;padding:12px 14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.sector-stock-left{min-width:0;flex:1}
+.sector-stock-name{font-size:14px;font-weight:700;color:#222;margin-bottom:4px}
+.sector-stock-code{font-size:11px;color:#b1b5bd}
+.sector-stock-right{
+  flex-shrink:0;text-align:right;
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.sector-stock-change{font-size:16px;font-weight:800;line-height:1}
+.sector-stock-change.pos{color:#e8413a}
+.sector-stock-change.neg{color:#27ae60}
+.sector-stock-change.neu{color:#8c8c8c}
+.sector-stock-rank{font-size:11px;color:#a4a8b0}
+
+
+/* ================================================================ */
+/* 重要日常事件 轻量版详情页（橙色主题）                              */
+/* ================================================================ */
+.detail2-page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:#f5f6fa;z-index:1200;
+  display:flex;flex-direction:column;overflow:hidden;
+  border-radius:20px;
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.detail2-page.open{transform:translateX(0)}
+
+/* 橙色顶部导航 */
+.detail2-hdr{
+  background:linear-gradient(135deg,#f39c12,#e67e22);
+  color:#fff;padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.detail2-back{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.detail2-hdr-title{font-size:16px;font-weight:700;color:#fff}
+
+/* 滚动区 */
+.detail2-scroll{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px;
+}
+.detail2-scroll::-webkit-scrollbar{width:0}
+
+/* 区块 */
+.d2-section{padding:14px 14px 0}
+.d2-section-title{
+  font-size:13px;font-weight:700;color:#999;
+  letter-spacing:.5px;margin-bottom:10px;
+}
+
+/* 概要卡 — 橙色徽章 */
+.d2-event-card{
+  background:#fff;border-radius:12px;
+  padding:16px 14px;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+}
+.d2-event-top{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.d2-badge{
+  font-size:10px;font-weight:700;padding:2px 8px;
+  border-radius:3px;background:#fff8ee;color:#e67e22;letter-spacing:.5px;
+}
+.d2-ts{font-size:11px;color:#bbb}
+.d2-event-title{
+  font-size:16px;font-weight:800;color:#111;
+  line-height:1.45;margin-bottom:10px;
+}
+.d2-event-summary{
+  font-size:13px;color:#666;line-height:1.7;
+  padding-top:10px;border-top:1px solid #f2f2f2;
+}
+
+/* 带图标横条卡片 */
+.d2-impact-list{display:flex;flex-direction:column;gap:9px}
+.d2-impact-card{
+  background:#fff;border-radius:10px;
+  padding:12px 14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  display:flex;align-items:center;gap:12px;
+}
+.d2-impact-icon{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.d2-impact-body{flex:1;min-width:0}
+.d2-impact-label{
+  font-size:13px;font-weight:700;color:#222;margin-bottom:3px;
+  display:flex;align-items:center;gap:6px;
+}
+.d2-impact-tag{
+  font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;
+}
+.d2-itag-pos{background:#fff0f0;color:#e8413a}
+.d2-itag-neg{background:#f0fff4;color:#27ae60}
+.d2-itag-neu{background:#f5f5f5;color:#888}
+.d2-impact-desc{font-size:12px;color:#777;line-height:1.6}
+
+/* 自选股（沿用 d-stock 样式，无需重写） */
+
+
+/* ================================================================ */
+/* 特别提醒面板 — 重新设计                                           */
+/* ================================================================ */
+
+/* 整体滚动容器 */
+.remind-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f5f6fa}
+.remind-wrap::-webkit-scrollbar{width:0}
+.remind-inner{padding:10px 14px 20px;display:flex;flex-direction:column;gap:10px}
+
+/* ── 今日概要卡 ── */
+.rsc-card{
+  background:#fff;border-radius:12px;padding:14px;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+}
+.rsc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.rsc-title{font-size:14px;font-weight:700;color:#222}
+.rsc-date{font-size:11px;color:#bbb}
+.rsc-summary{font-size:12px;color:#666;line-height:1.65;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f5f5f5}
+.rsc-stocks{display:flex;gap:6px;flex-wrap:wrap}
+.rsc-stock-pill{
+  display:flex;align-items:center;gap:4px;
+  background:#f7f7f8;border-radius:16px;padding:3px 10px;
+  font-size:11px;color:#444;
+}
+.rsc-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rsc-dot.pos{background:#e8413a}
+.rsc-dot.neg{background:#27ae60}
+.rsc-dot.neu{background:#bbb}
+/* 整体方向信号 */
+.rsc-signal-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5}
+.rsc-signal-label{font-size:11px;color:#bbb}
+.rsc-signal{font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px}
+.signal-warm{background:#fff0f0;color:#e8413a}
+.signal-risk{background:#fff8ee;color:#e67e22}
+.signal-calm{background:#f5f5f5;color:#888}
+
+/* ── 场景卡片（早盘/收盘）── */
+.scene-card{
+  border-radius:12px;padding:14px;cursor:pointer;
+  display:flex;align-items:flex-start;gap:12px;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+  transition:opacity .15s;
+}
+.scene-card:active{opacity:.85}
+.scene-card.morning{background:linear-gradient(135deg,#fff8f0,#fff3e6)}
+.scene-card.evening{background:linear-gradient(135deg,#f0f4ff,#e8eeff)}
+.scene-icon{font-size:26px;line-height:1;flex-shrink:0;margin-top:2px}
+.scene-body{flex:1;min-width:0}
+.scene-title{font-size:14px;font-weight:700;color:#222;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
+.scene-arrow{font-size:16px;color:#bbb}
+.scene-items{display:flex;flex-direction:column;gap:4px}
+.scene-item{font-size:12px;color:#555;line-height:1.55;display:flex;align-items:flex-start;gap:5px}
+.scene-item::before{content:'·';color:#e8413a;font-size:16px;line-height:1;margin-top:-1px;flex-shrink:0}
+
+/* ── 半小时消息汇总 ── */
+.hh-section-title{font-size:12px;font-weight:700;color:#999;letter-spacing:.5px;margin-bottom:2px}
+.hh-list{display:flex;flex-direction:column;gap:7px}
+.hh-item{
+  background:#fff;border-radius:10px;padding:11px 13px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  display:flex;align-items:flex-start;gap:10px;
+  cursor:pointer;
+}
+.hh-item:active{opacity:.85}
+.hh-left{flex-shrink:0;width:38px;text-align:center}
+.hh-time{font-size:11px;font-weight:700;color:#555;line-height:1}
+.hh-dir{margin-top:4px;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;white-space:nowrap;display:inline-block}
+.hh-dir.warm{background:#fff0f0;color:#e8413a}
+.hh-dir.risk{background:#fff8ee;color:#e67e22}
+.hh-dir.calm{background:#f5f5f5;color:#888}
+.hh-body{flex:1;min-width:0}
+.hh-text{font-size:12px;color:#444;line-height:1.6}
+.hh-more{color:#e8413a;font-size:12px}
+
+/* ── 优先级分层消息推送 ── */
+.pm-list{display:flex;flex-direction:column;gap:8px}
+.pm-card{
+  background:#fff;border-radius:10px;
+  padding:12px 13px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  border-left:3px solid #ddd;
+  cursor:pointer;
+  transition:opacity .15s;
+}
+.pm-card:active{opacity:.85}
+.pm-card.urgent{border-left-color:#e8413a}
+.pm-card.important{border-left-color:#f39c12}
+.pm-card.background{border-left-color:#ccc}
+.pm-top{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.pm-level{font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px}
+.pm-level.urgent{background:#fff0f0;color:#e8413a}
+.pm-level.important{background:#fff8ee;color:#e67e22}
+.pm-level.background{background:#f5f5f5;color:#888}
+.pm-stock{font-size:12px;font-weight:700;color:#222}
+.pm-code{font-size:10px;color:#bbb;margin-left:2px}
+.pm-tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;margin-left:auto}
+.pm-tag.pos{background:#fff0f0;color:#e8413a}
+.pm-tag.neg{background:#f0fff4;color:#27ae60}
+.pm-tag.neu{background:#f5f5f5;color:#888}
+.pm-desc{font-size:12px;color:#666;line-height:1.6}
+.pm-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.pm-time{font-size:10px;color:#ccc}
+.pm-expand{font-size:11px;color:#e8413a;font-weight:600}
+
+/* ── 特别提醒详情页 ── */
+.detail3-page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:#f5f6fa;z-index:1300;
+  display:flex;flex-direction:column;overflow:hidden;
+  border-radius:20px;
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.detail3-page.open{transform:translateX(0)}
+.detail3-hdr{
+  background:linear-gradient(135deg,#e8413a,#f06040);
+  color:#fff;padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.detail3-back{
+  width:36px;height:36px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.detail3-hdr-title{font-size:16px;font-weight:700;color:#fff}
+.detail3-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.detail3-scroll::-webkit-scrollbar{width:0}
+.d3-section{padding:14px 14px 0}
+.d3-section-title{font-size:12px;font-weight:700;color:#999;letter-spacing:.5px;margin-bottom:10px}
+
+/* 详情页内容卡 */
+.d3-content-card{
+  background:#fff;border-radius:12px;
+  padding:16px 14px;margin-bottom:10px;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+}
+.d3-content-label{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:10px;
+}
+.d3-label-dot{width:8px;height:8px;border-radius:50%;background:#e8413a;flex-shrink:0}
+.d3-label-dot.orange{background:#f39c12}
+.d3-label-dot.gray{background:#bbb}
+.d3-label-text{font-size:14px;font-weight:700;color:#222}
+.d3-label-sub{font-size:11px;color:#bbb;margin-left:auto}
+.d3-body{font-size:13px;color:#555;line-height:1.75}
+.d3-body strong{color:#222}
+.d3-divider{height:1px;background:#f5f5f5;margin:12px 0}
+.d3-suggestion{
+  background:#fff8f8;border-radius:8px;padding:10px 12px;
+  margin-top:10px;border-left:3px solid #e8413a;
+}
+.d3-sug-label{font-size:11px;font-weight:700;color:#e8413a;margin-bottom:4px}
+.d3-sug-text{font-size:12px;color:#555;line-height:1.65}
+
+
+/* ── 早盘个股关注轮播 ── */
+/* mc-outer 必须有明确宽度，mc-slide 的 100% 才能正确解析 */
+.mc-outer{position:relative;overflow-x:hidden;overflow-y:visible;width:100%}
+.mc-wrap{
+  display:flex;
+  width:100%;          /* 明确宽度，避免浏览器用"所有子元素之和"来计算 */
+  overflow-x:scroll;overflow-y:hidden;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  transition:height .35s cubic-bezier(.4,0,.2,1);
+}
+.mc-wrap::-webkit-scrollbar{display:none}
+/* min-width:100% + flex-shrink:0 比 flex:0 0 100% 在嵌套场景下更可靠 */
+.mc-slide{min-width:100%;flex-shrink:0;scroll-snap-align:start;box-sizing:border-box}
+/* 每张卡内部：概要行（在时间线之前） */
+.sc-keypoint{
+  font-size:12px;color:#c0392b;font-weight:600;
+  line-height:1.65;padding:9px 14px 7px;
+  background:linear-gradient(90deg,#fff5f5,#fff9f9);
+  border-left:3px solid #e8413a;margin:0;
+}
+.mc-dots{display:flex;justify-content:center;gap:5px;padding:6px 0 2px}
+.mc-dot{width:5px;height:5px;border-radius:50%;background:#ddd;transition:all .25s;cursor:pointer}
+.mc-dot.active{width:16px;border-radius:3px;background:#e8413a}
+
+
+/* ── 视觉层级优化 ── */
+
+/* 概要卡：从轻量白卡升级为有分量的面板感 */
+.rsc-card{
+  background:#fff;
+  border-radius:12px;
+  padding:0;          /* 移除统一 padding，改为分区控制 */
+  box-shadow:0 2px 12px rgba(232,65,58,.10);
+  overflow:hidden;    /* 让顶部色条贴边 */
+  border:1px solid #fde8e0;
+}
+/* 顶部红色渐变标题条 */
+.rsc-header-bar{
+  background:linear-gradient(135deg,#e8413a,#f06040);
+  padding:12px 14px 10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.rsc-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px}
+.rsc-date{font-size:11px;color:rgba(255,255,255,.75)}
+/* 概要文字区 */
+.rsc-body{padding:12px 14px 10px}
+.rsc-summary{margin-bottom:10px}
+.rsc-market-brief{
+  font-size:13px;font-weight:700;color:#222;line-height:1.5;
+  margin-bottom:10px;
+}
+.rsc-news-overview{font-size:12px;color:#666;line-height:1.7}
+.rsc-news-list{display:flex;flex-direction:column;gap:8px}
+.rsc-news-item{
+  background:#fafafa;border:1px solid #f1f1f1;border-radius:10px;
+  padding:9px 10px;
+}
+.rsc-news-top{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  margin-bottom:4px;
+}
+.rsc-news-name{font-size:12px;font-weight:700;color:#222}
+.rsc-news-desc{font-size:11px;color:#666;line-height:1.6}
+/* 股票胶囊：用白色背景+彩色文字，更清晰 */
+.rsc-stocks{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.rsc-stock-pill{
+  display:flex;align-items:center;gap:4px;
+  border-radius:16px;padding:4px 10px;
+  font-size:11px;font-weight:600;border:1px solid;
+}
+.rsc-stock-pill.pill-neg{background:#f0fff4;color:#27ae60;border-color:#b7e4c7}
+.rsc-stock-pill.pill-pos{background:#fff0f0;color:#e8413a;border-color:#fdd}
+.rsc-stock-pill.pill-neu{background:#f7f7f8;color:#888;border-color:#e8e8e8}
+/* 方向信号行 */
+.rsc-signal-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;
+  background:#fafafa;border-top:1px solid #f2f2f2;
+}
+.rsc-signal-label{font-size:11px;color:#bbb}
+.rsc-signal{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px}
+.signal-warm{background:#fff0f0;color:#e8413a}
+.signal-risk{background:#fff8ee;color:#e67e22}
+.signal-calm{background:#f5f5f5;color:#888}
+
+/* 个股轮播卡：降低视觉重量 */
+/* sc-header 从全宽渐变色块改为白底+红色文字+左侧竖线 */
+.mc-outer .sc-header{
+  background:#fff !important;
+  padding:12px 14px 10px;
+  border-bottom:1px solid #f2f2f2;
+  border-left:4px solid #e8413a;
+}
+.mc-outer .sc-header .sc-name{
+  color:#e8413a !important;
+  font-size:16px;font-weight:800;display:block;margin-bottom:2px;
+}
+.mc-outer .sc-header .sc-code{
+  color:#aaa !important;
+  font-size:11px;font-weight:400;
+}
+
+/* 重要消息推送：让无点击的卡片有明确的视觉差异 */
+.pm-card:not([onclick]){cursor:default}
+.pm-card:not([onclick]) .pm-footer{justify-content:flex-start}
+
+/* section title 更精致 */
+.hh-section-title{
+  font-size:11px;font-weight:700;color:#bbb;
+  letter-spacing:.8px;text-transform:uppercase;
+  padding:4px 0 2px;
+  border-bottom:none;
+}
+
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="island"></div>
+        <div class="safe">
+          <div class="page">
+            <div class="status">
+              <span>10:41</span>
+              <div class="status-icons">
+                <span class="signal"></span>
+                <span class="wifi"></span>
+                <span class="battery"></span>
+              </div>
+            </div>
+
+            <header class="hero">
+              <div class="hero-top">
+                <div class="logo">
+                  <img class="logo-image" src="./home-logo.png" alt="躺客" />
+                </div>
+                <div class="search" onclick="openChat()">🔍 <span class="accent">AI</span> 搜索</div>
+                <div class="top-action"><span class="icon"></span>排行榜</div>
+                <div class="top-action"><span class="icon"></span>奖励</div>
+                <div class="top-action"><span class="icon"></span>分享</div>
+              </div>
+            </header>
+
+            <section class="banner" aria-label="首页横幅"></section>
+
+            <section class="section">
+              <div class="tool-grid">
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">诊股示范</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">傻瓜炒股</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">范例操盘</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">见基本面</div></div>
+                <div class="tool"><div class="tool-icon"></div><div class="tool-label">模拟操盘</div></div>
+              </div>
+
+              <div class="dual-cards">
+                <article class="feature-card">
+                  <div class="feature-head">
+                    <div class="feature-title">K<span class="accent">线</span>捕手</div>
+                    <span class="feature-bell"></span>
+                  </div>
+                  <div class="feature-preview">
+                    <div class="preview-text"><span class="preview-time">04/23&nbsp;&nbsp;09:42</span> 国内领先的半导体设备供应商，量价结构持续改善，具备进一步观察价值...</div>
+                    <div class="preview-stock">
+                      <span>优股:</span>
+                      <span class="tag">北方华创(002371.SZ)</span>
+                    </div>
+                  </div>
+                  <span class="more-link">更多&gt;</span>
+                </article>
+
+                <article class="feature-card">
+                  <div class="feature-head">
+                    <div class="feature-title"><span class="accent">AI</span>异动筛股</div>
+                    <span class="feature-bell"></span>
+                  </div>
+                  <div class="feature-preview">
+                    <div class="preview-text"><span class="preview-time">04/23&nbsp;&nbsp;09:42</span> 国内领先的半导体设备供应商，量价结构持续改善，具备进一步观察价值...</div>
+                    <div class="preview-stock">
+                      <span>优股:</span>
+                      <span class="tag">北方华创(002371.SZ)</span>
+                    </div>
+                  </div>
+                  <span class="more-link">更多&gt;</span>
+                </article>
+              </div>
+
+              <article class="strength-card">
+                <div class="strength-head">
+                  <div class="strength-title">科技强度</div>
+                  <span class="more-link">更多&gt;</span>
+                </div>
+                <div class="rating-list">
+                  <div class="rating-row"><span>人工智能:</span><span class="stars">★★★★★</span></div>
+                  <div class="rating-row"><span>芯片半导体:</span><span class="stars">★★★★☆</span></div>
+                  <div class="rating-row"><span>算力产业:</span><span class="stars">★★★☆☆</span></div>
+                </div>
+                <div class="flame"></div>
+              </article>
+
+              <article class="guide-card">
+                <div class="guide-head">
+                  <div class="guide-title">平台指南</div>
+                </div>
+                <div class="guide-panel">
+                  平台结合证券信息汇总、证券投资大数据进行算法诊股，填补了成长股高效估值空白，是《无问炒股》一书的实操工具；加上AI赋能...<span class="guide-link">更多&gt;</span>
+                </div>
+              </article>
+
+              <article class="community-card">
+                <div class="section-head">
+                  <div class="section-title">交流社区</div>
+                  <span class="more-link">更多&gt;</span>
+                </div>
+                <div class="community-feed">
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar soft"></div>
+                      <div>
+                        <div class="community-name">助教-小客 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 09:34</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      今日大盘3200附近承压，关注AI算力和低空经济两条主线的轮动机会。宁德时代、比亚迪昨日放量，新能源链条短线可留意，注意控制仓位。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 31</span>
+                        <span class="community-post-action like">👍 58</span>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar"></div>
+                      <div>
+                        <div class="community-name">躺客研究员 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 11:18</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      半导体设备方向热度回升，北方华创、中微公司量价配合更强。若午后指数企稳，可优先看板块龙头的回踩承接，不追高，重节奏。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 24</span>
+                        <span class="community-post-action like">👍 42</span>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="community-post">
+                    <div class="community-post-head">
+                      <div class="avatar sunset"></div>
+                      <div>
+                        <div class="community-name">盘前观察员 <span class="badge">V</span></div>
+                        <div class="community-time">04/07 13:06</div>
+                      </div>
+                      <div class="more-dots">⋯</div>
+                    </div>
+                    <div class="community-post-body">
+                      科技强度仍维持高位，AI异动筛股和K线捕手今天命中率不错。下午如果市场情绪继续修复，可以留意算力、液冷和光模块的强势分支。
+                    </div>
+                    <div class="community-post-foot">
+                      <span>举报</span>
+                      <div class="community-post-actions">
+                        <span>回复 19</span>
+                        <span class="community-post-action like">👍 37</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </article>
+            </section>
+
+            <nav class="bottom-nav">
+              <div class="nav-item active"><div class="nav-icon"></div>首页</div>
+              <div class="nav-item"><div class="nav-icon"></div>自选</div>
+              <div class="nav-item"><div class="nav-icon"></div>资讯</div>
+              <div class="nav-item"><div class="nav-icon"></div>商城</div>
+              <div class="nav-item"><div class="nav-icon"></div>我</div>
+            </nav>
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+
+        <button class="ai-fab" onclick="openChat()"><div class="fab-ico">🤖</div><div>AI助手</div></button>
+
+<!-- ══════════ AI CHAT PAGE ══════════ -->
+<div class="chat-page" id="chatPage">
+
+  <div class="chat-hdr">
+    <button class="chat-back" onclick="closeChat()">&#8592;</button>
+    <div class="chat-hdr-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div>
+    <div class="chat-hdr-info">
+      <div class="chat-hdr-title">躺客AI助手 <span class="mode-badge demo" id="modeBadge">演示模式</span></div>
+      <div class="chat-hdr-sub">智能投资问答 &middot; 7&times;24小时在线</div>
+    </div>
+    <button class="chat-settings" onclick="openSettings()">&#9881;</button>
+  </div>
+
+  <div class="ai-tabs">
+    <div class="ai-tab active" onclick="switchTab('chat',this)">AI对话</div>
+    <div class="ai-tab" onclick="switchTab('remind',this)">特别提醒 <span class="tab-badge">8</span></div>
+    <div class="ai-tab" onclick="switchTab('hotspot',this)">热点预期</div>
+    <div class="ai-tab" onclick="switchTab('macro',this)">宏观要闻</div>
+  </div>
+
+  <div class="ai-panels">
+
+    <!-- ── Panel 1: AI对话 ── -->
+    <div class="ai-panel active" id="panel-chat">
+      <div class="chat-scroll">
+
+        <!-- ══ 事件卡片三级体系：左右滑动演示 ══ -->
+        <!-- 轨道外层：显示滑动进度的容器 -->
+        <div style="position:relative;overflow-x:hidden;overflow-y:visible">
+
+          <!-- 水平滑动轨道 -->
+          <div class="event-carousel-wrap" id="eventCarousel">
+
+            <!-- ── Slide 0: Level 1 特大事件 ── -->
+            <div class="event-slide">
+              <div class="feat-card" id="majorEventCard">
+                <div class="feat-card-meta">
+                  <div class="feat-badge-row">
+                    <span class="feat-level-badge">⚡ 特大事件 (4)</span>
+                    <button class="feat-more-btn" id="majorMoreBtn" aria-expanded="false" onclick="expandEventInfo('major')">查看更多</button>
+                  </div>
+                </div>
+                <div class="feat-primary-card">
+                  <div class="feat-topline">
+                    <div class="feat-time-inline">4月13日 21:10</div>
+                    <button class="feat-detail-link" onclick="openDetail('major-main')">看清影响</button>
+                  </div>
+                  <div class="feat-title">霍尔木兹海峡风险升温，国际油价一度突破100美元关口</div>
+                  <p class="feat-sub">中东局势在4月中旬急剧升温，油价一度升破100美元，全球市场重新定价能源、通胀与避险资产。</p>
+                  <div class="feat-impacts">
+                    <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">股市影响</span>油价冲高压缩制造业利润预期，市场风格快速切向资源、防御与避险资产。<br><span class="fi-stock-link" onclick="askQ(this)">万华化学 / 比亚迪 / 招商银行 可能受影响</span></div></div>
+                    <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">商品冲击</span>原油上冲会同步抬升化工原料和运输成本，资源品弹性上升而中下游承压。</div></div>
+                    <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">通胀回摆</span>输入型通胀预期回升后，全球宽松交易会被迫降温，利率敏感资产承压。</div></div>
+                    <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">避险升温</span>美元、黄金与高股息资产关注度抬升，全球资金短线更偏防守。</div></div>
+                  </div>
+                </div>
+                <div class="feat-extra-list">
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">4月17日 08:40</div>
+                        <button class="feat-detail-link" onclick="openDetail('major-oil')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">中东缓和信号推动油价回落，输入型通胀压力阶段性降温</div>
+                    </div>
+                    <div class="feat-extra-desc">4月17日亚洲时段国际油价回落，市场重新评估能源风险溢价，对制造和出行链条的成本压力边际减轻。</div>
+                    <div class="feat-impacts">
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">股市影响</span>油价回落利于缓解制造业成本压力，也会削弱化工原料涨价预期。<br><span class="fi-stock-link" onclick="askQ(this)">比亚迪 / 宁德时代 / 万华化学 可能受影响</span></div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">原油链条</span>上游油气弹性下降，中下游制造和运输链的利润预期相对改善。</div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">全球通胀</span>能源扰动降温有助于稳定海外通胀预期，成长资产估值压力边际缓和。</div></div>
+                    </div>
+                  </div>
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">4月14日 21:00</div>
+                        <button class="feat-detail-link" onclick="openDetail('major-deploy')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">IMF下调新兴经济体增长预期，油价冲击压低全球风险偏好</div>
+                    </div>
+                    <div class="feat-extra-desc">IMF在4月14日下调新兴市场增长预测，指出中东冲突带来的高能源和高粮价正在拖累经济与资金情绪。</div>
+                    <div class="feat-impacts">
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">股市影响</span>全球增长预期下修会压低成长资产风险偏好，资金更偏向稳健现金流和红利风格。<br><span class="fi-stock-link" onclick="askQ(this)">招商银行 / 万华化学 可能受影响</span></div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">全球资金</span>海外资金在高油价和增长下修背景下更趋谨慎，新兴市场承受更大资金波动。</div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">避险资产</span>美元和黄金获得更强配置需求，权益市场整体估值容忍度下降。</div></div>
+                    </div>
+                  </div>
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">4月14日 21:05</div>
+                        <button class="feat-detail-link" onclick="openDetail('major-inflation')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">IMF警告若油价长期维持高位，全球经济将逼近衰退边缘</div>
+                    </div>
+                    <div class="feat-extra-desc">IMF在情景推演中指出，如果冲突恶化且油价长期高于100美元，全球增长和风险资产都将面临更大冲击。</div>
+                    <div class="feat-impacts">
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">股市影响</span>一旦油价高位常态化，A股会明显偏向防御配置，成长和消费板块承压更大。<br><span class="fi-stock-link" onclick="askQ(this)">受影响板块：航空 / 消费 / 高估值成长</span></div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">通胀路径</span>能源和粮食价格共同抬升时，全球通胀粘性会增强，降息预期继续后移。</div></div>
+                      <div class="fi-row"><i class="flash-icon">&#9889;</i><div><span class="fi-bold">市场黑天鹅</span>资金会提前交易更差情景，波动率和避险需求同步抬升。</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Slide 1: Level 2 重要日常事件 ── -->
+            <div class="event-slide">
+              <div class="feat-card-sm-slide" id="dailyEventCard">
+                <div class="feat-sm-hdr">
+                  <div class="feat-badge-row">
+                    <span class="feat-sm-badge">📌 日常重要事件 (4)</span>
+                    <button class="feat-more-btn" id="dailyMoreBtn" aria-expanded="false" onclick="expandEventInfo('daily')">查看更多</button>
+                  </div>
+                </div>
+                <div class="feat-primary-card">
+                  <div class="feat-topline">
+                    <div class="feat-sm-time-inline">4月16日 10:29</div>
+                    <button class="feat-detail-link" onclick="openDetail2('daily-main')">看清影响</button>
+                  </div>
+                    <div class="feat-sm-title">中国一季度GDP同比增长5.0%，工业与消费同步改善</div>
+                  <div class="feat-sm-desc">国家统计局4月16日公布，一季度GDP同比增长5.0%，3月工业增加值与消费指标继续改善。</div>
+                  <div class="feat-sm-impacts">
+                    <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">股市影响</span>宏观数据改善稳住了当天盘面对顺周期与核心资产的预期。<br><span class="fi-stock-link" onclick="askQ(this)">宁德时代 / 比亚迪 / 招商银行 可能受影响</span></div></div>
+                    <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">政策维度</span>数据不弱意味着稳增长政策更偏精准加力，而不是全面刺激。</div></div>
+                    <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">风格维度</span>内需和制造改善有助于抬升风险偏好，资金更愿意回到核心龙头。</div></div>
+                  </div>
+                </div>
+                <div class="feat-extra-list">
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">3月24日 18:05</div>
+                        <button class="feat-detail-link" onclick="openDetail2('daily-northbound')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">央行开展5000亿元MLF操作并净投放500亿元，延续加量续做</div>
+                    </div>
+                    <div class="feat-extra-desc">人民银行3月24日公告，3月25日开展5000亿元MLF操作，较当月到期量实现净投放500亿元。</div>
+                    <div class="feat-sm-impacts">
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">股市影响</span>MLF净投放稳住了流动性预期，银行和高股息风格的估值更容易保持稳定。<br><span class="fi-stock-link" onclick="askQ(this)">招商银行 可能受影响</span></div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">利率维度</span>净投放有助于平抑季末资金扰动，短端利率波动更容易收敛。</div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">政策维度</span>利率不变说明政策更偏精准呵护，而不是全面加码宽松。</div></div>
+                    </div>
+                  </div>
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">4月12日 14:06</div>
+                        <button class="feat-detail-link" onclick="openDetail2('daily-volume')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">一季度外资持仓更新：宁德时代获增持，招商银行仍居核心重仓</div>
+                    </div>
+                    <div class="feat-extra-desc">沪深港通一季度持仓披露显示，外资对A股整体偏谨慎，但宁德时代获增持，招商银行仍在前十大重仓之列。</div>
+                    <div class="feat-sm-impacts">
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">股市影响</span>外资继续偏爱龙头制造和头部银行，核心资产的定价锚仍较清晰。<br><span class="fi-stock-link" onclick="askQ(this)">宁德时代 / 招商银行 可能受影响</span></div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">外资维度</span>外资整体仓位谨慎，但更愿意集中配置流动性好、业绩确定的龙头公司。</div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">风格维度</span>这类持仓结构通常对应“重质量、轻题材”的配置逻辑，权重蓝筹更占优。</div></div>
+                    </div>
+                  </div>
+                  <div class="feat-extra-card">
+                    <div class="feat-extra-head">
+                      <div class="feat-topline">
+                        <div class="feat-extra-time">4月2日 09:20</div>
+                        <button class="feat-detail-link" onclick="openDetail2('daily-bond')">看清影响</button>
+                      </div>
+                      <div class="feat-extra-title">多地发布以旧换新细则，家电与零售板块分化加剧</div>
+                    </div>
+                    <div class="feat-extra-desc">地方补贴细则进一步落地，白电和家居卖场预期改善，但传统百货与高成本渠道承压更明显。</div>
+                    <div class="feat-sm-impacts">
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">股市影响</span>补贴政策更直接影响可选消费板块，资金会优先交易白电、家居零售与低估值连锁渠道。<br><span class="fi-stock-link" onclick="askQ(this)">受影响板块：家电 / 家居零售 / 百货零售</span></div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">政策维度</span>地方细则落地提升了消费刺激政策的可执行性，短期板块弹性增强。</div></div>
+                      <div class="feat-sm-row"><div class="feat-sm-dot-icon"></div><div><span class="fi-bold">成交维度</span>资金更容易围绕补贴受益链条做结构性交易，而不是全面扩散到所有消费股。</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Slide 2: Level 3 无重大事件日 ── -->
+            <div class="event-slide">
+              <div class="feat-quiet-slide">
+                <div class="feat-quiet-icon">🌤</div>
+                <div class="feat-quiet-title">今日市场平稳</div>
+                <div class="feat-quiet-sub">暂无重大事件，AI 已为你梳理自选股动态<br>下方是根据你的关注点准备的问题</div>
+              </div>
+            </div>
+
+          </div><!-- /event-carousel-wrap -->
+
+          <!-- 分页圆点 -->
+          <div class="carousel-dots" id="carouselDots">
+            <div class="cdot active" onclick="scrollToSlide(0)"></div>
+            <div class="cdot" onclick="scrollToSlide(1)"></div>
+            <div class="cdot" onclick="scrollToSlide(2)"></div>
+          </div>
+
+        </div><!-- /carousel outer -->
+
+        <!-- ── 快捷问题区（随轮播动态更新） ── -->
+        <div class="quick-section" id="quickSection">
+
+          <!-- Block A: 事件联动（Slide 0 & 1 显示，Slide 2 隐藏） -->
+          <div class="quick-block" id="quickEventBlock">
+            <div class="quick-block-hdr">
+              <div class="qb-avatar"><img src="data:image/png;base64,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"></div>
+              <span class="qb-label" id="quickEventLabel">⚡ 事件相关</span>
+            </div>
+            <div class="quick-col" id="quickEventBtns">
+              <button class="quick-btn event-linked" onclick="askQ(this)">中东局势对A股能源板块影响几何？</button>
+              <button class="quick-btn event-linked" onclick="askQ(this)">油价上涨对哪些行业是利好？</button>
+            </div>
+          </div>
+
+          <div class="qb-divider" id="quickDivider"></div>
+
+          <!-- Block B: 行为预设（始终显示） -->
+          <div class="quick-block">
+            <div class="quick-block-hdr">
+              <div class="qb-avatar"><img src="data:image/png;base64,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"></div>
+              <span class="qb-label">💡 猜你想问</span>
+            </div>
+            <div class="quick-col">
+              <button class="quick-btn" onclick="askQ(this)">最近哪个板块资金流入最猛？</button>
+              <button class="quick-btn" onclick="askQ(this)">新手怎么选股？</button>
+              <button class="quick-btn" onclick="askQ(this)">现在适合买新能源吗？</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Chat messages injected here by JS -->
+
+        <div class="chat-msgs" id="chatMessages"></div>
+      </div>
+    </div>
+
+        <!-- ── Panel 2: 特别提醒 ── -->
+    <div class="ai-panel" id="panel-remind">
+      <div class="remind-wrap">
+        <div class="remind-inner">
+
+          <!-- ① 概要卡 -->
+          <div class="rsc-card">
+            <!-- 顶部标题条 -->
+            <div class="rsc-header-bar">
+              <span class="rsc-title">📋 自选股概要</span>
+              <span class="rsc-date">04月22日 08:30</span>
+            </div>
+            <!-- 正文区 -->
+            <div class="rsc-body">
+              <div class="rsc-summary">
+                <div class="rsc-market-brief">4月21日A股三指微涨，沪深两市延续偏强震荡，创业板反弹，新能源与科技方向活跃，周期与化工分化，市场情绪中性偏暖。</div>
+                <div class="rsc-news-overview">自选股消息面主要聚焦新能源、银行和化工。新能源链催化延续，仍是当前最强方向；银行以经营稳健为主，偏中性观察；化工链受油价回落扰动，短线承压，先看情绪修复。</div>
+              </div>
+              <div class="rsc-stocks">
+                <div class="rsc-stock-pill pill-pos">新能源链 · 利好较多</div>
+                <div class="rsc-stock-pill pill-neu">银行 · 中性</div>
+                <div class="rsc-stock-pill pill-neg">化工链 · 利空偏多</div>
+              </div>
+            </div>
+            <!-- 底部方向信号 -->
+            <div class="rsc-signal-row">
+              <span class="rsc-signal-label">今日消息面</span>
+              <span class="rsc-signal signal-warm">中性偏暖 · 板块分化</span>
+            </div>
+          </div>
+
+          <!-- ② 早盘个股关注卡（轮播） -->
+          <div class="mc-outer">
+            <div class="mc-wrap" id="morningCarousel">
+
+              <!-- Slide 0：万华化学 -->
+              <div class="mc-slide">
+                <div class="stock-card">
+                  <div class="sc-header">
+                    <div class="sc-header-row">
+                      <div>
+                        <span class="sc-name">万华化学</span>
+                        <span class="sc-code">600309.SH · 化工行业</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sc-keypoint">原油期货暴跌近15%，化工成本有望改善，但需观察传导节奏，短期情绪承压</div>
+                  <div class="sc-timeline">
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">09:32</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-price-alert">涨跌幅预警</div><div class="sc-desc">受原油期货暴跌拖累，开盘低开-1.5%，化工板块普遍承压，聚氨酯链条（MDI、TDI）个股集体走弱，主力资金小幅净流出约0.8亿。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-futures">关联期货异动</div><div class="sc-desc">跌幅扩大至-2.1%，WTI原油日内最大跌幅达19%；下游聚氨酯需求短期随原油情绪同步走弱，建议暂不追跌，等待油价企稳后重新评估成本传导节奏。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-news">资讯通知</div><div class="sc-desc">跌幅收窄至-1.8%，部分资金开始逢低布局原材料成本改善逻辑；成交量较开盘缩量，卖压减轻，化工板块整体出现企稳迹象，可继续观察午后方向。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">11:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-margin">融资融券变动</div><div class="sc-desc">截至上午收盘，主力净流出约1.2亿，以散户卖出为主；机构席位无明显大单卖出，机构持仓相对稳定，反映中长线资金尚未恐慌性离场。</div></div>
+                    </div>
+                  </div>
+                  <div class="sc-nav">
+                    <span class="sc-num">1 / 4</span>
+                    <span class="sc-hint">左右滑动查看更多自选股</span>
+                    <div class="sc-arrows">
+                      <button class="sc-arrow" disabled>&#8249;</button>
+                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 1：宁德时代 -->
+              <div class="mc-slide">
+                <div class="stock-card">
+                  <div class="sc-header">
+                    <div class="sc-header-row">
+                      <div>
+                        <span class="sc-name">宁德时代</span>
+                        <span class="sc-code">300750.SZ · 电池行业</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sc-keypoint">外资节后首日强势回归，北向净买入1.6亿创新高，基本面与资金面双向共振</div>
+                  <div class="sc-timeline">
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">09:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-margin">融资融券变动</div><div class="sc-desc">沪深股通节后恢复交易，宁德时代开盘即获北向资金买入超1.2亿元，外资信心修复信号明确；开盘涨幅4.2%，量能较昨日显著放大，情绪强烈。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-research">机构研报</div><div class="sc-desc">中信证券盘中更新研报，维持"买入"评级，目标价上调至240元；Q1净利润预增28%-35%，固态电池2026年小批量量产时间节点再度被确认，催化剂清晰。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-news">资讯通知</div><div class="sc-desc">涨幅稳定在4.1%，北向净买入累计达1.6亿，创节后外资单日买入宁德新高；两市科技板块全面活跃，宁德时代作为新能源龙头承接主线资金，趋势强势。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">11:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-dragon">龙虎榜数据</div><div class="sc-desc">盘中触发龙虎榜条件，机构席位净买入约2.1亿，游资席位合计净卖出0.6亿；机构持续加仓、游资轻微兑现，主力方向明确向上，持仓结构健康。</div></div>
+                    </div>
+                  </div>
+                  <div class="sc-nav">
+                    <span class="sc-num">2 / 4</span>
+                    <span class="sc-hint">左右滑动查看更多自选股</span>
+                    <div class="sc-arrows">
+                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2：比亚迪 -->
+              <div class="mc-slide">
+                <div class="stock-card">
+                  <div class="sc-header">
+                    <div class="sc-header-row">
+                      <div>
+                        <span class="sc-name">比亚迪</span>
+                        <span class="sc-code">002594.SZ · 汽车行业</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sc-keypoint">停火加速新能源替代逻辑，量能持续放大60%，机构合力做多信号最清晰</div>
+                  <div class="sc-timeline">
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">09:35</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-news">资讯通知</div><div class="sc-desc">美伊停火缓和能源供应链压力，油价若中长期回落将加速燃油车向新能源切换；叠加昨日公告沙特战略合作正式签约，比亚迪今日是自选股中逻辑最清晰的一天，开盘涨2.8%。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-dragon">龙虎榜数据</div><div class="sc-desc">机构席位全天持续净买入，截至10时净买入约1.8亿；龙虎榜成都系游资轻微参与，但体量极小，整体主导权在机构手中，多空分歧极小，市场合力向上态势明显。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-price-alert">涨跌幅预警</div><div class="sc-desc">涨幅3.0%，成交额较昨日放大约60%，量价配合良好，是主力真实认可的信号；若下午成交量能维持，当日涨幅有望进一步扩大，持股不动是当前最优策略。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">11:15</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-analysis">深度新闻解读</div><div class="sc-desc">彭博报道比亚迪与沙特阿美合作协议细节落地，涵盖新能源汽车及充电基础设施共建，预计2026年底前在沙特部署5万台充电桩，国际化战略重大突破获外资认可。</div></div>
+                    </div>
+                  </div>
+                  <div class="sc-nav">
+                    <span class="sc-num">3 / 4</span>
+                    <span class="sc-hint">左右滑动查看更多自选股</span>
+                    <div class="sc-arrows">
+                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3：招商银行 -->
+              <div class="mc-slide">
+                <div class="stock-card">
+                  <div class="sc-header">
+                    <div class="sc-header-row">
+                      <div>
+                        <span class="sc-name">招商银行</span>
+                        <span class="sc-code">600036.SH · 银行行业</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sc-keypoint">地缘缓和利好外资流入，但息差压力仍存，整体中性偏稳，无需操作</div>
+                  <div class="sc-timeline">
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">09:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-news">资讯通知</div><div class="sc-desc">平开微涨0.3%，整体跟随大盘情绪，无明显异动；资金以小幅买入为主，未见大笔净流入或净流出，整体交投清淡，银行板块今日明显弱于科技成长方向。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-news">资讯通知</div><div class="sc-desc">北向资金节后回归，但主要流向半导体和新能源方向，银行板块尚未获得明显配置；降息预期仍对净息差形成压制，短期缺乏催化，机构对银行整体持中性态度。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">10:30</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-report">定期报告发布</div><div class="sc-desc">招行3月末一季度经营数据显示，不良贷款率环比持平0.94%，拨备覆盖率维持430%以上，零售贷款结构健康；资产质量稳健是当前持有招行的核心逻辑，短期弱势属正常。</div></div>
+                    </div>
+                    <div class="sc-item">
+                      <div class="sc-left"><span class="sc-time">11:00</span><div class="sc-dot"></div></div>
+                      <div class="sc-body"><div class="sc-tag tag-analysis">深度新闻解读</div><div class="sc-desc">涨幅温和收于0.6%，在今日大盘科技强势行情中相对滞涨属正常分化；从中长期视角看，招行估值合理、分红稳定，当前无需操作，持仓等待行业周期改善即可。</div></div>
+                    </div>
+                  </div>
+                  <div class="sc-nav">
+                    <span class="sc-num">4 / 4</span>
+                    <span class="sc-hint">左右滑动查看更多自选股</span>
+                    <div class="sc-arrows">
+                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow" disabled>&#8250;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /mc-wrap -->
+          </div><!-- /mc-outer -->
+
+
+
+          <!-- ④ 优先级分层消息推送 -->
+          <div class="hh-section-title">🔔 重要消息推送</div>
+          <div class="pm-list">
+
+            <!-- 紧急 -->
+            <div class="pm-card urgent" onclick="openRemindDetail('pm1')">
+              <div class="pm-top">
+                <span class="pm-level urgent">紧急</span>
+                <span class="pm-stock">万华化学</span>
+                <span class="pm-code">600309.SH</span>
+                <span class="pm-tag neg">今日关注</span>
+              </div>
+              <div class="pm-desc">原油期货日内暴跌近15%，化工原料成本有望实质性下降，但股价已跌超2%反映悲观预期，需判断是否持有。</div>
+              <div class="pm-footer">
+                <span class="pm-time">09:32 · 行情异动</span>
+                <span class="pm-expand">分析影响 ›</span>
+              </div>
+            </div>
+
+            <div class="pm-card urgent" onclick="openRemindDetail('pm2')">
+              <div class="pm-top">
+                <span class="pm-level urgent">紧急</span>
+                <span class="pm-stock">宁德时代</span>
+                <span class="pm-code">300750.SZ</span>
+                <span class="pm-tag pos">建议关注</span>
+              </div>
+              <div class="pm-desc">北向资金节后首日恢复交易，早盘净买入超1.2亿，外资信心修复信号明确。固态电池概念持续发酵，今日是重要观察窗口。</div>
+              <div class="pm-footer">
+                <span class="pm-time">10:15 · 资金动向</span>
+                <span class="pm-expand">分析影响 ›</span>
+              </div>
+            </div>
+
+            <!-- 重要 -->
+            <div class="pm-card important">
+              <div class="pm-top">
+                <span class="pm-level important">重要</span>
+                <span class="pm-stock">比亚迪</span>
+                <span class="pm-code">002594.SZ</span>
+                <span class="pm-tag pos">利好</span>
+              </div>
+              <div class="pm-desc">美伊停火催化新能源替代逻辑，叠加沙特战略合作，今日机构席位净买入活跃，量能放大是关键验证指标。</div>
+              <div class="pm-footer">
+                <span class="pm-time">09:35 · 逻辑强化</span>
+              </div>
+            </div>
+
+            <div class="pm-card important">
+              <div class="pm-top">
+                <span class="pm-level important">重要</span>
+                <span class="pm-stock">宁德时代</span>
+                <span class="pm-code">300750.SZ</span>
+                <span class="pm-tag pos">利好</span>
+              </div>
+              <div class="pm-desc">一季报预告：Q1净利润预计同比增长约28%-35%，固态电池2026年小批量量产预期被机构反复确认，基本面支撑强劲。</div>
+              <div class="pm-footer">
+                <span class="pm-time">昨晚 22:00 · 业绩预告</span>
+              </div>
+            </div>
+
+            <!-- 背景信息 -->
+            <div class="pm-card background">
+              <div class="pm-top">
+                <span class="pm-level background">背景</span>
+                <span class="pm-stock">招商银行</span>
+                <span class="pm-code">600036.SH</span>
+                <span class="pm-tag neu">中性</span>
+              </div>
+              <div class="pm-desc">地缘风险缓和有利于外资流入银行板块，但降息预期压制息差弹性，短期盘面中性，无需操作。</div>
+              <div class="pm-footer">
+                <span class="pm-time">今日 · 宏观背景</span>
+              </div>
+            </div>
+
+            <div class="pm-card background">
+              <div class="pm-top">
+                <span class="pm-level background">背景</span>
+                <span class="pm-stock">万华化学</span>
+                <span class="pm-code">600309.SH</span>
+                <span class="pm-tag neu">观察中</span>
+              </div>
+              <div class="pm-desc">工信部发布《2026年半导体产业创新发展专项行动方案》，对化工上游特殊材料需求有潜在正向影响，中长期逻辑待跟踪。</div>
+              <div class="pm-footer">
+                <span class="pm-time">今日 · 政策背景</span>
+              </div>
+            </div>
+
+          </div><!-- /pm-list -->
+
+        </div><!-- /remind-inner -->
+      </div><!-- /remind-wrap -->
+    </div>
+
+        <!-- ── Panel 3: 热点预期 ── -->
+    <div class="ai-panel" id="panel-hotspot">
+      <div class="htl-scroll">
+        <div class="htl-list">
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-01</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot past"></div></div><div class="htl-body"><div class="htl-desc">4月1日至3日，第十四届储能国际峰会暨展览会（ESIE2026）将继续在北京进行</div><div class="htl-tags"><span class="htl-tag">储能</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-07</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot past"></div></div><div class="htl-body"><div class="htl-desc">证监会《关于短线交易监管的若干规定》于4月7日起正式施行</div><div class="htl-tags"><span class="htl-tag blue">券商</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-09</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">第十九届中国零售商大会将于4月9日至11日在广州举办</div><div class="htl-tags"><span class="htl-tag green">商业百货</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-11</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">首届脑机接口供应链论坛</div><div class="htl-tags"><span class="htl-tag purple">人脑工程</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-12</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026中国环境技术大会将于4月12日至15日在上海启幕</div><div class="htl-tags"><span class="htl-tag green">绿色电力</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-13</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026年世界互联网大会亚太峰会将于4月13日至14日在香港召开</div><div class="htl-tags"><span class="htl-tag blue">算力概念</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026全球采购与供应链交流大会将于4月14日至16日在海口召开</div><div class="htl-tags"><span class="htl-tag amber">物流行业</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">汇丰全球投资峰会将于4月14日至16日在香港举行</div><div class="htl-tags"><span class="htl-tag blue">券商</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-17</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">国家统计局将公布一季度GDP及3月工业增加值、固定资产投资等关键宏观数据</div><div class="htl-tags"><span class="htl-tag gray">大盘</span><span class="htl-tag green">消费</span></div></div></div>
+          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-20</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">LPR利率月度报价，市场预期下调5BP，关注银行板块及地产链反应</div><div class="htl-tags"><span class="htl-tag blue">银行</span><span class="htl-tag gray">地产</span></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Panel 4: 宏观要闻 ── -->
+    <div class="ai-panel" id="panel-macro">
+      <div class="macro-scroll">
+        <div class="macro-feed">
+          <div class="mi-item"><div class="mi-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div><div class="mi-right"><div class="mi-meta"><span class="mi-author">躺客AI助手</span><span class="mi-time">14:46</span></div><div class="mi-text"><span class="mi-label">【研报干货 | 70年代石油危机复盘和启示】</span>高油价冲击下，能源转型机遇在哪？复盘70两次石油危机，对比政策和效果 <span class="mi-more">>></span></div></div></div>
+          <div class="mi-item"><div class="mi-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div><div class="mi-right"><div class="mi-meta"><span class="mi-author">躺客AI助手</span><span class="mi-time">14:40</span></div><div class="mi-text"><span class="mi-label">【事件解读 | 中东局势进入深度博弈，对A股有什么影响】</span>中东多线对抗升级、供应链承压，A股该如何把握避险与涨价主线？<span class="mi-more">>></span></div></div></div>
+          <div class="mi-item"><div class="mi-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div><div class="mi-right"><div class="mi-meta"><span class="mi-author">躺客AI助手</span><span class="mi-time">03-30 14:40</span></div><div class="mi-text"><span class="mi-label">【事件解读 | 3月PMI数据怎么看？】</span>3月PMI数据已出，数据如何解读？又暗含什么信号？<span class="mi-more">>></span></div></div></div>
+          <div class="mi-item"><div class="mi-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div><div class="mi-right"><div class="mi-meta"><span class="mi-author">躺客AI助手</span><span class="mi-time">03-30 14:40</span></div><div class="mi-text"><span class="mi-label">【政策解读 | 央行MLF操作解读】</span>央行开展2000亿元MLF操作，利率持平。流动性维持合理充裕，短期对市场情绪偏中性，关注后续降准降息预期<span class="mi-more">>></span></div></div></div>
+          <div class="mi-item"><div class="mi-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div><div class="mi-right"><div class="mi-meta"><span class="mi-author">躺客AI助手</span><span class="mi-time">03-28 14:40</span></div><div class="mi-text"><span class="mi-label">【行业跟踪 | 新能源车3月销量数据前瞻】</span>机构预测3月新能源车零售销量有望突破95万辆，同比+28%。比亚迪、理想、小米汽车预计表现亮眼<span class="mi-more">>></span></div></div></div>
+          <div style="text-align:center;padding:18px;color:#ccc;font-size:12px">以上为历史消息</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ai-panels -->
+
+  <!-- Shared bottom input bar (visible across all panels) -->
+  <div class="shared-input">
+    <input class="shared-input-field" id="chatInput" placeholder="提问或搜索" onkeydown="handleKey(event)" oninput="this.dataset.val=this.value">
+    <button class="mic-btn" onclick="sendMsg()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#aaa" stroke-width="1.8" fill="none"/><path d="M5 10a7 7 0 0 0 14 0" stroke="#aaa" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="12" y1="17" x2="12" y2="22" stroke="#aaa" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+</div><!-- /chat-page -->
+
+
+<!-- ══════════ 事件详情页 ══════════ -->
+<div class="detail-page" id="detailPage">
+  <div class="detail-hdr">
+    <button class="detail-back" onclick="closeDetail()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="detail-hdr-title">事件影响分析</span>
+    <span style="width:36px"></span>
+  </div>
+  <div class="detail-scroll">
+    <div class="detail-section">
+      <div class="d-event-card">
+        <div class="d-event-top">
+          <span class="d-badge" id="detailBadge">⚡ 特大事件</span>
+          <span class="d-ts" id="detailTime">今日 14:32</span>
+        </div>
+        <div class="d-event-title" id="detailEventTitle">美以伊冲突罗生门迷雾之下的投资研判和应持仓影响？机会信号</div>
+        <p class="d-event-summary" id="detailEventSummary">中东局势仍在反复拉扯，市场围绕停火预期与能源价格重估展开博弈，风险偏好修复并不稳定，全球资产对能源与避险情绪都更敏感。</p>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="d-section-title">宏观市场影响</div>
+      <div class="d-macro-grid" id="detailMacroGrid"></div>
+    </div>
+    <div class="detail-section">
+      <div class="d-section-title" id="detailTargetTitle">我的自选股受影响情况</div>
+      <div class="d-stock-list" id="detailTargetList"></div>
+    </div>
+    <div style="height:18px"></div>
+  </div>
+  <div class="detail-ask-bar">
+    <input class="detail-ask-entry" id="detailAskInput" placeholder="您可继续深入追问此事件、自选股或受影响的板块" onkeydown="handleDetailAskKey(event)">
+    <button class="mic-btn" onclick="sendDetailAsk()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#aaa" stroke-width="1.8" fill="none"/><path d="M5 10a7 7 0 0 0 14 0" stroke="#aaa" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="12" y1="17" x2="12" y2="22" stroke="#aaa" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div><!-- /detail-page -->
+
+<!-- ══════════ 板块个股列表页 ══════════ -->
+<div class="sector-detail-page" id="sectorDetailPage">
+  <div class="sector-detail-hdr">
+    <button class="sector-detail-back" onclick="closeSectorDetail()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="sector-detail-title">板块个股</span>
+    <span style="width:36px"></span>
+  </div>
+  <div class="sector-detail-scroll">
+    <div class="sector-head-card">
+    <div class="sector-head-top">
+        <div class="sector-head-name" id="sectorDetailName">家电</div>
+        <span class="sector-head-chip d-sTag-pos" id="sectorDetailTag">利好</span>
+      </div>
+      <div class="sector-head-sub" id="sectorDetailSub">展示该板块下按涨跌幅排序的代表个股。</div>
+    </div>
+    <div class="sector-stock-head">
+      <span class="sector-stock-col">名称</span>
+      <button class="sector-stock-sort desc" id="sectorSortBtn" onclick="toggleSectorSort()">涨幅</button>
+    </div>
+    <div class="sector-stock-list" id="sectorDetailList"></div>
+  </div>
+</div><!-- /sector-detail-page -->
+
+<!-- ══════════ 重要日常事件详情页 ══════════ -->
+<div class="detail2-page" id="detailPage2">
+
+  <div class="detail2-hdr">
+    <button class="detail2-back" onclick="closeDetail2()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="detail2-hdr-title">事件影响分析</span>
+    <span style="width:36px"></span>
+  </div>
+
+  <div class="detail2-scroll">
+
+    <!-- 区块1：事件概要 -->
+    <div class="d2-section">
+      <div class="d2-event-card">
+        <div class="d2-event-top">
+          <span class="d2-badge">📌 重要日常事件</span>
+          <span class="d2-ts">今日 10:00</span>
+        </div>
+        <div class="d2-event-title">央行开展2000亿元MLF操作，利率持平</div>
+        <p class="d2-event-summary">流动性维持合理充裕，短期对市场情绪偏中性。利率持平意味着降息节奏放缓，关注后续降准降息预期的边际变化。</p>
+      </div>
+    </div>
+
+    <!-- 区块2：直接影响分析（带图标横条卡片） -->
+    <div class="d2-section">
+      <div class="d2-section-title">直接影响分析</div>
+      <div class="d2-impact-list">
+
+        <!-- 债市 -->
+        <div class="d2-impact-card">
+          <div class="d2-impact-icon" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="#fff" stroke-width="1.8" fill="none"/>
+              <path d="M8 12h8M8 8h5M8 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="d2-impact-body">
+            <div class="d2-impact-label">
+              债市
+              <span class="d2-impact-tag d2-itag-pos">短线偏暖</span>
+            </div>
+            <div class="d2-impact-desc">资金成本稳定，短债配置价值提升，长端利率震荡。</div>
+          </div>
+        </div>
+
+        <!-- 银行板块 -->
+        <div class="d2-impact-card">
+          <div class="d2-impact-icon" style="background:linear-gradient(135deg,#70a1ff,#3742fa)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21h18M3 10h18M5 6l7-3 7 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="7" y1="10" x2="7" y2="21" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="12" y1="10" x2="12" y2="21" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="17" y1="10" x2="17" y2="21" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="d2-impact-body">
+            <div class="d2-impact-label">
+              银行板块
+              <span class="d2-impact-tag d2-itag-neu">中性偏稳</span>
+            </div>
+            <div class="d2-impact-desc">息差压力暂缓，但降息预期仍存，净利润弹性有限。</div>
+          </div>
+        </div>
+
+        <!-- 地产链 -->
+        <div class="d2-impact-card">
+          <div class="d2-impact-icon" style="background:linear-gradient(135deg,#55efc4,#00b894)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21V9l9-6 9 6v12" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <rect x="9" y="14" width="6" height="7" rx=".5" stroke="#fff" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="d2-impact-body">
+            <div class="d2-impact-label">
+              地产链
+              <span class="d2-impact-tag d2-itag-neg">暂无催化</span>
+            </div>
+            <div class="d2-impact-desc">利率持平未带来额外宽松，降准信号缺席，关注后续。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 区块3：自选股受影响情况（复用 d-stock 样式） -->
+    <div class="d2-section">
+      <div class="d2-section-title">我的自选股受影响情况</div>
+      <div class="d-stock-list">
+
+        <div class="d-stock-card">
+          <div class="d-stock-left">
+            <div class="d-stock-name">万华化学</div>
+            <div class="d-stock-code">600309.SH</div>
+          </div>
+          <div class="d-stock-right">
+            <span class="d-stock-tag d-sTag-neu">中性</span>
+            <div class="d-stock-desc">融资成本稳定，化工债务结构受益有限，影响不大。</div>
+          </div>
+        </div>
+
+        <div class="d-stock-card">
+          <div class="d-stock-left">
+            <div class="d-stock-name">宁德时代</div>
+            <div class="d-stock-code">300750.SZ</div>
+          </div>
+          <div class="d-stock-right">
+            <span class="d-stock-tag d-sTag-neu">中性</span>
+            <div class="d-stock-desc">流动性平稳利好成长股估值，但无直接业务关联。</div>
+          </div>
+        </div>
+
+        <div class="d-stock-card">
+          <div class="d-stock-left">
+            <div class="d-stock-name">比亚迪</div>
+            <div class="d-stock-code">002594.SZ</div>
+          </div>
+          <div class="d-stock-right">
+            <span class="d-stock-tag d-sTag-neu">中性</span>
+            <div class="d-stock-desc">整体流动性环境稳定，对汽车消费贷款影响温和。</div>
+          </div>
+        </div>
+
+        <div class="d-stock-card">
+          <div class="d-stock-left">
+            <div class="d-stock-name">招商银行</div>
+            <div class="d-stock-code">600036.SH</div>
+          </div>
+          <div class="d-stock-right">
+            <span class="d-stock-tag d-sTag-pos">利好</span>
+            <div class="d-stock-desc">息差压力暂缓，零售银行业务稳定性最强，优于同业。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="height:28px"></div>
+
+  </div><!-- /detail2-scroll -->
+</div><!-- /detail2-page -->
+
+<!-- ══════════ 特别提醒详情页 ══════════ -->
+<div class="detail3-page" id="detailPage3">
+
+  <div class="detail3-hdr">
+    <button class="detail3-back" onclick="closeDetail3()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="detail3-hdr-title" id="detail3Title">早盘关注要点</span>
+    <span style="width:36px"></span>
+  </div>
+
+  <div class="detail3-scroll" id="detail3Body">
+    <!-- JS dynamically fills this -->
+  </div>
+
+</div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+<!-- Settings -->
+<div class="settings-overlay" id="settingsPanel">
+  <div class="settings-card">
+    <div class="settings-title">AI助手设置</div>
+    <div class="sf"><label>AI模式</label><select id="aiMode" onchange="toggleApiFields()"><option value="demo">演示模式（内置回复，无需API）</option><option value="api">真实AI模式（接入Claude API）</option></select><div class="sf-hint">演示模式适合快速展示，真实模式需要API Key</div></div>
+    <div id="apiFields" style="display:none">
+      <div class="sf"><label>API Key</label><input type="password" id="apiKey" placeholder="输入你的 Claude API Key"><div class="sf-hint">在 console.anthropic.com 获取</div></div>
+      <div class="sf"><label>模型</label><select id="modelSelect"><option value="claude-sonnet-4-6">Claude Sonnet 4.6（推荐）</option><option value="claude-haiku-4-5-20251001">Claude Haiku 4.5（更快）</option><option value="claude-opus-4-6">Claude Opus 4.6（最强）</option></select></div>
+      <div class="sf"><label>系统提示词</label><textarea id="systemPrompt" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:13px;height:80px;resize:vertical;font-family:inherit">你是"躺客AI助手"，一个专业的证券投资分析助手。用专业但易懂的语言回答问题，始终提醒用户投资有风险，建议仅供参考。</textarea></div>
+    </div>
+    <div class="settings-btns"><button class="btn-cancel" onclick="closeSettings()">取消</button><button class="btn-save" onclick="saveSettings()">保存设置</button></div>
+  </div>
+</div>
+
+
+<script>
+// ── AI avatar image (base64 embedded) ──
+const AI_IMG = '<img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">';
+const AI_AV_STYLE = 'background:none;padding:0;overflow:hidden;';
+
+// ── State ──
+let mode='demo', apiKey='', modelId='claude-sonnet-4-6', sysPrompt='', responding=false;
+let stockIdx=0;
+
+// ── Clock ──
+(function tick(){
+  const n=new Date(), el=document.getElementById('statusTime');
+  if(el)el.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  setTimeout(tick,30000);
+})();
+
+// ── Stock data ──
+
+// ── Navigation ──
+function openChat(tab){
+  document.getElementById('chatPage').classList.add('open');
+  document.querySelector('.ai-fab').style.display='none';
+  document.querySelectorAll('.tab-bar,.bottom-nav,.home-indicator').forEach(el=>el.style.display='none');
+  if(tab){const el=document.querySelector(`.ai-tab[onclick*="${tab}"]`);if(el)switchTab(tab,el);}
+}
+function closeChat(){
+  document.getElementById('chatPage').classList.remove('open');
+  document.querySelector('.ai-fab').style.display='flex';
+  document.querySelectorAll('.tab-bar,.bottom-nav,.home-indicator').forEach(el=>el.style.display='');
+  document.querySelectorAll('.tab-item,.nav-item').forEach((t,i)=>t.classList.toggle('active',i===0));
+}
+function switchTab(tab,el){
+  document.querySelectorAll('.ai-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.ai-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='remind'){
+    requestAnimationFrame(function(){requestAnimationFrame(function(){mcInit();});});
+  }
+}
+
+// ── Settings ──
+function openSettings(){document.getElementById('settingsPanel').classList.add('open')}
+function closeSettings(){document.getElementById('settingsPanel').classList.remove('open')}
+function toggleApiFields(){document.getElementById('apiFields').style.display=document.getElementById('aiMode').value==='api'?'block':'none'}
+function saveSettings(){
+  mode=document.getElementById('aiMode').value;
+  apiKey=document.getElementById('apiKey').value;
+  modelId=document.getElementById('modelSelect').value;
+  sysPrompt=document.getElementById('systemPrompt').value;
+  const b=document.getElementById('modeBadge');
+  if(mode==='api'&&apiKey){b.textContent='真实AI';b.className='mode-badge live';}
+  else{b.textContent='演示模式';b.className='mode-badge demo';if(mode==='api'&&!apiKey){alert('请输入API Key');mode='demo';}}
+  closeSettings();
+}
+
+// ── Chat ──
+function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+  if(!text||responding)return;
+  // If not already on AI chat panel, switch with a smooth transition
+  const chatTab=document.querySelector('.ai-tab[onclick*="chat"]');
+  const wasOnOtherPanel = chatTab && !chatTab.classList.contains('active');
+  if(wasOnOtherPanel){
+    switchTab('chat',chatTab);
+    // Brief flash on input to confirm message was captured from another panel
+    input.classList.add('flash');
+    setTimeout(()=>input.classList.remove('flash'), 700);
+  }
+  addMsg(text,'user');input.value='';
+  responding=true;showTyping();
+  if(mode==='api'&&apiKey)callAPI(text);
+  else setTimeout(()=>{hideTyping();addMsg(demoReply(text),'ai');responding=false;},700+Math.random()*800);
+}
+function askQ(btn){
+  // Strip any leading arrow from fi-stock-link elements
+  const raw = btn.textContent.replace(/^→\s*/, '');
+  document.getElementById('chatInput').value = raw.includes('可能受影响')
+    ? '这个事件对' + raw.replace(' 可能受影响','') + '有什么影响？'
+    : raw;
+  sendMsg();
+}
+function handleKey(e){if(e.key==='Enter')sendMsg();}
+
+function addMsg(text,type){
+  const c=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.className='msg-row '+type;d.style.marginBottom='14px';
+  d.innerHTML=`<div class="msg-av" style="${type==='ai'?AI_AV_STYLE:''}">${type==='ai'?AI_IMG:'👤'}</div><div class="msg-bub">${type==='ai'?fmt(text):esc(text)}</div>`;
+  c.appendChild(d);
+  document.querySelector('.chat-scroll').scrollTop=99999;
+}
+function showTyping(){
+  const c=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.className='msg-row ai';d.id='tyRow';d.style.marginBottom='14px';
+  d.innerHTML=`<div class="msg-av" style="${AI_AV_STYLE}">${AI_IMG}</div><div class="msg-bub"><div class="typing-ind"><span></span><span></span><span></span></div></div>`;
+  c.appendChild(d);document.querySelector('.chat-scroll').scrollTop=99999;
+}
+function hideTyping(){const el=document.getElementById('tyRow');if(el)el.remove();}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+function fmt(t){return t.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`(.*?)`/g,'<code>$1</code>');}
+
+async function callAPI(msg){
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:modelId,max_tokens:1024,system:sysPrompt||'你是躺客AI助手，专业的证券投资分析助手。用专业但易懂的语言回答问题，始终提醒用户投资有风险。',messages:[{role:'user',content:msg}]})});
+    const d=await r.json();hideTyping();
+    if(d.content&&d.content[0])addMsg(d.content[0].text,'ai');
+    else addMsg('API错误：'+(d.error?d.error.message:'未知错误'),'ai');
+  }catch(e){hideTyping();addMsg('网络错误：'+e.message,'ai');}
+  responding=false;
+}
+
+function demoReply(input){
+  const t=input.toLowerCase();
+  if(t.includes('能源板块')||t.includes('中东')||t.includes('地缘'))
+    return '**中东局势对A股能源板块影响分析**\n\n**直接受益方向：**\n* **油气开采** — 中国海油、中国石油受益于油价上涨，但国内管制价格有缓冲\n* **煤炭** — 能源替代逻辑强化，短期关注\n* **核电** — 避险属性凸显，政策长期利好\n\n**间接承压方向：**\n* 航空、化工、轮胎等高耗油行业成本承压\n* 中游制造业原材料成本上升\n\n**操作建议：**轻仓布局能源上游，规避高能耗行业超配；注意地缘事件持续性存在不确定性，控制仓位。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('油价')||t.includes('利好'))
+    return '**油价上涨的A股受益方向**\n\n**直接受益（油价涨=收入涨）：**\n* 油气开采：中国海油(600938)、中国石油(601857)\n* 油服：海油工程(600583)\n\n**资源替代受益：**\n* 煤炭：陕西煤业(601225)、中国神华(601088)\n* 天然气：新奥股份(600803)\n\n**注意：** 油价上涨同时会压制航空（东航/南航）、化工（聚酯链）、农化（化肥）等板块，需规避超配。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('资金流入')||t.includes('哪个板块'))
+    return '**近期板块资金流向TOP榜**\n\n根据主力资金净流入：\n\n* **人工智能算力** — 近5日净流入超200亿，AI应用端持续活跃\n* **新能源车** — 出口超预期催化，比亚迪带动产业链走强\n* **半导体** — 国产替代政策持续，设备/材料方向资金密集\n* **创新药** — License-out逻辑兑现，ADC方向获机构加仓\n\n主力资金净流出：银行、白酒、地产\n\n可用躺客的**发现异动**功能实时追踪！以上仅供参考。';
+  if(t.includes('适合买')||t.includes('现在适合')||t.includes('时机'))
+    return '**新能源布局时机分析**\n\n**支撑布局的理由：**\n* 出口数据超预期，国际化步伐加速\n* 固态电池进展持续，技术预期升温\n* 当前估值处于历史中低位\n\n**需要注意的风险：**\n* 国内竞争白热化，价格战压制利润\n* 海外关税政策存在不确定性\n* 大宗商品成本波动\n\n**结论：** 中长期逻辑仍然成立，短期建议分批建仓而非一次性重仓，建议关注宁德时代(300750)和比亚迪(002594)为代表的龙头。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('大盘')||t.includes('行情')||t.includes('走势'))
+    return '**今日大盘分析**\n\n* **上证指数**：3200-3280点区间整理，均线粘合，方向选择临近\n* **创业板**：科技板块活跃，相对强势\n* **成交量**：两市9000亿左右，情绪偏中性\n\n上方压力3280，下方支撑3200，重点看AI算力、新能源轮动\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('中瓷电子')||t.includes('003031'))
+    return '**中瓷电子(003031.SZ)**\n\n**基本面**：主营电子陶瓷，军工+半导体双轮驱动，2025年业绩预增35%-50%\n**机构观点**：中信证券首次覆盖，目标价35元，"买入"评级\n**技术面**：近期涨停，主力净买入5800万，均线多头排列\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('选股')||t.includes('新手'))
+    return '**新手选股核心思路**\n\n**基本面**：选行业龙头、营收增速>15%、PE合理、负债率<60%\n**技术面**：均线多头排列（MA5>MA10>MA20）、放量上涨为佳\n**习惯**：仓位分散，严格止损，先用躺客**模拟操盘**练手\n\n投资有风险，入市需谨慎。';
+  if(t.includes('电池')||t.includes('板块')||t.includes('热门'))
+    return '**电池龙头及热门板块**\n\n**电池龙头**：宁德时代(300750)、亿纬锂能(300014)、国轩高科(002074)\n\n**近期热门**：\n* **人工智能** — AI大模型国产替代，算力+应用活跃\n* **新能源车** — 出口超预期，比亚迪海外战略突破\n* **半导体** — 国产化政策持续加码\n\n以上仅供参考。';
+  if(t.includes('均线')||t.includes('策略'))
+    return '**均线策略入门**\n\n* MA5：短期趋势；MA20：中期趋势（最重要）\n* **金叉**：MA5上穿MA20 → 买入信号\n* **死叉**：MA5下穿MA20 → 减仓信号\n* **均线支撑**：回踩MA20不破可轻仓介入\n\n技术分析仅供参考。';
+  return `关于"**${input}**"，我可以帮你：\n\n* **个股诊断** — 告诉我股票代码或名称\n* **行情解读** — 大盘走势和板块热点\n* **投资知识** — 技术指标和策略讲解\n\n所有分析仅供参考，不构成投资建议。`;
+}
+
+// ── 事件卡片轮播 JS ──
+// 三套快捷问题，随滑动动态切换
+const SLIDE_QUICK = {
+  0: {
+    label: '⚡ 事件相关',
+    btns: [
+      {text:'中东局势对A股能源板块影响几何？', cls:'event-linked'},
+      {text:'油价上涨对哪些行业是利好？',     cls:'event-linked'},
+    ]
+  },
+  1: {
+    label: '📌 事件相关',
+    btns: [
+      {text:'MLF利率不变对债市有何影响？',   cls:'event-linked'},
+      {text:'降息预期落空后该怎么配置？',     cls:'event-linked'},
+    ]
+  },
+  2: null  // 无重大事件日：隐藏事件联动区
+};
+
+let currentSlide = 0;
+
+function scrollToSlide(idx) {
+  const carousel = document.getElementById('eventCarousel');
+  if (!carousel) return;
+  const slideWidth = carousel.offsetWidth;
+  carousel.scrollTo({ left: slideWidth * idx, behavior: 'smooth' });
+  // The scroll event + debounce will fire resizeCarousel automatically,
+  // but we also call it after a delay matching the smooth-scroll duration
+  // so dot-clicks feel as responsive as finger swipes.
+  setTimeout(function() { resizeCarousel(idx); }, 380);
+}
+
+function updateCarouselDots(idx) {
+  document.querySelectorAll('#carouselDots .cdot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+
+function updateQuickSection(idx) {
+  const eventBlock  = document.getElementById('quickEventBlock');
+  const eventLabel  = document.getElementById('quickEventLabel');
+  const eventBtns   = document.getElementById('quickEventBtns');
+  const divider     = document.getElementById('quickDivider');
+  if (!eventBlock) return;
+
+  const cfg = SLIDE_QUICK[idx];
+  if (!cfg) {
+    // Slide 2: hide event block entirely
+    eventBlock.classList.add('hidden');
+    if (divider) divider.style.display = 'none';
+  } else {
+    eventBlock.classList.remove('hidden');
+    if (divider) divider.style.display = '';
+    eventLabel.textContent = cfg.label;
+    eventBtns.innerHTML = cfg.btns.map(b =>
+      `<button class="quick-btn ${b.cls}" onclick="askQ(this)">${b.text}</button>`
+    ).join('');
+  }
+}
+
+// Attach scroll listener once DOM is ready
+// ── Resize carousel height to match the active slide's content ──
+// Each .event-slide wraps one card. Because all slides are laid out
+// horizontally in the same flex row, their DOM height equals the tallest
+// card (Level 1).  We fix this by explicitly setting the container's height
+// to the inner card's actual scrollHeight every time the slide changes.
+function resizeCarousel(idx) {
+  const carousel = document.getElementById('eventCarousel');
+  if (!carousel) return;
+  const slides = carousel.querySelectorAll('.event-slide');
+  if (!slides[idx]) return;
+
+  // slides[idx].scrollHeight is WRONG here: all flex children are
+  // stretch-aligned to the tallest sibling (Level-1 card), so every
+  // slide reports the same large height regardless of its content.
+  //
+  // Instead, measure the inner card element (firstElementChild).
+  // It is NOT a direct flex child of the carousel, so its offsetHeight
+  // reflects only its own content — exactly what we need.
+  const card = slides[idx].firstElementChild;
+  if (!card) return;
+
+  // .event-slide padding: 12px top + 4px bottom = 16px total vertical
+  const slidePaddingV = 12 + 4;
+  carousel.style.height = (card.offsetHeight + slidePaddingV) + 'px';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const carousel = document.getElementById('eventCarousel');
+  if (!carousel) return;
+
+  // Double requestAnimationFrame: the first rAF lets the browser do its
+  // initial layout pass; the second fires after that layout is committed,
+  // so offsetHeight values are final and accurate.
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      resizeCarousel(0);
+    });
+  });
+
+  let scrollTimer = null;
+  carousel.addEventListener('scroll', function() {
+    // Debounce: wait for the snap animation to settle (≈80ms),
+    // then update dots, quick questions, AND the container height.
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+      if (idx !== currentSlide) {
+        currentSlide = idx;
+        updateCarouselDots(idx);
+        updateQuickSection(idx);
+      }
+      // Always resize — even if the index didn't change — in case the
+      // window was resized or content reflowed mid-scroll.
+      resizeCarousel(idx);
+    }, 80);
+  }, { passive: true });
+});
+
+
+// ── 事件详情页配置与开关 ──
+const EVENT_DETAIL_CONFIG = {
+  'major-main': {
+    badge: '⚡ 特大事件',
+    badgeClass: '',
+    time: '4月13日 21:10',
+    title: '霍尔木兹海峡风险升温，国际油价一度突破100美元关口',
+    summary: '中东局势在4月中旬急剧升温，油价一度升破100美元，全球市场重新定价能源、通胀与避险资产。这类事件会同时冲击A股、商品和全球资金流向，属于典型的主线级特大事件。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'防御升温', tagClass:'d-tag-down', desc:'油价冲高压缩制造业利润预期，A股更容易切向资源、防御与高股息方向。' },
+      { icon:'地缘', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'地缘冲突', tag:'风险外溢', tagClass:'d-tag-up', desc:'地缘事件会快速影响航运、能源和军工预期，主线切换速度很快。' },
+      { icon:'商品', color:'linear-gradient(135deg,#ffa502,#e67e22)', label:'商品价格', tag:'上冲加剧', tagClass:'d-tag-up', desc:'原油和相关化工品价格弹性明显放大，上中下游利润重新分配。' },
+      { icon:'避险', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'避险资产', tag:'配置升温', tagClass:'d-tag-up', desc:'美元、黄金和低波动红利资产更容易获得全球资金增配。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'万华化学', code:'600309.SH', tag:'中性偏空', tagClass:'d-sTag-neu', desc:'能源和化工原料大涨时，成本与产品价差都会重新被市场审视。' },
+      { name:'比亚迪', code:'002594.SZ', tag:'中性偏空', tagClass:'d-sTag-neu', desc:'油价和运输成本上行会阶段性干扰整车链利润预期。' },
+      { name:'招商银行', code:'600036.SH', tag:'利好', tagClass:'d-sTag-pos', desc:'在避险升温阶段，银行和红利资产更容易得到配置资金承接。' }
+    ]
+  },
+  'major-oil': {
+    badge: '⚡ 特大事件',
+    badgeClass: '',
+    time: '4月17日 08:40',
+    title: '中东缓和信号推动油价回落，输入型通胀压力阶段性降温',
+    summary: '4月17日亚洲时段国际油价回落，市场重新评估能源风险溢价。若油价继续回落，制造业成本、出行链利润和海外通胀压力都会边际缓和。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'制造受益', tagClass:'d-tag-up', desc:'油价回落更利于制造和交通运输链利润预期改善，成长风格估值压力缓和。' },
+      { icon:'原油', color:'linear-gradient(135deg,#ffa502,#e67e22)', label:'原油链条', tag:'溢价回吐', tagClass:'d-tag-down', desc:'上游油气和油服的事件弹性下降，中下游成本端压力边际缓解。' },
+      { icon:'通胀', color:'linear-gradient(135deg,#f9ca24,#e67e22)', label:'全球通胀', tag:'预期降温', tagClass:'d-tag-down', desc:'能源扰动降温有助于稳定海外通胀预期，成长资产估值环境更友好。' },
+      { icon:'避险', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'风险偏好', tag:'边际修复', tagClass:'d-tag-up', desc:'避险情绪降温后，市场更愿意重新配置新能源与可选消费方向。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'比亚迪', code:'002594.SZ', tag:'利好', tagClass:'d-sTag-pos', desc:'能源价格回落有助于稳定供应链和运输成本，整车盈利预期更平滑。' },
+      { name:'宁德时代', code:'300750.SZ', tag:'中性偏利好', tagClass:'d-sTag-pos', desc:'成长赛道受益于全球通胀预期回落，估值压力边际缓解。' },
+      { name:'万华化学', code:'600309.SH', tag:'中性偏空', tagClass:'d-sTag-neu', desc:'若油价回落持续，化工原料涨价弹性会减弱，但成本压力也会同步下降。' }
+    ]
+  },
+  'major-deploy': {
+    badge: '⚡ 特大事件',
+    badgeClass: '',
+    time: '4月14日 21:00',
+    title: 'IMF下调新兴经济体增长预期，油价冲击压低全球风险偏好',
+    summary: 'IMF在4月14日下调新兴市场增长预测，指出高能源和高粮价正在拖累经济与资金情绪。它更像重大外部冲击后的全球资金重定价，不属于普通日常事件。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'估值承压', tagClass:'d-tag-down', desc:'全球增长预期下修后，A股成长与顺周期的估值容忍度都会下降。' },
+      { icon:'资金', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'全球资金', tag:'趋于防守', tagClass:'d-tag-up', desc:'海外资金在高油价和增长下修背景下更偏向保守，新兴市场波动放大。' },
+      { icon:'避险', color:'linear-gradient(135deg,#f9ca24,#e67e22)', label:'避险情绪', tag:'持续升温', tagClass:'d-tag-up', desc:'美元和黄金更容易获得配置需求，权益市场整体估值承受更强压力。' },
+      { icon:'通胀', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'通胀预期', tag:'难以下行', tagClass:'d-tag-up', desc:'能源与粮价抬升会拖慢全球通胀回落速度，压制宽松预期。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'招商银行', code:'600036.SH', tag:'利好', tagClass:'d-sTag-pos', desc:'全球资金转防守时，银行股和红利资产相对更容易获得承接。' },
+      { name:'万华化学', code:'600309.SH', tag:'中性偏空', tagClass:'d-sTag-neu', desc:'全球增长下修会压低化工需求预期，景气修复斜率更容易被下调。' }
+    ]
+  },
+  'major-inflation': {
+    badge: '⚡ 特大事件',
+    badgeClass: '',
+    time: '4月14日 21:05',
+    title: 'IMF警告若油价长期维持高位，全球经济将逼近衰退边缘',
+    summary: 'IMF在情景推演中指出，如果油价长期高于100美元，全球增长和风险资产都将面临更大冲击。这类典型黑天鹅情景会直接改变市场定价框架。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'风格转守', tagClass:'d-tag-down', desc:'一旦油价高位常态化，A股会明显转向防御配置，成长与消费承压。' },
+      { icon:'通胀', color:'linear-gradient(135deg,#f9ca24,#e67e22)', label:'通胀路径', tag:'重新上修', tagClass:'d-tag-up', desc:'能源与粮食价格共振时，全球通胀粘性会增强，降息预期继续后移。' },
+      { icon:'黑天', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'黑天鹅', tag:'波动放大', tagClass:'d-tag-up', desc:'资金会提前交易最差情景，波动率和避险需求同步抬升。' },
+      { icon:'全球', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'全球资金', tag:'撤离风险', tagClass:'d-tag-up', desc:'全球资金更可能从高估值成长与新兴市场撤出，转向美元资产。' }
+    ],
+    targetTitle: '实际受影响板块',
+    targets: [
+      { name:'航空', code:'', tag:'承压', tagClass:'d-sTag-pressure', desc:'高油价会直接抬升成本并压缩利润率。', relatedStocks:['中国国航 601111.SH','南方航空 600029.SH','春秋航空 601021.SH'], sectorStocks:[{name:'中国国航',code:'601111.SH',change:'-3.84%'},{name:'南方航空',code:'600029.SH',change:'-3.27%'},{name:'春秋航空',code:'601021.SH',change:'-2.95%'},{name:'吉祥航空',code:'603885.SH',change:'-2.16%'}] },
+      { name:'消费', code:'', tag:'承压', tagClass:'d-sTag-pressure', desc:'通胀回摆会削弱居民实际购买力，消费预期更容易走弱。', relatedStocks:['伊利股份 600887.SH','海天味业 603288.SH','青岛啤酒 600600.SH'], sectorStocks:[{name:'青岛啤酒',code:'600600.SH',change:'-2.72%'},{name:'海天味业',code:'603288.SH',change:'-2.14%'},{name:'伊利股份',code:'600887.SH',change:'-1.86%'},{name:'安井食品',code:'603345.SH',change:'-1.35%'}] },
+      { name:'高估值成长', code:'', tag:'承压', tagClass:'d-sTag-pressure', desc:'降息预期后移会压制高估值板块的折现逻辑。', relatedStocks:['寒武纪 688256.SH','中际旭创 300308.SZ','金山办公 688111.SH'], sectorStocks:[{name:'寒武纪',code:'688256.SH',change:'-4.92%'},{name:'中际旭创',code:'300308.SZ',change:'-3.88%'},{name:'金山办公',code:'688111.SH',change:'-3.41%'},{name:'科大讯飞',code:'002230.SZ',change:'-2.97%'}] }
+    ]
+  },
+  'daily-main': {
+    badge: '📌 日常重要事件',
+    badgeClass: 'daily',
+    time: '4月16日 10:29',
+    title: '中国一季度GDP同比增长5.0%，工业与消费同步改善',
+    summary: '国家统计局4月16日公布，一季度GDP同比增长5.0%，3月工业增加值与消费指标继续改善。这类宏观数据属于典型的日常重要事件，更影响近期交易节奏而不是直接改写市场总主线。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'预期改善', tagClass:'d-tag-up', desc:'宏观数据改善稳住了当天盘面对顺周期与核心资产的预期。' },
+      { icon:'政策', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'政策维度', tag:'精准加力', tagClass:'d-tag-down', desc:'数据不弱意味着稳增长政策更偏精准加力，而不是全面刺激。' },
+      { icon:'风格', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'市场风格', tag:'龙头回暖', tagClass:'d-tag-up', desc:'内需与制造改善有助于抬升风险偏好，资金更愿意回到核心龙头。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'宁德时代', code:'300750.SZ', tag:'利好', tagClass:'d-sTag-pos', desc:'制造景气改善有助于稳住新能源赛道的需求和估值预期。' },
+      { name:'比亚迪', code:'002594.SZ', tag:'利好', tagClass:'d-sTag-pos', desc:'消费与工业数据改善有利于整车销量和汽车链情绪修复。' },
+      { name:'招商银行', code:'600036.SH', tag:'利好', tagClass:'d-sTag-pos', desc:'经济预期稳定有助于压低银行资产质量担忧。' }
+    ]
+  },
+  'daily-northbound': {
+    badge: '📌 日常重要事件',
+    badgeClass: 'daily',
+    time: '3月24日 18:05',
+    title: '央行开展5000亿元MLF操作并净投放500亿元，延续加量续做',
+    summary: '人民银行3月24日公告，3月25日将开展5000亿元MLF操作，较当月到期量实现净投放500亿元。这类货币工具操作更适合归在日常重要事件中，重点看政策、利率和风格影响。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'权重偏稳', tagClass:'d-tag-up', desc:'流动性稳定有助于稳住大金融和红利资产估值，指数波动相对可控。' },
+      { icon:'利率', color:'linear-gradient(135deg,#a29bfe,#6c5ce7)', label:'利率维度', tag:'短端平稳', tagClass:'d-tag-up', desc:'净投放有助于平抑季末资金扰动，短端利率波动更容易收敛。' },
+      { icon:'政策', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'政策维度', tag:'精准呵护', tagClass:'d-tag-down', desc:'利率不变说明政策更偏精准呵护，而不是大水漫灌。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'招商银行', code:'600036.SH', tag:'利好', tagClass:'d-sTag-pos', desc:'资金面稳定有利于压缩银行板块波动，头部银行估值更容易维持。' }
+    ]
+  },
+  'daily-volume': {
+    badge: '📌 日常重要事件',
+    badgeClass: 'daily',
+    time: '4月12日 14:06',
+    title: '一季度外资持仓更新：宁德时代获增持，招商银行仍居核心重仓',
+    summary: '沪深港通一季度持仓披露显示，外资对A股整体偏谨慎，但宁德时代获增持，招商银行仍在前十大重仓之列。这类事件更强调外资、风格与资金偏好的边际变化。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'龙头占优', tagClass:'d-tag-up', desc:'外资持仓结构继续强化龙头定价，核心资产相对更有支撑。' },
+      { icon:'外资', color:'linear-gradient(135deg,#ff9ff3,#f368e0)', label:'外资维度', tag:'重质轻题', tagClass:'d-tag-up', desc:'外资整体仓位谨慎，但更愿意集中配置流动性好、业绩确定的龙头公司。' },
+      { icon:'风格', color:'linear-gradient(135deg,#70a1ff,#3742fa)', label:'风格维度', tag:'蓝筹偏强', tagClass:'d-tag-up', desc:'这种持仓结构通常对应质量和分红偏好，权重蓝筹相对占优。' }
+    ],
+    targetTitle: '我的自选股受影响情况',
+    targets: [
+      { name:'宁德时代', code:'300750.SZ', tag:'利好', tagClass:'d-sTag-pos', desc:'获外资增持强化了龙头估值锚，机构资金更愿意回流。' },
+      { name:'招商银行', code:'600036.SH', tag:'利好', tagClass:'d-sTag-pos', desc:'仍处外资核心重仓名单，说明银行龙头的长期配置价值仍被认可。' }
+    ]
+  },
+  'daily-bond': {
+    badge: '📌 日常重要事件',
+    badgeClass: 'daily',
+    time: '4月2日 09:20',
+    title: '多地发布以旧换新细则，家电与零售板块分化加剧',
+    summary: '地方补贴细则进一步落地，白电和家居卖场预期改善，但传统百货与高成本渠道承压更明显。这类事件更适合作为“只影响板块”的日常重要事件示例，用于展示板块回退和个股分级逻辑。',
+    markets: [
+      { icon:'A股', color:'linear-gradient(135deg,#ff6b6b,#e8413a)', label:'A股市场', tag:'消费分化', tagClass:'d-tag-up', desc:'补贴政策会优先利好可直接受益的白电和家居零售链条，而传统百货承压更明显。' },
+      { icon:'政策', color:'linear-gradient(135deg,#55efc4,#00b894)', label:'政策维度', tag:'细则落地', tagClass:'d-tag-up', desc:'地方细则落地提升了政策执行确定性，受益链条更容易出现结构性行情。' },
+      { icon:'成交', color:'linear-gradient(135deg,#ff9ff3,#f368e0)', label:'成交维度', tag:'局部活跃', tagClass:'d-tag-up', desc:'资金会围绕补贴受益方向集中交易，而不是全面扩散到所有消费股。' }
+    ],
+    targetTitle: '实际受影响板块',
+    targets: [
+      { name:'家电', code:'', tag:'利好', tagClass:'d-sTag-pos', desc:'白电与厨电产品更容易直接承接补贴，终端销量和渠道周转预期改善。', relatedStocks:['美的集团 000333.SZ','格力电器 000651.SZ','海尔智家 600690.SH'], sectorStocks:[{name:'美的集团',code:'000333.SZ',change:'+4.86%'},{name:'海尔智家',code:'600690.SH',change:'+3.91%'},{name:'格力电器',code:'000651.SZ',change:'+3.44%'},{name:'老板电器',code:'002508.SZ',change:'+2.17%'}] },
+      { name:'家居零售', code:'', tag:'利好', tagClass:'d-sTag-pos', desc:'家装和家居卖场有望受益于以旧换新联动需求，短期订单弹性更高。', relatedStocks:['欧派家居 603833.SH','顾家家居 603816.SH','红星美凯龙 601828.SH'], sectorStocks:[{name:'欧派家居',code:'603833.SH',change:'+5.12%'},{name:'顾家家居',code:'603816.SH',change:'+4.37%'},{name:'红星美凯龙',code:'601828.SH',change:'+2.68%'},{name:'索菲亚',code:'002572.SZ',change:'+1.94%'}] },
+      { name:'百货零售', code:'', tag:'利空', tagClass:'d-sTag-neg', desc:'传统百货业态承接补贴能力偏弱，且高成本渠道在价格竞争中更容易承压。', relatedStocks:['王府井 600859.SH','重庆百货 600729.SH','百联股份 600827.SH'], sectorStocks:[{name:'重庆百货',code:'600729.SH',change:'-3.61%'},{name:'王府井',code:'600859.SH',change:'-2.94%'},{name:'百联股份',code:'600827.SH',change:'-2.46%'},{name:'天虹股份',code:'002419.SZ',change:'-1.72%'}] }
+    ]
+  }
+};
+
+let currentDetailKey = 'major-main';
+let currentSectorDetail = null;
+let currentSectorSortOrder = 'desc';
+
+function renderEventDetail(key){
+  const detail = EVENT_DETAIL_CONFIG[key] || EVENT_DETAIL_CONFIG['major-main'];
+  const badge = document.getElementById('detailBadge');
+  const time = document.getElementById('detailTime');
+  const title = document.getElementById('detailEventTitle');
+  const summary = document.getElementById('detailEventSummary');
+  const macroGrid = document.getElementById('detailMacroGrid');
+  const targetTitle = document.getElementById('detailTargetTitle');
+  const targetList = document.getElementById('detailTargetList');
+  if(!badge || !time || !title || !summary || !macroGrid || !targetTitle || !targetList) return;
+
+  currentDetailKey = key in EVENT_DETAIL_CONFIG ? key : 'major-main';
+  badge.textContent = detail.badge;
+  badge.className = 'd-badge' + (detail.badgeClass ? ' ' + detail.badgeClass : '');
+  time.textContent = detail.time;
+  title.textContent = detail.title;
+  summary.textContent = detail.summary;
+  targetTitle.textContent = detail.targetTitle;
+
+  macroGrid.innerHTML = detail.markets.map(function(item){
+    return '<div class="d-macro-card">'
+      + '<div class="d-macro-icon" style="background:' + item.color + '">' + item.icon + '</div>'
+      + '<div class="d-macro-label">' + item.label + '</div>'
+      + '<div class="d-macro-tag ' + item.tagClass + '">' + item.tag + '</div>'
+      + '<div class="d-macro-desc">' + item.desc + '</div>'
+      + '</div>';
+  }).join('');
+
+  targetList.innerHTML = detail.targets.map(function(item){
+    const relatedTone = item.tagClass === 'd-sTag-pos'
+      ? 'pos'
+      : item.tagClass === 'd-sTag-neg'
+        ? 'neg'
+        : item.tagClass === 'd-sTag-pressure'
+          ? 'pressure'
+          : 'neu';
+    const relatedStocksHtml = item.relatedStocks && item.relatedStocks.length
+      ? '<div class="d-stock-related">'
+        + item.relatedStocks.slice(0, 3).map(function(stock){
+            return '<span class="d-stock-related-pill ' + relatedTone + '">' + stock + '</span>';
+          }).join('')
+        + '</div>'
+      : '';
+    const nameHtml = item.sectorStocks && item.sectorStocks.length
+      ? '<button class="d-stock-name sector-link" onclick="openSectorDetailByName(\'' + currentDetailKey + '\', \'' + item.name.replace(/'/g, "\\'") + '\')">' + item.name + '</button>'
+      : '<div class="d-stock-name">' + item.name + '</div>';
+    return '<div class="d-stock-card">'
+      + '<div class="d-stock-left">'
+      + nameHtml
+      + (item.code ? '<div class="d-stock-code">' + item.code + '</div>' : '')
+      + '</div>'
+      + '<div class="d-stock-right">'
+      + '<span class="d-stock-tag ' + item.tagClass + '">' + item.tag + '</span>'
+      + '<div class="d-stock-desc">' + item.desc + '</div>'
+      + relatedStocksHtml
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  const askInput = document.getElementById('detailAskInput');
+  if(askInput) askInput.value = '';
+}
+
+function openDetail(key){
+  renderEventDetail(key || 'major-main');
+  closeSectorDetail();
+  document.getElementById('detailPage').classList.add('open');
+}
+function closeDetail(){
+  closeSectorDetail();
+  document.getElementById('detailPage').classList.remove('open');
+}
+
+function openDetail2(key){
+  renderEventDetail(key || 'daily-main');
+  closeSectorDetail();
+  document.getElementById('detailPage').classList.add('open');
+}
+function closeDetail2(){
+  document.getElementById('detailPage2').classList.remove('open');
+}
+
+function sendDetailAsk(){
+  const askInput = document.getElementById('detailAskInput');
+  const chatInput = document.getElementById('chatInput');
+  if(!askInput || !chatInput) return;
+  const text = askInput.value.trim();
+  if(!text) return;
+  closeDetail();
+  chatInput.value = text;
+  setTimeout(function(){ sendMsg(); }, 220);
+}
+function handleDetailAskKey(e){
+  if(e.key === 'Enter') sendDetailAsk();
+}
+
+function parseStockChange(changeText){
+  if(!changeText) return 0;
+  return parseFloat(String(changeText).replace('%', '')) || 0;
+}
+
+function getChangeTone(value){
+  if(value > 0) return 'pos';
+  if(value < 0) return 'neg';
+  return 'neu';
+}
+
+function clampDetailText(text, maxLength){
+  const plain = String(text || '').trim();
+  if(!plain) return '';
+  if(plain.length <= maxLength) return plain;
+  return plain.slice(0, maxLength - 3) + '...';
+}
+
+function renderSectorStockList(){
+  const listEl = document.getElementById('sectorDetailList');
+  const sortBtn = document.getElementById('sectorSortBtn');
+  if(!listEl || !currentSectorDetail || !currentSectorDetail.sectorStocks) return;
+
+  const multiplier = currentSectorSortOrder === 'asc' ? 1 : -1;
+  const stocks = currentSectorDetail.sectorStocks.slice().sort(function(a, b){
+    return (parseStockChange(a.change) - parseStockChange(b.change)) * multiplier;
+  });
+
+  if(sortBtn){
+    sortBtn.className = 'sector-stock-sort ' + currentSectorSortOrder;
+  }
+
+  listEl.innerHTML = stocks.map(function(stock){
+    const changeValue = parseStockChange(stock.change);
+    const tone = getChangeTone(changeValue);
+    return '<div class="sector-stock-row">'
+      + '<div class="sector-stock-left">'
+      + '<div class="sector-stock-name">' + stock.name + '</div>'
+      + '<div class="sector-stock-code">' + stock.code + '</div>'
+      + '</div>'
+      + '<div class="sector-stock-right">'
+      + '<div class="sector-stock-change ' + tone + '">' + stock.change + '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openSectorDetailByName(detailKey, sectorName){
+  const detail = EVENT_DETAIL_CONFIG[detailKey];
+  if(!detail || !detail.targets) return;
+  const sector = detail.targets.find(function(item){
+    return item.name === sectorName && item.sectorStocks && item.sectorStocks.length;
+  });
+  if(!sector) return;
+
+  const page = document.getElementById('sectorDetailPage');
+  const nameEl = document.getElementById('sectorDetailName');
+  const tagEl = document.getElementById('sectorDetailTag');
+  const subEl = document.getElementById('sectorDetailSub');
+  const listEl = document.getElementById('sectorDetailList');
+  if(!page || !nameEl || !tagEl || !subEl || !listEl) return;
+
+  nameEl.textContent = sector.name;
+  tagEl.textContent = sector.tag;
+  tagEl.className = 'sector-head-chip ' + (sector.tagClass || 'd-sTag-neu');
+  subEl.textContent = clampDetailText(sector.desc || '展示该板块下受影响较明显的代表个股。', 50);
+  currentSectorDetail = sector;
+  currentSectorSortOrder = 'desc';
+  renderSectorStockList();
+
+  page.classList.add('open');
+}
+
+function toggleSectorSort(){
+  if(!currentSectorDetail) return;
+  currentSectorSortOrder = currentSectorSortOrder === 'desc' ? 'asc' : 'desc';
+  renderSectorStockList();
+}
+
+function closeSectorDetail(){
+  const page = document.getElementById('sectorDetailPage');
+  currentSectorDetail = null;
+  currentSectorSortOrder = 'desc';
+  if(page) page.classList.remove('open');
+}
+
+function expandEventInfo(type){
+  const map = {
+    major: {cardId:'majorEventCard', btnId:'majorMoreBtn'},
+    daily: {cardId:'dailyEventCard', btnId:'dailyMoreBtn'}
+  };
+  const cfg = map[type];
+  if (!cfg) return;
+  const card = document.getElementById(cfg.cardId);
+  const btn = document.getElementById(cfg.btnId);
+  if (!card || !btn) return;
+  const expanded = card.classList.toggle('event-expanded');
+  btn.textContent = expanded ? '收起' : '查看更多';
+  btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  resizeCarousel(currentSlide);
+}
+
+
+// ── 特别提醒详情页内容配置 ──
+const REMIND_DETAILS = {
+  morning: {
+    title: '🌅 早盘关注要点',
+    html: `
+      <div class="d3-section">
+        <div class="d3-section-title">今日早盘操作建议</div>
+        <div class="d3-content-card">
+          <div class="d3-content-label">
+            <div class="d3-label-dot"></div>
+            <span class="d3-label-text">万华化学 (600309)</span>
+            <span class="d3-label-sub">今日必关注</span>
+          </div>
+          <div class="d3-body">
+            原油期货WTI日内最大跌幅达<strong>19%</strong>，对万华化学形成双面影响：
+            短期来看，股价已跌超2%反映市场悲观情绪，但<strong>中期逻辑是利好的</strong>——原油是MDI、TDI等主要化工品的核心原材料，
+            成本端下行将改善毛利率。
+            <div class="d3-divider"></div>
+            关键问题是传导节奏：通常化工品价格滞后原油1-2个月。若持仓成本较低，可以继续持有观察；
+            若短线操作，需注意板块情绪拖累的风险。
+          </div>
+          <div class="d3-suggestion">
+            <div class="d3-sug-label">AI 建议</div>
+            <div class="d3-sug-text">持仓观察为主，不宜在今日大跌时追加，等待油价稳定后的成本传导信号再评估。</div>
+          </div>
+        </div>
+        <div class="d3-content-card">
+          <div class="d3-content-label">
+            <div class="d3-label-dot"></div>
+            <span class="d3-label-text">宁德时代 (300750)</span>
+            <span class="d3-label-sub">外资回归窗口</span>
+          </div>
+          <div class="d3-body">
+            北向资金节后首日恢复交易，这是外资态度最重要的观察窗口。
+            早盘数据显示净买入超<strong>1.2亿元</strong>，趋势明确。结合固态电池Q1进展预期和
+            一季报业绩增长28%-35%的预告，基本面与资金面形成共振。
+          </div>
+          <div class="d3-suggestion">
+            <div class="d3-sug-label">AI 建议</div>
+            <div class="d3-sug-text">今日是持仓信心验证的好时机，如盘中外资持续净流入且涨幅稳定在3%以上，可以考虑适当加仓。</div>
+          </div>
+        </div>
+        <div class="d3-content-card">
+          <div class="d3-content-label">
+            <div class="d3-label-dot"></div>
+            <span class="d3-label-text">比亚迪 (002594)</span>
+            <span class="d3-label-sub">逻辑强化日</span>
+          </div>
+          <div class="d3-body">
+            美伊停火意味着能源供应链压力缓和，油价若中长期回落将进一步加速燃油车向新能源的切换。
+            叠加沙特战略合作协议的国际化逻辑，<strong>比亚迪今日的逻辑层是近期最清晰的一天</strong>。
+            量能是否持续放大是判断主力态度的核心指标。
+          </div>
+          <div class="d3-suggestion">
+            <div class="d3-sug-label">AI 建议</div>
+            <div class="d3-sug-text">若成交额相比昨日放量50%以上，且涨幅维持2.5%以上，说明主力认可，可持股不动或轻仓跟进。</div>
+          </div>
+        </div>
+        <div style="height:14px"></div>
+      </div>`
+  },
+  hh930: {
+    title: '09:30 消息汇总',
+    html: `
+      <div class="d3-section">
+        <div class="d3-section-title">09:30 开盘消息汇总 · 消息面偏暖</div>
+        <div class="d3-content-card">
+          <div class="d3-body">
+            <strong>市场背景：</strong>美伊停火消息驱动A股跳空高开，沪指+1.03%至3930.25点，
+            创业板+3.07%至3257.91点，科创芯片指数涨超4%，全市场近5000股飘红。
+            <div class="d3-divider"></div>
+            <strong>自选股情况：</strong><br>
+            · 宁德时代：高开4.2%，节后北向资金回归，外资净买入启动<br>
+            · 比亚迪：高开2.8%，量能较昨日放大明显，机构席位活跃<br>
+            · 招商银行：平开微涨0.3%，银行板块整体跟随大盘<br>
+            · 万华化学：低开-1.5%，受原油期货暴跌拖累，化工板块承压
+          </div>
+        </div>
+        <div style="height:14px"></div>
+      </div>`
+  },
+  hh1000: {
+    title: '10:00 消息汇总',
+    html: `
+      <div class="d3-section">
+        <div class="d3-section-title">10:00 消息汇总 · 关注风险</div>
+        <div class="d3-content-card">
+          <div class="d3-body">
+            <strong>风险提示：</strong>万华化学跌幅持续扩大至2.1%，WTI原油期货日内最大跌幅达19%，
+            化工板块普遍承压，需关注万华仓位风险。
+            <div class="d3-divider"></div>
+            <strong>自选股更新：</strong><br>
+            · 宁德时代：涨幅收窄至3.8%，北向净买入累计超1.2亿，整体强势<br>
+            · 比亚迪：涨幅稳定在2.6%，主力资金持续流入<br>
+            · 招商银行：涨幅0.4%，外资暂观望，成交清淡<br>
+            · 万华化学：跌幅-2.1%，建议观察，暂不追跌
+          </div>
+          <div class="d3-suggestion">
+            <div class="d3-sug-label">风险提示</div>
+            <div class="d3-sug-text">万华化学今日跌幅较大，若有止损需求，可考虑在-3%附近评估是否执行，避免恐慌性操作。</div>
+          </div>
+        </div>
+        <div style="height:14px"></div>
+      </div>`
+  },
+  hh1030: {
+    title: '10:30 消息汇总',
+    html: `
+      <div class="d3-section">
+        <div class="d3-section-title">10:30 消息汇总 · 消息面偏暖</div>
+        <div class="d3-content-card">
+          <div class="d3-body">
+            <strong>市场情绪修复：</strong>两市成交额已突破1.5万亿，向1.8万亿冲击，
+            市场情绪持续修复，科技成长方向最为活跃。
+            <div class="d3-divider"></div>
+            <strong>自选股最新：</strong><br>
+            · 宁德时代：涨幅4.1%，北向净买入累计1.6亿，创近期外资单日新高<br>
+            · 比亚迪：涨幅3.0%，量能持续放大，机构席位全天净买入<br>
+            · 招商银行：涨幅0.6%，温和上涨，无明显异动<br>
+            · 万华化学：跌幅收窄至-1.8%，化工板块出现企稳迹象
+          </div>
+        </div>
+        <div style="height:14px"></div>
+      </div>`
+  },
+  pm1: {
+    title: '万华化学 · 行情异动分析',
+    html: `
+      <div class="d3-section">
+        <div class="d3-section-title">原油暴跌对万华化学的影响分析</div>
+        <div class="d3-content-card">
+          <div class="d3-content-label"><div class="d3-label-dot"></div><span class="d3-label-text">直接影响</span></div>
+          <div class="d3-body">
+            万华化学是全球最大MDI（二苯基甲烷二异氰酸酯）生产商，纯苯等石化原料与原油价格高度相关。
+            原油跌15%意味着<strong>未来1-2个月原材料成本存在实质性下行空间</strong>，
+            理论上对毛利率是正向影响。
+          </div>
+        </div>
+        <div class="d3-content-card">
+          <div class="d3-content-label"><div class="d3-label-dot orange"></div><span class="d3-label-text">当前跌价原因</span></div>
+          <div class="d3-body">
+            今日股价下跌主要有两个原因：其一，市场短期将万华化学归入"石油石化"板块情绪联动；
+            其二，担忧下游化工品（聚氨酯等）价格也会跟随下跌，压缩产品利润。
+            <strong>这两个担忧都有一定道理，但未必会同步发生。</strong>
+          </div>
+        </div>
+        <div class="d3-content-card">
+          <div class="d3-content-label"><div class="d3-label-dot gray"></div><span class="d3-label-text">AI 综合建议</span></div>
+          <div class="d3-body">
+            短期震荡属于情绪反应，中期成本改善逻辑成立。若持仓成本低于当前价格20%以上，
+            建议持有不动；若成本接近或高于当前价，可考虑在下跌放缓后逐步减仓或换成更受益的方向。
+          </div>
+          <div class="d3-suggestion">
+            <div class="d3-sug-label">操作参考</div>
+            <div class="d3-sug-text">今日跌幅-2%以内属正常波动，若跌破-4%且量能放大，则需警惕机构减仓信号，应及时复评仓位。</div>
+          </div>
+        </div>
+        <div style="height:14px"></div>
+      </div>`
+  }
+};
+// 其他 pm2-pm6 使用通用模板
+['pm2','pm3','pm4','pm5','pm6'].forEach(k => {
+  REMIND_DETAILS[k] = {
+    title: '消息详情',
+    html: `<div class="d3-section"><div class="d3-content-card"><div class="d3-body">详细分析内容将结合实时数据生成，当前为演示模式。<br><br>你可以在底部输入框问 AI：<br>「宁德时代今日的外资流向意味着什么」</div></div><div style="height:14px"></div></div>`
+  };
+});
+
+function openRemindDetail(key) {
+  const cfg = REMIND_DETAILS[key];
+  if (!cfg) return;
+  document.getElementById('detail3Title').textContent = cfg.title;
+  document.getElementById('detail3Body').innerHTML = cfg.html;
+  document.getElementById('detailPage3').classList.add('open');
+}
+function closeDetail3() {
+  document.getElementById('detailPage3').classList.remove('open');
+}
+
+
+
+// ── 早盘个股关注轮播 ──────────────────────────────────────────────
+// 设计原则：用 JS 把每张 slide 的宽度设成容器的像素值，
+// 完全绕开 CSS % 在 flex 嵌套场景下的解析不稳定问题。
+// 滚动目标 = containerWidth × idx，简单可靠。
+
+let mcIdx = 0;
+const MC_TOTAL = 4;
+
+// 根据当前页码更新所有卡片的左右箭头禁用状态
+function mcUpdateArrows(idx){
+  const wrap = document.getElementById('morningCarousel');
+  if(!wrap) return;
+  wrap.querySelectorAll('.mc-slide').forEach(function(slide){
+    const btns = slide.querySelectorAll('.sc-arrow');
+    if(btns[0]) btns[0].disabled = (idx === 0);
+    if(btns[1]) btns[1].disabled = (idx === MC_TOTAL - 1);
+  });
+}
+
+// 高度自适应：读内部卡片的 offsetHeight（不受 flex stretch 影响）
+function mcResizeHeight(idx){
+  const wrap = document.getElementById('morningCarousel');
+  if(!wrap) return;
+  const slides = wrap.querySelectorAll('.mc-slide');
+  if(!slides[idx]) return;
+  const card = slides[idx].firstElementChild;
+  if(!card) return;
+  wrap.style.height = card.offsetHeight + 'px';
+}
+
+// ★ 核心：把每张 slide 的宽度显式设为容器 offsetWidth 像素
+// 这一步在 switchTab → remind 后、面板真正可见时执行
+// 之后 scrollLeft = w * idx 就永远准确
+function mcInit(){
+  const wrap = document.getElementById('morningCarousel');
+  if(!wrap) return;
+  const w = wrap.offsetWidth;
+  if(w === 0) return;           // 面板仍不可见，等下次调用
+  wrap.querySelectorAll('.mc-slide').forEach(function(slide){
+    slide.style.minWidth = w + 'px';
+    slide.style.maxWidth = w + 'px';
+    slide.style.width    = w + 'px';
+  });
+  // 修正滚动位置（比如从其他 tab 回来时保持上次位置）
+  wrap.scrollLeft = w * mcIdx;
+  mcResizeHeight(mcIdx);
+  mcUpdateArrows(mcIdx);
+}
+
+// 跳转：宽度已由 mcInit 设为像素，直接 w × idx 定位
+function mcGoTo(idx){
+  const wrap = document.getElementById('morningCarousel');
+  if(!wrap) return;
+  const w = wrap.offsetWidth;
+  if(w === 0) return;
+  mcIdx = idx;
+  wrap.scrollTo({ left: w * idx, behavior: 'smooth' });
+  setTimeout(function(){ mcResizeHeight(idx); }, 380);
+  mcUpdateArrows(idx);
+}
+
+function mcPrev(){ if(mcIdx > 0)             mcGoTo(mcIdx - 1); }
+function mcNext(){ if(mcIdx < MC_TOTAL - 1)  mcGoTo(mcIdx + 1); }
+
+// 手指直接滑动时同步状态
+document.addEventListener('DOMContentLoaded', function(){
+  const wrap = document.getElementById('morningCarousel');
+  if(!wrap) return;
+  let t = null;
+  wrap.addEventListener('scroll', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){
+      const w = wrap.offsetWidth;
+      if(w === 0) return;
+      const nearest = Math.round(wrap.scrollLeft / w);
+      if(nearest !== mcIdx){
+        mcIdx = nearest;
+        mcUpdateArrows(nearest);
+      }
+      mcResizeHeight(nearest);
+    }, 80);
+  }, { passive: true });
+});
+
+
+
+</script>
+</body>
+</html>
