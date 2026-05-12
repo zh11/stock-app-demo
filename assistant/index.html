@@ -1229,14 +1229,21 @@ body.chat-open{overflow:hidden}
 .htl-dot.past{background:#d0d0d0}
 .htl-body{flex:1}
 .htl-desc{font-size:13px;color:#333;line-height:1.55;margin-bottom:8px}
+.htl-event{font-size:13px;font-weight:700;color:#202124;line-height:1.5;margin-bottom:5px}
+.htl-expect{font-size:12px;color:#555;line-height:1.5;margin-bottom:8px}
 .htl-tags{display:flex;flex-wrap:wrap;gap:5px}
-.htl-tag{font-size:11px;padding:2px 10px;border-radius:3px;display:inline-block}
-.htl-tag{background:#fff0f0;color:#e8413a}
-.htl-tag.green{background:#f0fff4;color:#27ae60}
-.htl-tag.blue{background:#e8f4fd;color:#1565c0}
-.htl-tag.purple{background:#f3e5f5;color:#6a1b9a}
-.htl-tag.amber{background:#fffde7;color:#e65100}
-.htl-tag.gray{background:#f5f5f5;color:#666}
+.htl-tag{font-size:11px;padding:2px 10px;border-radius:3px;display:inline-block;border:1px solid #d8ecef;background:#edf8fa;color:#2c5f68}
+.htl-tag.green{background:#fff7ea;color:#7a5b26;border-color:#f2e2c7}
+.htl-tag.blue{background:#eef4fb;color:#365a78;border-color:#d7e4f1}
+.htl-tag.purple{background:#f5f1fb;color:#5f557a;border-color:#e3dcef}
+.htl-tag.amber{background:#f6f3ec;color:#6c5a3a;border-color:#e8dfcf}
+.htl-tag.gray{background:#f4f6f8;color:#52606d;border-color:#e3e7eb}
+.htl-stock-groups{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.htl-stock-group{display:flex;flex-direction:column;gap:5px}
+.htl-stock-title{display:none}
+.htl-stock-chips{display:flex;flex-wrap:wrap;gap:5px}
+.htl-stock-chip{font-size:10px;line-height:1;padding:5px 7px;border-radius:999px;background:#f7f8fa;color:#111;border:1px solid #eceff3}
+.htl-stock-chip.blue,.htl-stock-chip.green,.htl-stock-chip.gray{background:#f7f8fa;color:#111;border-color:#eceff3}
 
 /* ================================================================ */
 /* PANEL 4: 宏观要闻                                                  */
@@ -2538,20 +2545,6 @@ body.chat-open{overflow:hidden}
           <div class="pm-list">
 
             <!-- 紧急 -->
-            <div class="pm-card urgent" onclick="openRemindDetail('pm1')">
-              <div class="pm-top">
-                <span class="pm-level urgent">紧急</span>
-                <span class="pm-stock">万华化学</span>
-                <span class="pm-code">600309.SH</span>
-                <span class="pm-tag neg">今日关注</span>
-              </div>
-              <div class="pm-desc">原油期货日内暴跌近15%，化工原料成本有望实质性下降，但股价已跌超2%反映悲观预期，需判断是否持有。</div>
-              <div class="pm-footer">
-                <span class="pm-time">09:32 · 行情异动</span>
-                <span class="pm-expand">分析影响 ›</span>
-              </div>
-            </div>
-
             <div class="pm-card urgent" onclick="openRemindDetail('pm2')">
               <div class="pm-top">
                 <span class="pm-level urgent">紧急</span>
@@ -2561,7 +2554,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">北向资金节后首日恢复交易，早盘净买入超1.2亿，外资信心修复信号明确。固态电池概念持续发酵，今日是重要观察窗口。</div>
               <div class="pm-footer">
-                <span class="pm-time">10:15 · 资金动向</span>
+                <span class="pm-time">04-23 10:15 · 资金动向</span>
                 <span class="pm-expand">分析影响 ›</span>
               </div>
             </div>
@@ -2576,7 +2569,21 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">美伊停火催化新能源替代逻辑，叠加沙特战略合作，今日机构席位净买入活跃，量能放大是关键验证指标。</div>
               <div class="pm-footer">
-                <span class="pm-time">09:35 · 逻辑强化</span>
+                <span class="pm-time">04-23 09:35 · 逻辑强化</span>
+              </div>
+            </div>
+
+            <div class="pm-card urgent" onclick="openRemindDetail('pm1')">
+              <div class="pm-top">
+                <span class="pm-level urgent">紧急</span>
+                <span class="pm-stock">万华化学</span>
+                <span class="pm-code">600309.SH</span>
+                <span class="pm-tag neg">今日关注</span>
+              </div>
+              <div class="pm-desc">原油期货日内暴跌近15%，化工原料成本有望实质性下降，但股价已跌超2%反映悲观预期，需判断是否持有。</div>
+              <div class="pm-footer">
+                <span class="pm-time">04-23 09:32 · 行情异动</span>
+                <span class="pm-expand">分析影响 ›</span>
               </div>
             </div>
 
@@ -2589,7 +2596,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">一季报预告：Q1净利润预计同比增长约28%-35%，固态电池2026年小批量量产预期被机构反复确认，基本面支撑强劲。</div>
               <div class="pm-footer">
-                <span class="pm-time">昨晚 22:00 · 业绩预告</span>
+                <span class="pm-time">04-22 22:00 · 业绩预告</span>
               </div>
             </div>
 
@@ -2603,7 +2610,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">地缘风险缓和有利于外资流入银行板块，但降息预期压制息差弹性，短期盘面中性，无需操作。</div>
               <div class="pm-footer">
-                <span class="pm-time">今日 · 宏观背景</span>
+                <span class="pm-time">04-22 16:20 · 宏观背景</span>
               </div>
             </div>
 
@@ -2616,7 +2623,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">工信部发布《2026年半导体产业创新发展专项行动方案》，对化工上游特殊材料需求有潜在正向影响，中长期逻辑待跟踪。</div>
               <div class="pm-footer">
-                <span class="pm-time">今日 · 政策背景</span>
+                <span class="pm-time">04-22 14:35 · 政策背景</span>
               </div>
             </div>
 
@@ -2630,16 +2637,116 @@ body.chat-open{overflow:hidden}
     <div class="ai-panel" id="panel-hotspot">
       <div class="htl-scroll">
         <div class="htl-list">
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-01</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot past"></div></div><div class="htl-body"><div class="htl-desc">4月1日至3日，第十四届储能国际峰会暨展览会（ESIE2026）将继续在北京进行</div><div class="htl-tags"><span class="htl-tag">储能</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-07</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot past"></div></div><div class="htl-body"><div class="htl-desc">证监会《关于短线交易监管的若干规定》于4月7日起正式施行</div><div class="htl-tags"><span class="htl-tag blue">券商</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-09</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">第十九届中国零售商大会将于4月9日至11日在广州举办</div><div class="htl-tags"><span class="htl-tag green">商业百货</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-11</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">首届脑机接口供应链论坛</div><div class="htl-tags"><span class="htl-tag purple">人脑工程</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-12</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026中国环境技术大会将于4月12日至15日在上海启幕</div><div class="htl-tags"><span class="htl-tag green">绿色电力</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-13</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026年世界互联网大会亚太峰会将于4月13日至14日在香港召开</div><div class="htl-tags"><span class="htl-tag blue">算力概念</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">2026全球采购与供应链交流大会将于4月14日至16日在海口召开</div><div class="htl-tags"><span class="htl-tag amber">物流行业</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">汇丰全球投资峰会将于4月14日至16日在香港举行</div><div class="htl-tags"><span class="htl-tag blue">券商</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-17</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">国家统计局将公布一季度GDP及3月工业增加值、固定资产投资等关键宏观数据</div><div class="htl-tags"><span class="htl-tag gray">大盘</span><span class="htl-tag green">消费</span></div></div></div>
-          <div class="htl-item"><div class="htl-date-col"><div class="htl-date-main">04-20</div><div class="htl-date-y">2026</div></div><div class="htl-dot-col"><div class="htl-dot"></div></div><div class="htl-body"><div class="htl-desc">LPR利率月度报价，市场预期下调5BP，关注银行板块及地产链反应</div><div class="htl-tags"><span class="htl-tag blue">银行</span><span class="htl-tag gray">地产</span></div></div></div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-01</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot past"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：第十四届储能国际峰会暨展览会（ESIE2026）在北京进行。</div>
+              <div class="htl-expect">预期：若会议释放装机、海外订单或新型储能政策信号，储能方向关注度可能提升。</div>
+              <div class="htl-tags"><span class="htl-tag">储能</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#阳光电源</span><span class="htl-stock-chip">#固德威</span><span class="htl-stock-chip">#派能科技</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-07</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot past"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：证监会《关于短线交易监管的若干规定》正式施行。</div>
+              <div class="htl-expect">预期：监管规则进一步明确，市场交易制度预期改善，券商板块情绪可能受到带动。</div>
+              <div class="htl-tags"><span class="htl-tag blue">证券</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#东方财富</span><span class="htl-stock-chip">#中信证券</span><span class="htl-stock-chip">#华泰证券</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-09</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：第十九届中国零售商大会将在广州举办。</div>
+              <div class="htl-expect">预期：若会议聚焦消费复苏、渠道升级或即时零售，商业百货板块可能获得阶段性关注。</div>
+              <div class="htl-tags"><span class="htl-tag green">商业百货</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#王府井</span><span class="htl-stock-chip">#百联股份</span><span class="htl-stock-chip">#重庆百货</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-11</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：首届脑机接口供应链论坛召开。</div>
+              <div class="htl-expect">预期：产业链协同与应用落地预期升温，脑机接口相关概念可能出现主题交易。</div>
+              <div class="htl-tags"><span class="htl-tag purple">脑机接口</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#创新医疗</span><span class="htl-stock-chip">#三博脑科</span><span class="htl-stock-chip">#南京熊猫</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-12</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：2026中国环境技术大会将在上海启幕。</div>
+              <div class="htl-expect">预期：环保治理、绿电消纳和低碳技术议题升温，绿色电力方向可能获得关注。</div>
+              <div class="htl-tags"><span class="htl-tag green">绿色电力</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#三峡能源</span><span class="htl-stock-chip">#华能国际</span><span class="htl-stock-chip">#节能风电</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-13</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：2026年世界互联网大会亚太峰会将在香港召开。</div>
+              <div class="htl-expect">预期：AI基础设施、数据中心与算力网络议题受关注，算力概念可能继续活跃。</div>
+              <div class="htl-tags"><span class="htl-tag blue">算力概念</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#中际旭创</span><span class="htl-stock-chip">#新易盛</span><span class="htl-stock-chip">#工业富联</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：2026全球采购与供应链交流大会将在海口召开。</div>
+              <div class="htl-expect">预期：跨境供应链、仓储运输和平台物流议题升温，物流行业可能获得事件催化。</div>
+              <div class="htl-tags"><span class="htl-tag amber">物流行业</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#顺丰控股</span><span class="htl-stock-chip">#韵达股份</span><span class="htl-stock-chip">#圆通速递</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-17</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：国家统计局将公布一季度GDP及3月工业增加值、固定资产投资等关键宏观数据。</div>
+              <div class="htl-expect">预期：若数据强于预期，市场风险偏好可能改善；若消费数据改善，消费方向关注度可能提升。</div>
+              <div class="htl-tags"><span class="htl-tag gray">沪深300</span><span class="htl-tag green">食品饮料</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#东方财富</span><span class="htl-stock-chip">#中信证券</span><span class="htl-stock-chip">#贵州茅台</span></div></div>
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#伊利股份</span><span class="htl-stock-chip">#五粮液</span><span class="htl-stock-chip">#海天味业</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="htl-item">
+            <div class="htl-date-col"><div class="htl-date-main">04-20</div><div class="htl-date-y">2026</div></div>
+            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-body">
+              <div class="htl-event">事件：LPR利率月度报价将公布，市场关注是否下调。</div>
+              <div class="htl-expect">预期：若利率继续下调，稳增长与宽信用预期有望升温，银行和房地产板块可能分化加大。</div>
+              <div class="htl-tags"><span class="htl-tag blue">银行</span><span class="htl-tag gray">房地产开发</span></div>
+              <div class="htl-stock-groups">
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#招商银行</span><span class="htl-stock-chip">#平安银行</span><span class="htl-stock-chip">#宁波银行</span></div></div>
+                <div class="htl-stock-group"><div class="htl-stock-chips"><span class="htl-stock-chip">#万科A</span><span class="htl-stock-chip">#保利发展</span><span class="htl-stock-chip">#招商蛇口</span></div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
