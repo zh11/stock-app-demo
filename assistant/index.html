@@ -863,14 +863,15 @@
 /* AI assistant shell refresh */
 .chat-page{position:absolute;display:flex;flex-direction:column;background:#fff}
 body.chat-open{overflow:hidden}
-.chat-hdr{order:0;height:54px;background:#fff;color:#111;padding:0 18px;display:grid;grid-template-columns:44px 1fr 94px;align-items:center;gap:0;flex-shrink:0}
-.chat-hdr::after{content:'⊕';width:34px;height:34px;grid-column:3;grid-row:1;justify-self:start;align-self:center;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1;font-weight:400;color:#111}
+.chat-hdr{order:0;height:54px;background:#fff;color:#111;padding:0 18px;display:grid;grid-template-columns:34px 1fr 34px 34px;align-items:center;column-gap:8px;flex-shrink:0}
 .chat-back{grid-column:1;color:#111;font-size:30px;line-height:1;padding:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:400}
 .chat-hdr-av,.chat-hdr-sub,.mode-badge{display:none!important}
 .chat-hdr-info{grid-column:2;grid-row:1;text-align:center;min-width:0;pointer-events:none}
-.chat-hdr-title{font-size:0;font-weight:680;color:#111;line-height:1}
-.chat-hdr-title::before{content:'新对话';font-size:16px}
-.chat-settings{grid-column:3;grid-row:1;justify-self:end;color:#111;font-size:0;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center}
+.chat-hdr-title{font-size:16px;font-weight:680;color:#111;line-height:1}
+.chat-new-btn,.chat-settings{color:#111;font-size:0;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer}
+.chat-new-btn{grid-column:3;grid-row:1}
+.chat-settings{grid-column:4;grid-row:1;justify-self:end}
+.chat-new-btn::before{content:'⊕';font-size:28px;line-height:1;font-weight:400}
 .chat-settings::before{content:'☰';font-size:24px;line-height:1}
 
 .ai-panels{order:1;flex:1;min-height:0;overflow:hidden;background:#fff}
@@ -886,12 +887,15 @@ body.chat-open{overflow:hidden}
 .ai-feature-title{min-width:0;font-size:16px;font-weight:800;white-space:nowrap;color:#111}
 .ai-feature-card p{font-size:13px;line-height:1.48;color:#717781;margin:0}
 .ai-feature-meta{display:inline-flex;margin-top:11px;padding:4px 8px;border-radius:999px;background:#fff2ef;color:#e8413a;font-size:11px;font-weight:720}
-.ai-home-brand{flex:1;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.ai-home-logo{width:64px;height:64px;border-radius:17px;object-fit:cover;box-shadow:0 12px 24px rgba(232,65,58,.2);margin-bottom:18px}
-.ai-home-brand strong{font-size:22px;line-height:1;margin-bottom:13px;color:#111}
-.ai-home-brand span{font-size:16px;color:#8d929a}
+.ai-home-questions{flex:1;min-height:260px;display:flex;align-items:flex-start;justify-content:center;padding:18px 0 8px}
+.ai-question-list{width:100%;display:flex;flex-direction:column;gap:8px}
+.ai-question-btn{width:100%;min-height:44px;border:1px solid #edf0f4;border-radius:12px;background:rgba(255,255,255,.96);box-shadow:0 7px 18px rgba(15,23,42,.045);padding:10px 34px 10px 13px;text-align:left;font-family:inherit;font-size:13px;line-height:1.45;color:#20242a;position:relative;cursor:pointer}
+.ai-question-btn::after{content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;line-height:1;color:#b8bec8}
+.ai-question-btn:active{border-color:#ffd5ce;background:#fff8f6;color:#111}
 
-.shared-input{order:2;border:1px solid #eceff3;margin:8px 20px 8px;padding:7px 8px;background:#fff;border-radius:12px;box-shadow:0 7px 20px rgba(15,23,42,.14);gap:7px;position:relative;align-items:center}
+.chat-bottom-dock{order:2;display:flex;flex-direction:column;flex-shrink:0;position:relative;z-index:3;padding:6px 0 calc(4px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(247,248,250,0) 0,#fff 14px,#fff 100%);border-top:1px solid rgba(236,239,243,.96);box-shadow:0 -10px 24px rgba(15,23,42,.05)}
+.chat-bottom-dock.with-preset{box-shadow:0 -14px 28px rgba(15,23,42,.08)}
+.shared-input{border:1px solid #eceff3;margin:6px 20px 0;padding:7px 8px;background:#fff;border-radius:12px;box-shadow:0 7px 20px rgba(15,23,42,.14);gap:7px;position:relative;align-items:center}
 .shared-input-field{height:36px;min-width:0;border:0;border-radius:8px;background:transparent;box-shadow:none;padding:0 4px;font-size:15px}
 .shared-input-field:focus{border-color:#e8413a;background:#fff}
 .input-tool-btn,.mic-btn{width:34px;height:34px;border:0;border-radius:17px;background:#f7f8fa;color:#6f7681;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:none}
@@ -912,18 +916,219 @@ body.chat-open{overflow:hidden}
 .image-preview-chip img{width:24px;height:24px;border-radius:6px;object-fit:cover;flex:0 0 auto}
 .image-preview-chip button{margin-left:auto;border:0;background:#f4f5f7;color:#7b818b;width:22px;height:22px;border-radius:11px;line-height:1;cursor:pointer}
 
-.ai-tabs{order:3;display:flex;gap:5px;background:#fff;border-bottom:0;flex-shrink:0;overflow-x:auto;padding:0 20px 12px;scrollbar-width:none}
+.ai-tabs{display:flex;gap:5px;background:transparent;border-bottom:0;flex-shrink:0;overflow-x:auto;padding:0 20px 2px;scrollbar-width:none}
 .ai-tabs::-webkit-scrollbar{display:none}
 .ai-tab{flex:0 0 auto;height:32px;border:1px solid #edf0f4;border-radius:17px;background:#fff;color:#3c4149;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 8px;font-size:12px;white-space:nowrap;box-shadow:0 5px 14px rgba(15,23,42,.045)}
 .ai-tab.active{border-color:#ffd5ce;background:#fff2ef;color:#e8413a;font-weight:720}
 .ai-tab.active::after{display:none}
 .tab-badge{background:#fff2ef;color:#e8413a;height:auto;line-height:1;min-width:0;margin-left:0;padding:0;font-size:0}
+.scene-default-block.hidden{display:none}
+.scene-default-inline-host{display:none;padding:0 14px 12px;background:#f7f7f8}
+.scene-default-inline-host.show{display:block}
+.scene-default-inline-host .scene-default-block-chat{display:block!important}
+.scene-entry-stack{display:flex;flex-direction:column;gap:10px}
+.scene-entry{width:100%;border:1px solid #f0d7d1;border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(15,23,42,.06);padding:11px 12px;text-align:left;cursor:pointer}
+.scene-entry-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.scene-entry-label{font-size:13px;font-weight:700;color:#222}
+.scene-entry-meta{font-size:11px;color:#a67d72}
+.scene-entry-arrow{font-size:16px;color:#c9907e;line-height:1}
+.scene-entry-sub{margin-top:4px;font-size:11px;color:#8c949e}
+.scene-entry.expanded .scene-entry-arrow{transform:rotate(90deg)}
+.scene-preview-shell{margin-top:10px;border-radius:12px;overflow:visible;border:1px solid #eceff3;background:#fff}
+.scene-preview-panel .scene-preview-shell{margin-top:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.scene-preview-shell,
+.scene-preview-shell *{box-sizing:border-box}
+.scene-preview-shell .remind-wrap,
+.scene-preview-shell .htl-scroll,
+.scene-preview-shell .macro-scroll,
+.scene-preview-shell .scene-default-block-chat{
+  display:block!important;
+  flex:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.scene-preview-shell .remind-inner,
+.scene-preview-shell .macro-feed{padding-bottom:14px}
+.scene-preview-shell .event-carousel-wrap,
+.scene-preview-shell .mc-wrap,
+.scene-preview-shell .htl-list{
+  touch-action:pan-x;
+  overscroll-behavior-x:contain;
+}
+.scene-preview-shell .event-carousel-wrap,
+.scene-preview-shell .mc-wrap,
+.scene-preview-shell .macro-feed,
+.scene-preview-shell .remind-inner,
+.scene-preview-shell .scene-default-block-chat{
+  width:100%;
+}
+.scene-preview-shell .mc-outer{
+  width:100%;
+  overflow:hidden;
+}
+.scene-preview-shell .mc-wrap{
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.scene-preview-shell .mc-wrap::-webkit-scrollbar{display:none}
+.scene-preview-shell .mc-slide,
+.scene-preview-shell .stock-card,
+.scene-preview-shell .rsc-card,
+.scene-preview-shell .pm-card{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+.scene-preview-shell .stock-card,
+.scene-preview-shell .rsc-card,
+.scene-preview-shell .pm-card{
+  overflow:hidden;
+}
+.scene-preview-shell .sc-header,
+.scene-preview-shell .sc-keypoint,
+.scene-preview-shell .sc-timeline,
+.scene-preview-shell .sc-nav,
+.scene-preview-shell .sc-item,
+.scene-preview-shell .sc-body,
+.scene-preview-shell .sc-desc,
+.scene-preview-shell .sc-tag,
+.scene-preview-shell .sc-header-row,
+.scene-preview-shell .pm-top,
+.scene-preview-shell .pm-desc,
+.scene-preview-shell .pm-footer{
+  min-width:0;
+}
+.scene-preview-shell .sc-keypoint,
+.scene-preview-shell .sc-desc,
+.scene-preview-shell .pm-desc{
+  overflow-wrap:anywhere;
+}
+.scene-preview-shell .sc-left{
+  width:40px;
+  flex:0 0 40px;
+}
+.scene-preview-shell .sc-tag{
+  max-width:100%;
+  white-space:normal;
+  line-height:1.4;
+}
+.scene-preview-shell .sc-nav{
+  gap:8px;
+}
+.scene-preview-shell .sc-arrows{
+  flex:0 0 auto;
+}
+.scene-preview-shell .sc-name,
+.scene-preview-shell .sc-code,
+.scene-preview-shell .sc-num,
+.scene-preview-shell .sc-hint{
+  min-width:0;
+}
+.scene-preview-shell .sc-hint{
+  white-space:normal;
+  text-align:center;
+}
+.scene-preview-shell .event-carousel-wrap{
+  height:auto!important;
+  align-items:flex-start;
+}
+.scene-preview-shell .event-slide,
+.scene-preview-shell .feat-card,
+.scene-preview-shell .feat-card-sm-slide,
+.scene-preview-shell .feat-quiet-slide,
+.scene-preview-shell .feat-primary-card,
+.scene-preview-shell .feat-extra-card,
+.scene-preview-shell .quick-block,
+.scene-preview-shell .htl-item{
+  width:100%;
+  max-width:100%;
+}
+.scene-preview-shell .event-slide{padding:12px 14px 8px}
+.scene-preview-shell .event-slide > *{display:block}
+.scene-preview-shell .feat-card,
+.scene-preview-shell .feat-card-sm-slide,
+.scene-preview-shell .quick-block{margin-top:0}
+.scene-preview-shell .feat-topline,
+.scene-preview-shell .fi-row,
+.scene-preview-shell .feat-sm-row,
+.scene-preview-shell .feat-extra-head{min-width:0}
+.scene-preview-shell .feat-topline > :first-child,
+.scene-preview-shell .fi-row > div,
+.scene-preview-shell .feat-sm-row > div,
+.scene-preview-shell .feat-extra-head > *,
+.scene-preview-shell .feat-title,
+.scene-preview-shell .feat-sub,
+.scene-preview-shell .feat-extra-title,
+.scene-preview-shell .feat-extra-desc,
+.scene-preview-shell .feat-sm-title,
+.scene-preview-shell .feat-sm-desc{
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.scene-preview-shell .fi-stock-link{
+  display:inline-flex;
+  max-width:100%;
+  white-space:normal;
+  flex-wrap:wrap;
+  line-height:1.45;
+  padding:3px 8px;
+  margin-top:6px;
+  cursor:default;
+}
+.scene-preview-shell .fi-stock-link::before{
+  align-self:flex-start;
+  margin-top:1px;
+}
+.scene-preview-shell .fi-row > div br + .fi-stock-link,
+.scene-preview-shell .feat-sm-row > div br + .fi-stock-link{
+  display:inline-flex;
+}
+.scene-preview-shell .htl-scroll{padding-bottom:8px}
+.scene-preview-shell .htl-list{padding:18px 14px 14px;gap:10px;scrollbar-width:none;-ms-overflow-style:none}
+.scene-preview-shell .htl-item{min-width:calc(100% - 6px);overflow:visible}
+.scene-preview-shell .htl-card-foot{padding:6px 14px 12px}
+.scene-preview-shell .chat-scroll,
+.scene-preview-shell .chat-msgs,
+.scene-preview-shell .scene-collapsed-host{display:none!important}
+.scene-preview-shell .shared-input,
+.scene-preview-shell .ai-tabs{display:none!important}
+.scene-preview-shell [data-preview-onclick],
+.scene-preview-shell .carousel-dots .cdot{cursor:pointer}
+.history-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.28);z-index:2100;display:none;align-items:flex-start;justify-content:flex-end;padding:54px 18px 18px}
+.history-overlay.open{display:flex}
+.history-panel{width:min(320px,100%);max-height:min(72vh,540px);background:#fff;border-radius:18px;box-shadow:0 18px 40px rgba(15,23,42,.18);overflow:hidden;display:flex;flex-direction:column}
+.history-panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid #f1f3f5}
+.history-panel-title{font-size:16px;font-weight:700;color:#111}
+.history-close{width:28px;height:28px;border:0;border-radius:14px;background:#f7f8fa;color:#666;cursor:pointer;font-size:18px;line-height:1}
+.history-list{padding:10px 10px 12px;overflow:auto}
+.history-empty{padding:28px 18px;color:#9aa1aa;font-size:13px;line-height:1.6;text-align:center}
+.history-item{width:100%;border:1px solid #edf0f4;border-radius:14px;background:#fff;padding:12px 12px 11px;text-align:left;cursor:pointer;display:block;margin-bottom:10px}
+.history-item.active{border-color:#ffd5ce;background:#fff8f6}
+.history-item:last-child{margin-bottom:0}
+.history-item-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+.history-scene{font-size:11px;color:#e8413a;background:#fff2ef;border-radius:999px;padding:3px 8px;font-weight:700}
+.history-time{font-size:11px;color:#a0a7b1;white-space:nowrap}
+.history-title{font-size:13px;font-weight:700;color:#21262d;line-height:1.45;margin-bottom:5px}
+.history-summary{font-size:12px;color:#6b7280;line-height:1.55}
+.chat-preset-section{display:block;max-height:0;opacity:0;overflow:hidden;transform:translateY(8px);transition:max-height .24s ease,opacity .18s ease,transform .24s ease,padding .24s ease;background:transparent;flex-shrink:0;padding:0 14px;pointer-events:none}
+.chat-preset-section.show{max-height:126px;opacity:1;transform:translateY(0);padding:4px 14px 6px;pointer-events:auto}
+.chat-preset-title{font-size:11px;color:#a0a7b1;font-weight:700;margin:0 0 10px;padding:0 2px}
+.chat-preset-list{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+.chat-preset-list::-webkit-scrollbar{display:none}
+.chat-preset-card{flex:0 0 78%;min-height:70px;border:1px solid #edf0f4;border-radius:14px;background:rgba(255,255,255,.98);box-shadow:0 7px 18px rgba(15,23,42,.045);padding:12px 34px 12px 13px;text-align:left;font-family:inherit;font-size:13px;line-height:1.5;color:#20242a;position:relative;cursor:pointer;scroll-snap-align:start;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.chat-preset-card:hover{border-color:#ffd9d2;box-shadow:0 10px 22px rgba(232,65,58,.08);transform:translateY(-1px)}
+.chat-preset-card::after{content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;line-height:1;color:#b8bec8}
+.chat-preset-card:active{border-color:#ffd5ce;background:#fff8f6;color:#111}
 
 /* ================================================================ */
 /* PANEL 1: AI 对话                                                  */
 /* ================================================================ */
-.chat-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f7f7f8}
-.chat-scroll::-webkit-scrollbar{width:0}
+.chat-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f7f7f8;scrollbar-width:thin;scrollbar-color:#cfd6df transparent}
+.chat-scroll::-webkit-scrollbar{width:6px}
+.chat-scroll::-webkit-scrollbar-thumb{background:#cfd6df;border-radius:999px}
+.chat-scroll::-webkit-scrollbar-track{background:transparent}
 
 /* ── 事件卡片（三个层级）── */
 
@@ -983,21 +1188,256 @@ body.chat-open{overflow:hidden}
 .quick-btn.event-linked:active{background:#fff0ef;border-color:#fdd;color:#e8413a}
 
 /* ── Chat messages ── */
-.chat-msgs{padding:10px 14px 8px}
+.chat-msgs{padding:10px 6px 8px}
+.chat-msgs.hidden{display:none}
 .msg-row{display:flex;margin-bottom:14px;animation:msgin .3s ease-out}
 @keyframes msgin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg-row.user{flex-direction:row-reverse}
-.msg-av{width:34px;height:34px;border-radius:50%;background:#e8413a;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.msg-av{width:24px;height:24px;border-radius:50%;background:#e8413a;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-start;margin-top:2px}
 .msg-row.user .msg-av{background:#ddd;color:#888;font-size:16px}
-.msg-bub{max-width:75%;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.6;margin:0 8px;word-break:break-word}
+.msg-bub{max-width:calc(100% - 30px);padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.6;margin:0 2px;word-break:break-word}
 .msg-row.ai .msg-bub{background:#fff;color:#333;border-top-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .msg-row.user .msg-bub{background:#e8413a;color:#fff;border-top-right-radius:4px}
+.msg-row.scene-entry{display:block;margin:0 2px 14px 20px}
+.msg-row.scene-entry .scene-entry-wrap{max-width:calc(100% - 4px)}
+.scene-visit-block{margin:0 2px 14px 20px}
+.scene-visit-block.scene-jump-focus,
+.msg-row.scene-entry.scene-jump-focus{animation:sceneJumpPulse 1.15s ease}
+.scene-visit-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 8px}
+.scene-visit-title{font-size:13px;font-weight:700;color:#222}
+.scene-visit-sub{font-size:11px;color:#8c949e}
+.scene-preview-panel{border:1px solid #eef1f5;border-radius:16px;background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%);box-shadow:0 10px 24px rgba(15,23,42,.05);overflow:hidden}
+.scene-preview-panel + .scene-preview-panel{margin-top:10px}
+.scene-preview-bar{display:flex;align-items:center;justify-content:flex-start;padding:11px 8px 10px;border-bottom:1px solid #f1f3f6;background:rgba(255,255,255,.88)}
+.scene-preview-bar-main{min-width:0;display:flex;align-items:center;gap:8px}
+.scene-preview-name{font-size:14px;font-weight:700;color:#20242a;min-width:0}
+.scene-preview-body{padding:0;background:#f7f8fa}
+.scene-preview-panel[data-scene="chat"] .scene-preview-body{background:#f7f8fa}
+.scene-preview-panel[data-scene="chat"] .scene-preview-shell{
+  padding-bottom:12px;
+  background:linear-gradient(180deg,#f7f8fa 0%,#f9fafc 100%);
+}
+.scene-preview-panel[data-scene="chat"] .feat-card,
+.scene-preview-panel[data-scene="chat"] .feat-card-sm-slide,
+.scene-preview-panel[data-scene="chat"] .feat-quiet-slide{
+  border:1px solid #edf0f4;
+  box-shadow:0 8px 20px rgba(15,23,42,.05);
+  border-radius:16px;
+  overflow:hidden;
+  background:linear-gradient(180deg,#fff 0%,#fffaf8 100%);
+  margin:0;
+}
+.scene-preview-panel[data-scene="chat"] .event-slide{
+  padding:10px 8px 6px;
+}
+.scene-preview-panel[data-scene="chat"] .feat-primary-card,
+.scene-preview-panel[data-scene="chat"] .feat-extra-card{
+  border-radius:14px;
+  background:#fff;
+}
+.scene-preview-panel[data-scene="chat"] .feat-impacts,
+.scene-preview-panel[data-scene="chat"] .feat-sm-impacts{
+  border-top:0;
+  padding-top:8px;
+  display:grid;
+  gap:8px;
+}
+.scene-preview-panel[data-scene="chat"] .fi-row,
+.scene-preview-panel[data-scene="chat"] .feat-sm-row{
+  margin:0;
+  padding:10px 10px 10px 9px;
+  border:1px solid #f1f3f6;
+  border-radius:12px;
+  background:#fff;
+}
+.scene-preview-panel[data-scene="chat"] .feat-extra-list{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+.scene-preview-panel[data-scene="chat"] .feat-extra-card{
+  margin-top:0;
+}
+.scene-preview-panel[data-scene="chat"] .quick-section{
+  margin:2px 8px 0;
+  border:1px solid #edf0f4;
+  border-radius:16px;
+  background:#fff;
+  padding:12px;
+  box-shadow:0 8px 20px rgba(15,23,42,.05);
+}
+.scene-preview-panel[data-scene="chat"] .quick-block-hdr{
+  margin-bottom:10px;
+}
+.scene-preview-panel[data-scene="chat"] .quick-block{
+  margin-bottom:0;
+}
+.scene-preview-panel[data-scene="chat"] .quick-col{gap:8px}
+.scene-preview-panel[data-scene="chat"] .quick-btn{
+  width:100%;
+  border-radius:12px;
+  padding:10px 12px;
+}
+.scene-preview-panel[data-scene="chat"] .qb-label{
+  color:#8b919b;
+}
+.scene-preview-panel[data-scene="chat"] .carousel-dots{
+  padding:6px 0 6px;
+}
+.scene-preview-panel[data-scene="remind"] .scene-preview-body,
+.scene-preview-panel[data-scene="hotspot"] .scene-preview-body,
+.scene-preview-panel[data-scene="macro"] .scene-preview-body{padding:4px;background:#f7f8fa}
+.scene-preview-panel[data-scene="remind"] .scene-preview-shell,
+.scene-preview-panel[data-scene="hotspot"] .scene-preview-shell,
+.scene-preview-panel[data-scene="macro"] .scene-preview-shell{border-radius:12px;overflow:hidden}
+.scene-preview-panel[data-scene="remind"] .remind-wrap,
+.scene-preview-panel[data-scene="macro"] .macro-scroll,
+.scene-preview-panel[data-scene="hotspot"] .htl-scroll{background:transparent}
+.scene-preview-panel[data-scene="remind"] .rsc-card,
+.scene-preview-panel[data-scene="remind"] .stock-card,
+.scene-preview-panel[data-scene="remind"] .pm-card,
+.scene-preview-panel[data-scene="macro"] .mi-item,
+.scene-preview-panel[data-scene="hotspot"] .htl-item{
+  border:1px solid #edf0f4;
+  box-shadow:0 8px 20px rgba(15,23,42,.05);
+}
+.scene-preview-panel[data-scene="remind"] .remind-inner{padding-bottom:2px}
+.scene-preview-panel[data-scene="remind"] .mc-outer{margin-top:8px}
+.scene-preview-panel[data-scene="remind"] .rsc-header-bar,
+.scene-preview-panel[data-scene="remind"] .sc-header{
+  background:#fff;
+  border-bottom:1px solid #f1f3f6;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-header-bar{
+  padding:12px 8px;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-title,
+.scene-preview-panel[data-scene="remind"] .sc-header .sc-name{
+  color:#20242a;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-date,
+.scene-preview-panel[data-scene="remind"] .sc-header .sc-code{
+  color:#99a0aa;
+}
+.scene-preview-panel[data-scene="remind"] .sc-header{
+  padding:12px 8px 10px;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-body{
+  padding:7px;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-summary{
+  display:grid;
+  gap:10px;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-market-brief,
+.scene-preview-panel[data-scene="remind"] .rsc-news-overview{
+  padding:10px;
+  border:1px solid #f1f3f6;
+  border-radius:12px;
+  background:#fff;
+  line-height:1.66;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-market-brief{
+  font-size:15px;
+  font-weight:700;
+  color:#1f2731;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-news-overview{
+  font-size:13px;
+  color:#535a65;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-stocks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.scene-preview-panel[data-scene="remind"] .rsc-stock-pill{
+  margin:0;
+}
+.scene-preview-panel[data-scene="remind"] .sc-keypoint{
+  margin:10px 7px 2px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #ffe1da;
+  background:#fff7f4;
+  color:#cb523c;
+  font-size:13px;
+  line-height:1.6;
+}
+.scene-preview-panel[data-scene="remind"] .sc-timeline{
+  padding:8px 7px 0;
+  display:grid;
+  gap:10px;
+}
+.scene-preview-panel[data-scene="remind"] .sc-item{
+  display:grid;
+  grid-template-columns:40px minmax(0,1fr);
+  align-items:flex-start;
+  gap:10px;
+}
+.scene-preview-panel[data-scene="remind"] .sc-body{
+  padding:10px 12px;
+  border:1px solid #f1f3f6;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(15,23,42,.04);
+}
+.scene-preview-panel[data-scene="remind"] .sc-desc{
+  font-size:13px;
+  line-height:1.66;
+  color:#39404a;
+}
+.scene-preview-panel[data-scene="remind"] .sc-tag{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:3px 8px;
+  margin-bottom:8px;
+}
+.scene-preview-panel[data-scene="remind"] .hh-section-title{
+  margin:10px 2px 8px;
+  color:#9aa1aa;
+  font-size:11px;
+  letter-spacing:.2px;
+}
+.scene-preview-panel[data-scene="remind"] .pm-list{gap:10px}
+.scene-preview-panel[data-scene="remind"] .pm-card{
+  padding:10px 7px;
+}
+.scene-preview-panel[data-scene="remind"] .sc-nav,
+.scene-preview-panel[data-scene="hotspot"] .htl-card-foot{
+  background:#fff;
+}
+.scene-preview-panel[data-scene="remind"] .sc-nav{
+  padding:10px 7px 12px;
+}
+.scene-preview-panel[data-scene="remind"] .sc-hint{display:none}
+.scene-preview-panel[data-scene="hotspot"] .htl-list{padding:4px 4px 10px}
+.scene-preview-panel[data-scene="hotspot"] .htl-item{min-width:calc(100% - 4px)}
+.scene-preview-panel[data-scene="hotspot"] .htl-card-foot{
+  padding:8px 12px 2px;
+  color:#9aa1aa;
+}
+.scene-preview-panel[data-scene="hotspot"] .htl-hint{display:none}
+.scene-preview-panel[data-scene="macro"] .macro-feed{padding:0}
+.scene-preview-panel[data-scene="macro"] .mi-item{
+  margin-bottom:10px;
+  padding:12px;
+  gap:0;
+  border-left:3px solid #ffd8d1;
+}
+.scene-preview-panel[data-scene="macro"] .mi-item:last-child{margin-bottom:0}
+.scene-preview-panel[data-scene="macro"] .mi-av{display:none}
+.scene-preview-panel[data-scene="macro"] .mi-meta{margin-bottom:6px;justify-content:flex-end}
+.scene-preview-panel[data-scene="macro"] .mi-text{line-height:1.65}
 .msg-bub strong{color:#e8413a}
 .msg-row.user .msg-bub strong{color:#ffe0e0}
 .typing-ind{display:flex;gap:4px;padding:4px 0}
 .typing-ind span{width:6px;height:6px;border-radius:50%;background:#ccc;animation:typanim 1.4s infinite}
 .typing-ind span:nth-child(2){animation-delay:.2s}
 .typing-ind span:nth-child(3){animation-delay:.4s}
+@keyframes sceneJumpPulse{0%{box-shadow:0 0 0 0 rgba(232,65,58,0)}20%{box-shadow:0 0 0 4px rgba(232,65,58,.14)}100%{box-shadow:0 0 0 0 rgba(232,65,58,0)}}
 @keyframes typanim{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
 
 /* ── Panel tab smooth transition ── */
@@ -1214,23 +1654,26 @@ body.chat-open{overflow:hidden}
 .ri-more{color:#e8413a}
 
 /* ================================================================ */
-/* PANEL 3: 热点预期                                                  */
+/* PANEL 3: 事件前瞻                                                  */
 /* ================================================================ */
-.htl-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff}
+.htl-scroll{flex:1;overflow:hidden;background:#f7f8fa;display:flex;flex-direction:column}
 .htl-scroll::-webkit-scrollbar{width:0}
-.htl-list{padding:4px 14px}
-.htl-item{display:flex;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f5f5f5}
-.htl-item:last-child{border-bottom:none}
-.htl-date-col{width:50px;flex-shrink:0}
-.htl-date-main{font-size:14px;font-weight:700;color:#333;line-height:1.15}
-.htl-date-y{font-size:10px;color:#ccc;margin-top:2px}
-.htl-dot-col{width:22px;flex-shrink:0;display:flex;justify-content:center;padding-top:4px}
+.htl-list{flex:0 0 auto;min-height:0;display:flex;align-items:flex-start;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:30px 20px 20px;gap:12px;scrollbar-width:none;-ms-overflow-style:none}
+.htl-list::-webkit-scrollbar{display:none}
+.htl-item{min-width:calc(100% - 20px);height:auto;box-sizing:border-box;scroll-snap-align:center;background:#fff;border:1px solid #edf0f4;border-radius:16px;box-shadow:0 10px 24px rgba(15,23,42,.055);display:flex;flex-direction:column;padding:15px 15px 13px;overflow-y:auto}
+.htl-item::-webkit-scrollbar{width:0}
+.htl-item:last-child{border-bottom:1px solid #edf0f4}
+.htl-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.htl-date-col{width:auto;flex-shrink:0}
+.htl-date-main{font-size:18px;font-weight:800;color:#111;line-height:1.1}
+.htl-date-y{font-size:11px;color:#b8bec8;margin-top:3px}
+.htl-dot-col{display:none}
 .htl-dot{width:10px;height:10px;border-radius:50%;background:#e8413a}
 .htl-dot.past{background:#d0d0d0}
-.htl-body{flex:1}
+.htl-body{flex:1;min-height:0;display:flex;flex-direction:column}
 .htl-desc{font-size:13px;color:#333;line-height:1.55;margin-bottom:8px}
-.htl-event{font-size:13px;font-weight:700;color:#202124;line-height:1.5;margin-bottom:5px}
-.htl-expect{font-size:12px;color:#555;line-height:1.5;margin-bottom:8px}
+.htl-event{font-size:16px;font-weight:800;color:#202124;line-height:1.45;margin-bottom:10px}
+.htl-expect{font-size:13px;color:#555;line-height:1.65;margin-bottom:12px}
 .htl-tags{display:flex;flex-wrap:wrap;gap:5px}
 .htl-tag{font-size:11px;padding:2px 10px;border-radius:3px;display:inline-block;border:1px solid #d8ecef;background:#edf8fa;color:#2c5f68}
 .htl-tag.green{background:#fff7ea;color:#7a5b26;border-color:#f2e2c7}
@@ -1244,6 +1687,11 @@ body.chat-open{overflow:hidden}
 .htl-stock-chips{display:flex;flex-wrap:wrap;gap:5px}
 .htl-stock-chip{font-size:10px;line-height:1;padding:5px 7px;border-radius:999px;background:#f7f8fa;color:#111;border:1px solid #eceff3}
 .htl-stock-chip.blue,.htl-stock-chip.green,.htl-stock-chip.gray{background:#f7f8fa;color:#111;border-color:#eceff3}
+.htl-card-foot{flex-shrink:0;padding:0 20px 10px;display:flex;align-items:center;justify-content:center;gap:8px;color:#b8bec8;font-size:11px;background:#f7f8fa}
+.htl-nav-btn{width:30px;height:30px;border-radius:50%;border:1px solid #e7ebf0;background:#fff;color:#333;font-size:18px;line-height:1;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(15,23,42,.06);cursor:pointer}
+.htl-nav-btn:disabled{opacity:.36;cursor:default}
+.htl-page{font-size:12px;color:#69707a;font-weight:700}
+.htl-hint{white-space:nowrap}
 
 /* ================================================================ */
 /* PANEL 4: 宏观要闻                                                  */
@@ -2077,24 +2525,18 @@ body.chat-open{overflow:hidden}
     <button class="chat-back" onclick="closeChat()">&lt;</button>
     <div class="chat-hdr-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div>
     <div class="chat-hdr-info">
-      <div class="chat-hdr-title">躺客AI助手 <span class="mode-badge demo" id="modeBadge">演示模式</span></div>
+      <div class="chat-hdr-title">新对话 <span class="mode-badge demo" id="modeBadge">演示模式</span></div>
       <div class="chat-hdr-sub">智能投资问答 &middot; 7&times;24小时在线</div>
     </div>
-    <button class="chat-settings" onclick="openSettings()">&#9881;</button>
-  </div>
-
-  <div class="ai-tabs">
-    <button class="ai-tab" data-tab="remind" onclick="switchTab('remind',this)">自选消息</button>
-    <button class="ai-tab" data-tab="hotspot" onclick="switchTab('hotspot',this)">热点预期</button>
-    <button class="ai-tab" data-tab="chat" onclick="switchTab('chat',this)">AI对话</button>
-    <button class="ai-tab" data-tab="macro" onclick="switchTab('macro',this)">宏观要闻</button>
+    <button class="chat-new-btn" type="button" onclick="startNewConversation()"></button>
+    <button class="chat-settings" type="button" onclick="openHistoryPanel()">&#9881;</button>
   </div>
 
   <div class="ai-panels">
 
     <div class="ai-home active" id="aiHome">
       <section class="ai-home-features">
-        <button class="ai-feature-card" onclick="switchTab('remind',document.querySelector('.ai-tab[data-tab=&quot;remind&quot;]'))">
+        <button class="ai-feature-card" onclick="switchTab('remind',document.querySelector('.ai-tab[data-tab=&quot;remind&quot;]'),'force-panel')">
           <div class="ai-feature-top">
             <span class="ai-feature-icon alert">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -2104,27 +2546,26 @@ body.chat-open{overflow:hidden}
           <p>自选异动、公告、研报和盘中波动优先推送。</p>
           <span class="ai-feature-meta">8条待看</span>
         </button>
-        <button class="ai-feature-card" onclick="switchTab('hotspot',document.querySelector('.ai-tab[data-tab=&quot;hotspot&quot;]'))">
+        <button class="ai-feature-card" onclick="switchTab('hotspot',document.querySelector('.ai-tab[data-tab=&quot;hotspot&quot;]'),'force-panel')">
           <div class="ai-feature-top">
             <span class="ai-feature-icon hot">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
             </span>
-            <span class="ai-feature-title">热点预期</span>
+            <span class="ai-feature-title">事件前瞻</span>
           </div>
           <p>未来事件、题材催化和影响板块提前观察。</p>
           <span class="ai-feature-meta">3个催化</span>
         </button>
       </section>
-      <section class="ai-home-brand">
-        <img class="ai-home-logo" src="logo2.png" alt="躺客">
-        <strong>躺客AI</strong>
-        <span>你的贴身投资助手</span>
+      <section class="ai-home-questions" aria-label="首页推荐问题">
+        <div class="ai-question-list" id="aiHomePresetList"></div>
       </section>
     </div>
 
     <!-- ── Panel 1: AI对话 ── -->
     <div class="ai-panel" id="panel-chat">
       <div class="chat-scroll">
+        <div class="scene-default-block scene-default-block-chat" id="chatSceneDefaultContent">
 
         <!-- ══ 事件卡片三级体系：左右滑动演示 ══ -->
         <!-- 轨道外层：显示滑动进度的容器 -->
@@ -2329,10 +2770,11 @@ body.chat-open{overflow:hidden}
           </div>
 
         </div>
+        </div>
 
         <!-- Chat messages injected here by JS -->
-
         <div class="chat-msgs" id="chatMessages"></div>
+        <div class="scene-default-inline-host" id="chatSceneInlineHost"></div>
       </div>
     </div>
 
@@ -2345,7 +2787,7 @@ body.chat-open{overflow:hidden}
           <div class="rsc-card">
             <!-- 顶部标题条 -->
             <div class="rsc-header-bar">
-              <span class="rsc-title">📋 自选股概要</span>
+              <span class="rsc-title">📋 盘前提醒</span>
               <span class="rsc-date">04月22日 08:30</span>
             </div>
             <!-- 正文区 -->
@@ -2554,7 +2996,21 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">北向资金节后首日恢复交易，早盘净买入超1.2亿，外资信心修复信号明确。固态电池概念持续发酵，今日是重要观察窗口。</div>
               <div class="pm-footer">
-                <span class="pm-time">04-23 10:15 · 资金动向</span>
+                <span class="pm-time">资金动向 · 04-23 10:15</span>
+                <span class="pm-expand">分析影响 ›</span>
+              </div>
+            </div>
+
+            <div class="pm-card urgent" onclick="openRemindDetail('pm1')">
+              <div class="pm-top">
+                <span class="pm-level urgent">紧急</span>
+                <span class="pm-stock">万华化学</span>
+                <span class="pm-code">600309.SH</span>
+                <span class="pm-tag neg">今日关注</span>
+              </div>
+              <div class="pm-desc">原油期货日内暴跌近15%，化工原料成本有望实质性下降，但股价已跌超2%反映悲观预期，需判断是否持有。</div>
+              <div class="pm-footer">
+                <span class="pm-time">行情异动 · 04-23 09:32</span>
                 <span class="pm-expand">分析影响 ›</span>
               </div>
             </div>
@@ -2569,21 +3025,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">美伊停火催化新能源替代逻辑，叠加沙特战略合作，今日机构席位净买入活跃，量能放大是关键验证指标。</div>
               <div class="pm-footer">
-                <span class="pm-time">04-23 09:35 · 逻辑强化</span>
-              </div>
-            </div>
-
-            <div class="pm-card urgent" onclick="openRemindDetail('pm1')">
-              <div class="pm-top">
-                <span class="pm-level urgent">紧急</span>
-                <span class="pm-stock">万华化学</span>
-                <span class="pm-code">600309.SH</span>
-                <span class="pm-tag neg">今日关注</span>
-              </div>
-              <div class="pm-desc">原油期货日内暴跌近15%，化工原料成本有望实质性下降，但股价已跌超2%反映悲观预期，需判断是否持有。</div>
-              <div class="pm-footer">
-                <span class="pm-time">04-23 09:32 · 行情异动</span>
-                <span class="pm-expand">分析影响 ›</span>
+                <span class="pm-time">逻辑强化 · 04-23 09:35</span>
               </div>
             </div>
 
@@ -2596,7 +3038,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">一季报预告：Q1净利润预计同比增长约28%-35%，固态电池2026年小批量量产预期被机构反复确认，基本面支撑强劲。</div>
               <div class="pm-footer">
-                <span class="pm-time">04-22 22:00 · 业绩预告</span>
+                <span class="pm-time">业绩预告 · 04-22 22:00</span>
               </div>
             </div>
 
@@ -2610,7 +3052,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">地缘风险缓和有利于外资流入银行板块，但降息预期压制息差弹性，短期盘面中性，无需操作。</div>
               <div class="pm-footer">
-                <span class="pm-time">04-22 16:20 · 宏观背景</span>
+                <span class="pm-time">宏观背景 · 04-22 16:20</span>
               </div>
             </div>
 
@@ -2623,7 +3065,7 @@ body.chat-open{overflow:hidden}
               </div>
               <div class="pm-desc">工信部发布《2026年半导体产业创新发展专项行动方案》，对化工上游特殊材料需求有潜在正向影响，中长期逻辑待跟踪。</div>
               <div class="pm-footer">
-                <span class="pm-time">04-22 14:35 · 政策背景</span>
+                <span class="pm-time">政策背景 · 04-22 14:35</span>
               </div>
             </div>
 
@@ -2633,15 +3075,14 @@ body.chat-open{overflow:hidden}
       </div><!-- /remind-wrap -->
     </div>
 
-        <!-- ── Panel 3: 热点预期 ── -->
+        <!-- ── Panel 3: 事件前瞻 ── -->
     <div class="ai-panel" id="panel-hotspot">
       <div class="htl-scroll">
         <div class="htl-list">
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-01</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot past"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-01</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：第十四届储能国际峰会暨展览会（ESIE2026）在北京进行。</div>
+              <div class="htl-event">第十四届储能国际峰会暨展览会（ESIE2026）在北京进行。</div>
               <div class="htl-expect">预期：若会议释放装机、海外订单或新型储能政策信号，储能方向关注度可能提升。</div>
               <div class="htl-tags"><span class="htl-tag">储能</span></div>
               <div class="htl-stock-groups">
@@ -2650,10 +3091,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-07</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot past"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-07</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：证监会《关于短线交易监管的若干规定》正式施行。</div>
+              <div class="htl-event">证监会《关于短线交易监管的若干规定》正式施行。</div>
               <div class="htl-expect">预期：监管规则进一步明确，市场交易制度预期改善，券商板块情绪可能受到带动。</div>
               <div class="htl-tags"><span class="htl-tag blue">证券</span></div>
               <div class="htl-stock-groups">
@@ -2662,10 +3102,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-09</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-09</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：第十九届中国零售商大会将在广州举办。</div>
+              <div class="htl-event">第十九届中国零售商大会将在广州举办。</div>
               <div class="htl-expect">预期：若会议聚焦消费复苏、渠道升级或即时零售，商业百货板块可能获得阶段性关注。</div>
               <div class="htl-tags"><span class="htl-tag green">商业百货</span></div>
               <div class="htl-stock-groups">
@@ -2674,10 +3113,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-11</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-11</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：首届脑机接口供应链论坛召开。</div>
+              <div class="htl-event">首届脑机接口供应链论坛召开。</div>
               <div class="htl-expect">预期：产业链协同与应用落地预期升温，脑机接口相关概念可能出现主题交易。</div>
               <div class="htl-tags"><span class="htl-tag purple">脑机接口</span></div>
               <div class="htl-stock-groups">
@@ -2686,10 +3124,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-12</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-12</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：2026中国环境技术大会将在上海启幕。</div>
+              <div class="htl-event">2026中国环境技术大会将在上海启幕。</div>
               <div class="htl-expect">预期：环保治理、绿电消纳和低碳技术议题升温，绿色电力方向可能获得关注。</div>
               <div class="htl-tags"><span class="htl-tag green">绿色电力</span></div>
               <div class="htl-stock-groups">
@@ -2698,10 +3135,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-13</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-13</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：2026年世界互联网大会亚太峰会将在香港召开。</div>
+              <div class="htl-event">2026年世界互联网大会亚太峰会将在香港召开。</div>
               <div class="htl-expect">预期：AI基础设施、数据中心与算力网络议题受关注，算力概念可能继续活跃。</div>
               <div class="htl-tags"><span class="htl-tag blue">算力概念</span></div>
               <div class="htl-stock-groups">
@@ -2710,10 +3146,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-14</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：2026全球采购与供应链交流大会将在海口召开。</div>
+              <div class="htl-event">2026全球采购与供应链交流大会将在海口召开。</div>
               <div class="htl-expect">预期：跨境供应链、仓储运输和平台物流议题升温，物流行业可能获得事件催化。</div>
               <div class="htl-tags"><span class="htl-tag amber">物流行业</span></div>
               <div class="htl-stock-groups">
@@ -2722,10 +3157,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-17</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-17</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：国家统计局将公布一季度GDP及3月工业增加值、固定资产投资等关键宏观数据。</div>
+              <div class="htl-event">国家统计局将公布一季度GDP及3月工业增加值、固定资产投资等关键宏观数据。</div>
               <div class="htl-expect">预期：若数据强于预期，市场风险偏好可能改善；若消费数据改善，消费方向关注度可能提升。</div>
               <div class="htl-tags"><span class="htl-tag gray">沪深300</span><span class="htl-tag green">食品饮料</span></div>
               <div class="htl-stock-groups">
@@ -2735,10 +3169,9 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
           <div class="htl-item">
-            <div class="htl-date-col"><div class="htl-date-main">04-20</div><div class="htl-date-y">2026</div></div>
-            <div class="htl-dot-col"><div class="htl-dot"></div></div>
+            <div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">04-20</div><div class="htl-date-y">2026</div></div></div>
             <div class="htl-body">
-              <div class="htl-event">事件：LPR利率月度报价将公布，市场关注是否下调。</div>
+              <div class="htl-event">LPR利率月度报价将公布，市场关注是否下调。</div>
               <div class="htl-expect">预期：若利率继续下调，稳增长与宽信用预期有望升温，银行和房地产板块可能分化加大。</div>
               <div class="htl-tags"><span class="htl-tag blue">银行</span><span class="htl-tag gray">房地产开发</span></div>
               <div class="htl-stock-groups">
@@ -2748,6 +3181,7 @@ body.chat-open{overflow:hidden}
             </div>
           </div>
         </div>
+        <div class="htl-card-foot"><button class="htl-nav-btn" id="hotspotPrev" onclick="hotspotMove(-1)" aria-label="上一条事件">‹</button><span class="htl-page" id="hotspotPage">1 / 9</span><span class="htl-hint">左右滑动查看不同时间事件</span><button class="htl-nav-btn" id="hotspotNext" onclick="hotspotMove(1)" aria-label="下一条事件">›</button></div>
       </div>
     </div>
 
@@ -2766,6 +3200,19 @@ body.chat-open{overflow:hidden}
     </div>
 
   </div><!-- /ai-panels -->
+
+  <div class="chat-bottom-dock" id="chatBottomDock">
+  <div class="chat-preset-section" id="chatPresetSection">
+    <div class="chat-preset-title">问题推荐</div>
+    <div class="chat-preset-list" id="chatPresetList"></div>
+  </div>
+
+  <div class="ai-tabs">
+    <button class="ai-tab" data-tab="remind" onclick="switchTab('remind',this)">自选消息</button>
+    <button class="ai-tab" data-tab="hotspot" onclick="switchTab('hotspot',this)">事件前瞻</button>
+    <button class="ai-tab" data-tab="chat" onclick="switchTab('chat',this)">AI对话</button>
+    <button class="ai-tab" data-tab="macro" onclick="switchTab('macro',this)">宏观要闻</button>
+  </div>
 
   <!-- Shared bottom input bar (visible across all panels) -->
   <div class="shared-input voice-mode" id="sharedInputBar">
@@ -2789,8 +3236,19 @@ body.chat-open{overflow:hidden}
     </button>
     <input type="file" id="imageUploadInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
   </div>
+  </div>
 
 </div><!-- /chat-page -->
+
+<div class="history-overlay" id="historyPanel" onclick="closeHistoryPanel(event)">
+  <div class="history-panel" onclick="event.stopPropagation()">
+    <div class="history-panel-head">
+      <div class="history-panel-title">对话历史</div>
+      <button class="history-close" type="button" onclick="closeHistoryPanel()">×</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
 
 
 <!-- ══════════ 事件详情页 ══════════ -->
@@ -3048,12 +3506,461 @@ body.chat-open{overflow:hidden}
 
 <script>
 // ── AI avatar image (base64 embedded) ──
-const AI_IMG = '<img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">';
-const AI_AV_STYLE = 'background:none;padding:0;overflow:hidden;';
+const AI_IMG = '<img src="ai.png" alt="AI" style="width:100%;height:100%;object-fit:contain;display:block;">';
+const AI_AV_STYLE = 'background:none;padding:0;overflow:hidden;border-radius:8px;';
 
 // ── State ──
 let mode='demo', apiKey='', modelId='claude-sonnet-4-6', sysPrompt='', responding=false;
 let stockIdx=0;
+let conversationId='';
+let currentScene='home';
+let sourceScene='';
+let latestScene='';
+let messages=[];
+let sceneAskedState=createSceneStateMap(false);
+let sceneExpandedState=createSceneStateMap(false);
+let sceneVisitOrder=[];
+let historyList=buildSeedHistory();
+
+const SCENE_ORDER=['remind','hotspot','chat','macro'];
+const SCENE_CONFIG={
+  home:{sceneName:'首页入口',collapsedEntryText:'',inputPlaceholder:'发送问题',defaultContentType:'entry',contextPolicy:'home'},
+  remind:{sceneName:'自选消息',collapsedEntryText:'查看今日自选消息',inputPlaceholder:'追问自选消息',defaultContentType:'list',contextPolicy:'watchlist'},
+  hotspot:{sceneName:'事件前瞻',collapsedEntryText:'查看事件前瞻',inputPlaceholder:'追问事件前瞻',defaultContentType:'cards',contextPolicy:'event'},
+  chat:{sceneName:'AI对话',collapsedEntryText:'查看AI对话引导',inputPlaceholder:'输入你想深度分析的问题',defaultContentType:'questions',contextPolicy:'chat'},
+  macro:{sceneName:'宏观要闻',collapsedEntryText:'查看宏观要闻',inputPlaceholder:'追问宏观要闻',defaultContentType:'feed',contextPolicy:'macro'}
+};
+const PRESET_QUESTION_SETS={
+  home:[
+    '宁德时代最近的资金变化，对我的自选股有什么影响？',
+    '万华化学受原油波动影响，现在需要重点看哪些信号？',
+    '我最近关注的新能源方向，短期还有哪些风险点？',
+    '现在市场最关注的主线板块有哪些？',
+    '股民最近讨论最多的股票，背后逻辑是什么？'
+  ],
+  remind:[
+    '今天我的自选股里，哪一只最值得优先复盘？',
+    '宁德时代这条消息更偏短期催化还是中期趋势？',
+    '万华化学现在需要重点盯价格、库存还是资金面？',
+    '如果只看自选股，今天更该防风险还是找机会？',
+    '招商银行这类稳健品种，当前更适合持有还是等回调？'
+  ],
+  hotspot:[
+    '这个事件最先影响哪些板块和个股？',
+    '这条催化更适合短线交易还是中线跟踪？',
+    '如果事件预期落空，哪些方向会先承压？',
+    '这次事件和上一次类似催化相比，强度差别在哪？',
+    '围绕这条事件线，今天更应该看龙头还是低位补涨？'
+  ],
+  chat:[
+    '如果我只想看一个方向，今天最值得跟的是哪条主线？',
+    '现在适合买新能源吗？',
+    '最近哪个板块资金流入最猛？',
+    '新手怎么把问题问得更聚焦一些？',
+    '如果只给我一个风险提示，今天最该防什么？'
+  ],
+  macro:[
+    '这条宏观信息会先影响指数、行业还是风格？',
+    'PMI、利率和汇率里，今天市场更在意哪个变量？',
+    '这类宏观信号对银行和高股息有什么影响？',
+    '如果宏观预期继续变化，哪些成长板块弹性更大？',
+    '这条宏观消息对我自选股里谁影响最明显？'
+  ]
+};
+const TOPIC_QUESTION_SETS={
+  oil:[
+    '如果油价继续波动，最先要看哪些A股板块的联动？',
+    '万华化学这条线里，成本改善和需求承压哪个更关键？',
+    '油价回落后，化工链里谁更容易先修复？',
+    '这次能源扰动对新能源和传统能源的影响有什么区别？',
+    '如果我只跟一条主线，现在该看资源、防御还是制造修复？'
+  ],
+  watchlist:[
+    '如果只从我现在的持仓里选一只，今天最该盯哪只？',
+    '我这组自选里，谁更像短线机会，谁更像中线跟踪？',
+    '今天我的自选股应该先防风险还是先找加仓点？',
+    '这几只票里，资金、消息和走势谁最一致？',
+    '如果只做一次复盘，我应该先从哪只股票开始？'
+  ],
+  macro:[
+    '这条宏观信息最先影响指数、风格还是具体行业？',
+    'PMI、利率和汇率里，今天市场更在意哪个变量？',
+    '如果宏观预期继续变化，银行和高股息会怎么走？',
+    '这条宏观消息对成长板块的弹性是利多还是利空？',
+    '我自选股里谁对这条宏观信号最敏感？'
+  ],
+  ai:[
+    '如果只跟一个方向，今天最值得继续看哪条主线？',
+    '现在这个阶段，更适合看龙头、补涨还是防守板块？',
+    '今天最需要防的风险点是什么？',
+    '如果继续追问，下一步最该问资金、逻辑还是节奏？',
+    '这条思路更适合短线执行还是中线跟踪？'
+  ],
+  event:[
+    '这个事件最先影响哪些板块和个股？',
+    '这条催化更适合短线交易还是中线跟踪？',
+    '如果事件预期落空，哪些方向会先承压？',
+    '这次事件和上一次类似催化相比，强度差别在哪？',
+    '围绕这条事件线，今天更应该看龙头还是低位补涨？'
+  ]
+};
+
+function createSceneStateMap(value){
+  return {remind:value,hotspot:value,chat:value,macro:value};
+}
+
+function cloneSceneStateMap(source){
+  return {
+    remind:!!source.remind,
+    hotspot:!!source.hotspot,
+    chat:!!source.chat,
+    macro:!!source.macro
+  };
+}
+
+function cloneSceneVisitOrder(list){
+  return Array.isArray(list) ? list.slice() : [];
+}
+
+function getAskedScenes(){
+  return SCENE_ORDER.filter(function(sceneId){ return !!sceneAskedState[sceneId]; });
+}
+
+function hasSceneVisitMessage(sceneId){
+  return messages.some(function(item){
+    return item.role==='scene_visit' && item.sceneId===sceneId;
+  });
+}
+
+function hasSceneEntryMessage(sceneId){
+  return messages.some(function(item){ return item.role==='scene_entry' && item.sceneId===sceneId; });
+}
+
+function findSceneEntryIndex(sceneId){
+  return messages.findIndex(function(item){
+    return item.role==='scene_entry' && item.sceneId===sceneId;
+  });
+}
+
+function findSceneViewIndex(sceneId){
+  return messages.findIndex(function(item){
+    return item.role==='scene_view' && item.sceneId===sceneId;
+  });
+}
+
+function insertSceneEntryBeforeFirstQuestion(sceneId){
+  if(!sceneId || sceneId==='home' || hasSceneEntryMessage(sceneId)) return;
+  const firstQuestionIndex=messages.findIndex(function(item){
+    return item.role==='user' && item.sceneId===sceneId;
+  });
+  const entry={role:'scene_entry',sceneId:sceneId,text:SCENE_CONFIG[sceneId].collapsedEntryText};
+  if(firstQuestionIndex===-1){
+    messages.push(entry);
+    return;
+  }
+  messages.splice(firstQuestionIndex,0,entry);
+}
+
+function shouldShowConversationFlow(){
+  return currentScene!=='home';
+}
+
+function markSceneVisited(sceneId){
+  if(!sceneId || sceneId==='home') return;
+  if(sceneVisitOrder.indexOf(sceneId)===-1){
+    sceneVisitOrder.push(sceneId);
+  }
+  if(!hasSceneVisitMessage(sceneId)){
+    messages.push({role:'scene_visit',sceneId:sceneId});
+  }
+}
+
+function hasConversationMessages(){
+  return messages.some(function(item){
+    return item.role==='user' || item.role==='assistant';
+  });
+}
+
+function collapseAllSceneBlocks(){
+  Object.keys(sceneExpandedState).forEach(function(key){
+    sceneExpandedState[key]=false;
+  });
+}
+
+function renderSceneVisitItem(sceneId, hasConversation){
+  if(!hasConversation){
+    return '<div class="scene-visit-block" id="sceneTrail-' + sceneId + '">'
+      + renderScenePreviewPanel(sceneId)
+      + '</div>';
+  }
+  const expanded=!!sceneExpandedState[sceneId];
+  return '<div class="msg-row scene-entry" id="sceneTrail-' + sceneId + '">'
+    + '<div class="scene-entry-wrap">'
+    + '<button class="scene-entry' + (expanded ? ' expanded' : '') + '" type="button" onclick="focusSceneEntry(\'' + sceneId + '\')">'
+    + '<div class="scene-entry-top">'
+    + '<span class="scene-entry-label">' + SCENE_CONFIG[sceneId].collapsedEntryText + '</span>'
+    + '<span class="scene-entry-arrow">›</span>'
+    + '</div>'
+    + '</button>'
+    + (expanded ? renderScenePreviewPanel(sceneId) : '')
+    + '</div>'
+    + '</div>';
+}
+
+function renderSceneVisitTrail(){
+  if(!sceneVisitOrder.length) return '';
+  const hasConversation=hasConversationMessages();
+  return sceneVisitOrder.map(function(sceneId){
+    return renderSceneVisitItem(sceneId, hasConversation);
+  }).join('');
+}
+
+function getPresetQuestionKey(){
+  if(currentScene && currentScene!=='home') return currentScene;
+  if(latestScene) return latestScene;
+  if(sourceScene) return sourceScene;
+  return 'home';
+}
+
+function getLastUserQuestion(){
+  for(let i=messages.length-1;i>=0;i--){
+    if(messages[i].role==='user') return messages[i].text || '';
+  }
+  return '';
+}
+
+function detectQuestionTopic(text, sceneKey){
+  const source=(text || '').toLowerCase();
+  if(/原油|油价|能源|中东|化工|万华化学/.test(source)) return 'oil';
+  if(/宏观|利率|汇率|pmi|mlf|降息|银行|高股息/.test(source)) return 'macro';
+  if(/自选|持仓|宁德时代|比亚迪|招商银行/.test(source)) return 'watchlist';
+  if(/事件|催化|前瞻|板块|龙头/.test(source)) return 'event';
+  if(sceneKey==='macro') return 'macro';
+  if(sceneKey==='remind') return 'watchlist';
+  if(sceneKey==='hotspot') return 'event';
+  return 'ai';
+}
+
+function getAdaptiveQuestions(sceneKey){
+  const lastQuestion=getLastUserQuestion();
+  const topicKey=detectQuestionTopic(lastQuestion, sceneKey);
+  const topicQuestions=TOPIC_QUESTION_SETS[topicKey] || [];
+  const sceneQuestions=PRESET_QUESTION_SETS[sceneKey] || PRESET_QUESTION_SETS.home || [];
+  const merged=topicQuestions.concat(sceneQuestions).filter(function(text, idx, list){
+    return text && list.indexOf(text)===idx;
+  });
+  return merged.slice(0,5);
+}
+
+function renderChatPresetQuestions(){
+  const list=document.getElementById('chatPresetList');
+  const title=document.querySelector('#chatPresetSection .chat-preset-title');
+  if(!list) return;
+  const key=getPresetQuestionKey();
+  const questions=getAdaptiveQuestions(key);
+  if(title){
+    title.textContent='问题推荐';
+  }
+  list.innerHTML=questions.map(function(text){
+    return '<button class="chat-preset-card" type="button" onclick="askQ(this)">' + esc(text) + '</button>';
+  }).join('');
+}
+
+function renderHomePresetQuestions(){
+  const list=document.getElementById('aiHomePresetList');
+  if(!list) return;
+  const questions=(PRESET_QUESTION_SETS.home || []).slice(0,5);
+  list.innerHTML=questions.map(function(text){
+    return '<button class="ai-question-btn" type="button" onclick="askQ(this)">' + esc(text) + '</button>';
+  }).join('');
+}
+
+function buildSeedHistory(){
+  const now=Date.now();
+  return [
+    {
+      id:'seed-hotspot',
+      title:'事件前瞻 · LPR下调会影响哪些板块？',
+      sourceScene:'hotspot',
+      latestScene:'hotspot',
+      createdAt:now-1000*60*185,
+      updatedAt:now-1000*60*168,
+      messages:[
+        {role:'user',text:'LPR下调会影响哪些板块？',sceneId:'hotspot'},
+        {role:'assistant',text:'**影响更直接的方向**\n\n* 银行与地产链会先交易利率预期变化。\n* 高股息和红利资产通常更看重息差与估值切换。\n* 消费与家电会受益于贷款成本下降带来的需求修复。\n\n以上仅供参考，不构成投资建议。',sceneId:'hotspot'}
+      ],
+      sceneAskedState:{remind:false,hotspot:true,chat:false,macro:false},
+      sceneExpandedState:createSceneStateMap(false)
+    },
+    {
+      id:'seed-remind',
+      title:'自选消息 · 宁德时代今天为什么异动？',
+      sourceScene:'remind',
+      latestScene:'remind',
+      createdAt:now-1000*60*410,
+      updatedAt:now-1000*60*395,
+      messages:[
+        {role:'user',text:'宁德时代今天为什么异动？',sceneId:'remind'},
+        {role:'assistant',text:'**核心原因**\n\n今天的异动主要来自外资增持预期、板块情绪回暖以及龙头估值修复三条线共振。短线更需要看成交量能否持续放大。\n\n以上仅供参考，不构成投资建议。',sceneId:'remind'}
+      ],
+      sceneAskedState:{remind:true,hotspot:false,chat:false,macro:false},
+      sceneExpandedState:createSceneStateMap(false)
+    },
+    {
+      id:'seed-macro',
+      title:'宏观要闻 · PMI数据对市场有什么影响？',
+      sourceScene:'macro',
+      latestScene:'macro',
+      createdAt:now-1000*60*720,
+      updatedAt:now-1000*60*700,
+      messages:[
+        {role:'user',text:'PMI数据对市场有什么影响？',sceneId:'macro'},
+        {role:'assistant',text:'**看法概括**\n\nPMI回升说明制造业景气边际修复，顺周期、设备更新和核心制造更容易得到资金关注；如果价格分项偏弱，市场又会担心复苏力度不够。\n\n以上仅供参考，不构成投资建议。',sceneId:'macro'}
+      ],
+      sceneAskedState:{remind:false,hotspot:false,chat:false,macro:true},
+      sceneExpandedState:createSceneStateMap(false)
+    }
+  ];
+}
+
+function generateConversationId(){
+  return 'conv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,6);
+}
+
+function formatTime(ts){
+  const date=new Date(ts);
+  const month=String(date.getMonth()+1).padStart(2,'0');
+  const day=String(date.getDate()).padStart(2,'0');
+  const hour=String(date.getHours()).padStart(2,'0');
+  const minute=String(date.getMinutes()).padStart(2,'0');
+  return month + '-' + day + ' ' + hour + ':' + minute;
+}
+
+function escapeAttr(text){
+  return String(text || '').replace(/"/g,'&quot;');
+}
+
+function getSceneName(sceneId){
+  return SCENE_CONFIG[sceneId] ? SCENE_CONFIG[sceneId].sceneName : 'AI对话';
+}
+
+function buildConversationTitle(){
+  const firstUser=messages.find(function(item){ return item.role==='user'; });
+  if(!firstUser) return '新对话';
+  const sceneLabel=sourceScene ? getSceneName(sourceScene) : 'AI对话';
+  return sceneLabel + ' · ' + firstUser.text;
+}
+
+function getConversationSummary(list){
+  const lastAssistant=list.slice().reverse().find(function(item){ return item.role==='assistant'; });
+  const lastUser=list.slice().reverse().find(function(item){ return item.role==='user'; });
+  const source=(lastAssistant && lastAssistant.text) || (lastUser && lastUser.text) || '还没有对话内容';
+  return source.replace(/\*\*/g,'').replace(/\n+/g,' ').trim();
+}
+
+function getSceneSourceElement(sceneId){
+  if(sceneId==='chat') return document.getElementById('chatSceneDefaultContent');
+  if(sceneId==='remind') return document.querySelector('#panel-remind .remind-wrap');
+  if(sceneId==='hotspot') return document.querySelector('#panel-hotspot .htl-scroll');
+  if(sceneId==='macro') return document.querySelector('#panel-macro .macro-scroll');
+  return null;
+}
+
+function getScenePreviewHtml(sceneId){
+  const source=getSceneSourceElement(sceneId);
+  if(!source) return '<div class="history-empty">今日暂无内容，可以继续围绕当前场景提问。</div>';
+  const clone=source.cloneNode(true);
+  clone.classList.add('scene-preview-source', 'scene-preview-source-' + sceneId);
+  clone.setAttribute('data-preview-scene', sceneId);
+  clone.querySelectorAll('[onclick]').forEach(function(node){
+    node.setAttribute('data-preview-onclick', node.getAttribute('onclick'));
+  });
+  if(sceneId==='chat'){
+    clone.querySelectorAll('[id]').forEach(function(node){
+      node.setAttribute('data-preview-id', node.id);
+    });
+    clone.querySelectorAll('.carousel-dots .cdot').forEach(function(dot, idx){
+      dot.setAttribute('data-slide-index', String(idx));
+    });
+  }
+  clone.querySelectorAll('[id]').forEach(function(node){ node.removeAttribute('id'); });
+  clone.querySelectorAll('[onclick]').forEach(function(node){ node.removeAttribute('onclick'); });
+  clone.querySelectorAll('.scene-collapsed-host,.chat-msgs').forEach(function(node){ node.remove(); });
+  if(sceneId==='remind'){
+    clone.querySelectorAll('.sc-hint').forEach(function(node){ node.remove(); });
+  }
+  if(sceneId==='hotspot'){
+    clone.querySelectorAll('.htl-hint').forEach(function(node){ node.remove(); });
+  }
+  if(sceneId==='macro'){
+    clone.querySelectorAll('.mi-av').forEach(function(node){ node.remove(); });
+    clone.querySelectorAll('.mi-author').forEach(function(node){ node.remove(); });
+    clone.querySelectorAll('div').forEach(function(node){
+      if((node.textContent || '').trim()==='以上为历史消息') node.remove();
+    });
+  }
+  return clone.outerHTML;
+}
+
+function renderScenePreviewPanel(sceneId){
+  return '<section class="scene-preview-panel" data-scene="' + sceneId + '">'
+    + '<div class="scene-preview-bar">'
+    + '<div class="scene-preview-bar-main">'
+    + '<span class="scene-preview-name">' + getSceneName(sceneId) + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div class="scene-preview-body">'
+    + '<div class="scene-preview-shell">' + getScenePreviewHtml(sceneId) + '</div>'
+    + '</div>'
+    + '</section>';
+}
+
+function flashSceneTrail(sceneId){
+  const target=document.getElementById('sceneTrail-' + sceneId);
+  if(!target) return;
+  target.classList.remove('scene-jump-focus');
+  void target.offsetWidth;
+  target.classList.add('scene-jump-focus');
+  setTimeout(function(){
+    target.classList.remove('scene-jump-focus');
+  }, 1200);
+}
+
+function scrollToSceneTrail(sceneId, behavior){
+  const target=document.getElementById('sceneTrail-' + sceneId);
+  if(!target) return false;
+  target.scrollIntoView({block:'start',behavior:behavior || 'smooth'});
+  flashSceneTrail(sceneId);
+  return true;
+}
+
+function upsertActiveConversation(){
+  if(!conversationId) return;
+  const now=Date.now();
+  const snapshot={
+    id:conversationId,
+    title:buildConversationTitle(),
+    sourceScene:sourceScene,
+    latestScene:latestScene,
+    createdAt:now,
+    updatedAt:now,
+    messages:messages.map(function(item){ return Object.assign({}, item); }),
+    sceneAskedState:cloneSceneStateMap(sceneAskedState),
+    sceneExpandedState:cloneSceneStateMap(sceneExpandedState),
+    sceneVisitOrder:cloneSceneVisitOrder(sceneVisitOrder)
+  };
+  const index=historyList.findIndex(function(item){ return item.id===conversationId; });
+  if(index>=0){
+    snapshot.createdAt=historyList[index].createdAt;
+    historyList[index]=snapshot;
+  }else if(snapshot.messages.length){
+    historyList.unshift(snapshot);
+  }
+}
+
+function ensureConversationVisible(){
+  historyList.sort(function(a,b){ return b.updatedAt-a.updatedAt; });
+}
 
 // ── Clock ──
 (function tick(){
@@ -3066,6 +3973,9 @@ let stockIdx=0;
 
 // ── Navigation ──
 function openChat(tab){
+  if(!document.getElementById('chatPage').classList.contains('open')){
+    startNewConversation(true);
+  }
   document.body.classList.add('chat-open');
   document.getElementById('chatPage').classList.add('open');
   document.querySelector('.ai-fab').style.display='none';
@@ -3078,6 +3988,7 @@ function openChat(tab){
   }
 }
 function closeChat(){
+  closeHistoryPanel();
   document.body.classList.remove('chat-open');
   document.getElementById('chatPage').classList.remove('open');
   document.querySelector('.ai-fab').style.display='flex';
@@ -3085,40 +3996,586 @@ function closeChat(){
   document.querySelectorAll('.tab-item,.nav-item').forEach((t,i)=>t.classList.toggle('active',i===0));
 }
 function showAiHome(){
+  currentScene='home';
   const home=document.getElementById('aiHome');
   if(home)home.classList.add('active');
   document.querySelectorAll('.ai-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.ai-panel').forEach(p=>p.classList.remove('active'));
   const input=document.getElementById('chatInput');
-  if(input)input.placeholder='发送问题';
+  if(input)input.placeholder=SCENE_CONFIG.home.inputPlaceholder;
+  renderHomePresetQuestions();
+  renderScenePresentation();
+  renderChatMessages();
 }
-function switchTab(tab,el){
+function switchTab(tab,el,mode){
+  currentScene=tab;
+  const isRestoreMode=mode==='restore';
+  const alreadyVisited=sceneVisitOrder.indexOf(tab)!==-1;
+  if(!isRestoreMode){
+    markSceneVisited(tab);
+    if(tab!=='home'){
+      if(hasConversationMessages()){
+        collapseAllSceneBlocks();
+        sceneExpandedState[tab]=true;
+      }else{
+        sceneExpandedState[tab]=true;
+      }
+    }
+  }
   const home=document.getElementById('aiHome');
-  if(home)home.classList.remove('active');
   document.querySelectorAll('.ai-tab').forEach(t=>t.classList.remove('active'));
   if(el)el.classList.add('active');
   document.querySelectorAll('.ai-panel').forEach(p=>p.classList.remove('active'));
-  const panel=document.getElementById('panel-'+tab);
-  if(panel)panel.classList.add('active');
   const input=document.getElementById('chatInput');
   if(input){
-    input.placeholder=tab==='remind'?'追问自选消息':tab==='hotspot'?'追问热点预期':tab==='macro'?'追问宏观要闻':'输入你想深度分析的问题';
+    input.placeholder=SCENE_CONFIG[tab].inputPlaceholder;
   }
-  if(tab==='chat'){
+  if(home)home.classList.remove('active');
+  const shouldUseChatPanel=true;
+  const panel=document.getElementById('panel-chat');
+  if(panel)panel.classList.add('active');
+  renderScenePresentation();
+  renderChatMessages();
+  if(shouldUseChatPanel){
     requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        const scroller=document.querySelector('#panel-chat .chat-scroll');
-        if(scroller)scroller.scrollTop=0;
+      const scroller=document.querySelector('#panel-chat .chat-scroll');
+      if(scroller){
+        if(!isRestoreMode && tab!=='home'){
+          if(alreadyVisited && scrollToSceneTrail(tab,'smooth')){
+            return;
+          }
+          if(sceneVisitOrder.indexOf(tab)!==-1 && scrollToSceneTrail(tab,'smooth')){
+            return;
+          }
+          scroller.scrollTop=scroller.scrollHeight;
+        }else{
+          scroller.scrollTop=scroller.scrollHeight;
+        }
+      }
+      if(tab==='chat' && !sceneAskedState.chat){
         if(typeof currentSlide!=='undefined')currentSlide=0;
         if(typeof updateCarouselDots==='function')updateCarouselDots(0);
         if(typeof updateQuickSection==='function')updateQuickSection(0);
         if(typeof resizeCarousel==='function')resizeCarousel(0);
-      });
+      }
+    });
+  }else if(tab==='remind'){
+    requestAnimationFrame(function(){requestAnimationFrame(function(){mcInit();});});
+  }else if(tab==='hotspot'){
+    requestAnimationFrame(function(){requestAnimationFrame(function(){initHotspotCards();});});
+  }
+}
+
+function openHomeConversationPanel(){
+  currentScene='home';
+  const home=document.getElementById('aiHome');
+  if(home)home.classList.remove('active');
+  document.querySelectorAll('.ai-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.ai-panel').forEach(function(p){ p.classList.remove('active'); });
+  const panel=document.getElementById('panel-chat');
+  if(panel)panel.classList.add('active');
+  const input=document.getElementById('chatInput');
+  if(input)input.placeholder=SCENE_CONFIG.home.inputPlaceholder;
+  renderScenePresentation();
+  renderChatMessages();
+  requestAnimationFrame(function(){
+    const scroller=document.querySelector('#panel-chat .chat-scroll');
+    if(scroller) scroller.scrollTop=scroller.scrollHeight;
+  });
+}
+
+function renderScenePresentation(){
+  const chatDefault=document.getElementById('chatSceneDefaultContent');
+  const chatInlineHost=document.getElementById('chatSceneInlineHost');
+  const chatMessages=document.getElementById('chatMessages');
+  const presetSection=document.getElementById('chatPresetSection');
+  const bottomDock=document.getElementById('chatBottomDock');
+  const title=document.querySelector('.chat-hdr-title');
+  if(title) title.textContent='新对话';
+  const showConversationFlow=shouldShowConversationFlow();
+  const shouldShowScenePreset=hasConversationMessages();
+  if(chatDefault){
+    chatDefault.classList.add('hidden');
+    if(chatInlineHost){
+      chatInlineHost.classList.remove('show');
+      chatInlineHost.innerHTML='';
+    }
+  }else if(chatInlineHost){
+    chatInlineHost.classList.remove('show');
+    chatInlineHost.innerHTML='';
+  }
+  if(chatMessages){
+    chatMessages.classList.toggle('hidden', !showConversationFlow);
+  }
+  if(presetSection){
+    presetSection.classList.toggle('show', shouldShowScenePreset);
+  }
+  if(bottomDock){
+    bottomDock.classList.toggle('with-preset', shouldShowScenePreset);
+  }
+  renderChatPresetQuestions();
+}
+
+function renderChatMessages(){
+  const container=document.getElementById('chatMessages');
+  if(!container) return;
+  const hasConversation=hasConversationMessages();
+  const messageHtml=messages.filter(function(item){
+    return item.role!=='scene_entry' && item.role!=='scene_view';
+  }).map(function(item){
+    if(item.role==='scene_visit'){
+      return renderSceneVisitItem(item.sceneId, hasConversation);
+    }
+    const avatar=item.role==='assistant' ? AI_IMG : '👤';
+    const avatarStyle=item.role==='assistant' ? AI_AV_STYLE : '';
+    const content=item.role==='assistant' ? fmt(item.text) : esc(item.text);
+    return '<div class="msg-row ' + item.role + '" style="margin-bottom:14px">'
+      + '<div class="msg-av" style="' + avatarStyle + '">' + avatar + '</div>'
+      + '<div class="msg-bub">' + content + '</div>'
+      + '</div>';
+  }).join('');
+  container.innerHTML=messageHtml;
+  if(responding){
+    container.innerHTML += '<div class="msg-row ai" id="tyRow" style="margin-bottom:14px"><div class="msg-av" style="' + AI_AV_STYLE + '">' + AI_IMG + '</div><div class="msg-bub"><div class="typing-ind"><span></span><span></span><span></span></div></div></div>';
+  }
+  requestAnimationFrame(function(){
+    enhanceScenePreviewShells();
+    const scroller=document.querySelector('#panel-chat .chat-scroll');
+    if(scroller && shouldShowConversationFlow()) scroller.scrollTop=scroller.scrollHeight;
+  });
+}
+
+function enhanceScenePreviewShells(){
+  document.querySelectorAll('.scene-preview-shell').forEach(function(shell){
+    if(shell.dataset.enhanced==='1') return;
+    shell.dataset.enhanced='1';
+    normalizePreviewScene(shell);
+    bindPreviewActions(shell);
+    initPreviewCarousel(shell);
+    initPreviewMorningCarousel(shell);
+    initPreviewHotspot(shell);
+    fixPreviewLayout(shell);
+  });
+}
+
+function normalizePreviewScene(shell){
+  const sceneId=shell.getAttribute('data-preview-scene') || (shell.firstElementChild && shell.firstElementChild.getAttribute('data-preview-scene')) || '';
+  if(sceneId==='chat'){
+    const blocks=shell.querySelectorAll('.quick-section .quick-block');
+    if(blocks[1]) blocks[1].remove();
+    const divider=shell.querySelector('#quickDivider, [data-preview-id="quickDivider"]');
+    if(divider) divider.remove();
+    shell.querySelectorAll('.quick-section .qb-avatar').forEach(function(node){ node.remove(); });
+    const label=shell.querySelector('#quickEventBlock .qb-label, [data-preview-id="quickEventBlock"] .qb-label');
+    if(label) label.textContent='继续了解';
+  }
+  if(sceneId==='remind'){
+    shell.querySelectorAll('.hh-section-title').forEach(function(node){
+      node.textContent='重要提醒';
     });
   }
-  if(tab==='remind'){
-    requestAnimationFrame(function(){requestAnimationFrame(function(){mcInit();});});
+}
+
+function bindPreviewActions(shell){
+  shell.querySelectorAll('[data-preview-onclick]').forEach(function(node){
+    if(node.dataset.previewBound==='1') return;
+    const action=(node.getAttribute('data-preview-onclick') || '').trim();
+    if(!action) return;
+    if(/^expandEventInfo\(/.test(action) || /^scrollToSlide\(/.test(action) || action==='mcPrev()' || action==='mcNext()' || /^hotspotMove\(/.test(action)){
+      return;
+    }
+    node.dataset.previewBound='1';
+    node.addEventListener('click', function(event){
+      runPreviewAction(node, action, event);
+    });
+  });
+}
+
+function runPreviewAction(node, action, event){
+  if(action==='askQ(this)'){
+    if(node.classList && node.classList.contains('fi-stock-link')) return;
+    askQ(node);
+    return;
   }
+  let match=action.match(/^openDetail\('([^']+)'\)$/);
+  if(match){
+    openDetail(match[1]);
+    return;
+  }
+  match=action.match(/^openDetail2\('([^']+)'\)$/);
+  if(match){
+    openDetail2(match[1]);
+    return;
+  }
+  match=action.match(/^openRemindDetail\('([^']+)'\)$/);
+  if(match && typeof openRemindDetail==='function'){
+    openRemindDetail(match[1]);
+    return;
+  }
+  match=action.match(/^openSectorDetailByName\('([^']+)'\s*,\s*'([^']+)'\)$/);
+  if(match){
+    openSectorDetailByName(match[1], match[2]);
+    return;
+  }
+  try{
+    const fn=new Function('node','event','window', 'with(window){' + action.replace(/\bthis\b/g,'node') + ';}');
+    fn.call(node, node, event, window);
+  }catch(err){
+    console.warn('preview action failed:', action, err);
+  }
+}
+
+function fixPreviewLayout(shell){
+  shell.querySelectorAll('.feat-topline, .fi-row, .feat-sm-row, .feat-extra-head').forEach(function(node){
+    node.style.minWidth='0';
+  });
+  shell.querySelectorAll('.feat-title, .feat-sub, .feat-extra-title, .feat-extra-desc, .feat-sm-title, .feat-sm-desc, .fi-row > div, .feat-sm-row > div').forEach(function(node){
+    node.style.minWidth='0';
+    node.style.overflowWrap='anywhere';
+  });
+}
+
+function initPreviewCarousel(shell){
+  const carousel=shell.querySelector('.event-carousel-wrap');
+  if(!carousel) return;
+  const dots=shell.querySelectorAll('.carousel-dots .cdot');
+  const quickEventBlock=shell.querySelector('[data-preview-id="quickEventBlock"]');
+  const quickEventLabel=shell.querySelector('[data-preview-id="quickEventLabel"]');
+  const quickEventBtns=shell.querySelector('[data-preview-id="quickEventBtns"]');
+  const quickDivider=shell.querySelector('[data-preview-id="quickDivider"]');
+  const majorCard=shell.querySelector('[data-preview-id="majorEventCard"]');
+  const dailyCard=shell.querySelector('[data-preview-id="dailyEventCard"]');
+  const majorMoreBtn=shell.querySelector('[data-preview-id="majorMoreBtn"]');
+  const dailyMoreBtn=shell.querySelector('[data-preview-id="dailyMoreBtn"]');
+  let previewSlide=0;
+  let previewTimer=null;
+
+  function resizePreview(idx){
+    const slides=carousel.querySelectorAll('.event-slide');
+    if(!slides[idx]) return;
+    const card=slides[idx].firstElementChild;
+    if(!card) return;
+    carousel.style.height=(card.offsetHeight + 20) + 'px';
+  }
+
+  function updatePreviewDots(idx){
+    dots.forEach(function(dot, dotIdx){
+      dot.classList.toggle('active', dotIdx===idx);
+    });
+  }
+
+  function updatePreviewQuick(idx){
+    if(!quickEventBlock || !quickEventLabel || !quickEventBtns) return;
+    if((shell.getAttribute('data-preview-scene') || (shell.firstElementChild && shell.firstElementChild.getAttribute('data-preview-scene')) || '')==='chat'){
+      quickEventBlock.classList.remove('hidden');
+      if(quickDivider) quickDivider.style.display='none';
+      quickEventLabel.textContent='继续了解';
+      quickEventBtns.innerHTML=getAdaptiveQuestions('chat').map(function(text){
+        return '<button class="quick-btn event-linked" onclick="askQ(this)">' + esc(text) + '</button>';
+      }).join('');
+      return;
+    }
+    const cfg=SLIDE_QUICK[idx];
+    if(!cfg){
+      quickEventBlock.classList.add('hidden');
+      if(quickDivider) quickDivider.style.display='none';
+      return;
+    }
+    quickEventBlock.classList.remove('hidden');
+    if(quickDivider) quickDivider.style.display='';
+    quickEventLabel.textContent=cfg.label;
+    quickEventBtns.innerHTML=cfg.btns.map(function(btn){
+      return '<button class="quick-btn ' + btn.cls + '" onclick="askQ(this)">' + btn.text + '</button>';
+    }).join('');
+  }
+
+  function togglePreviewExpand(card, btn){
+    if(!card || !btn) return;
+    const expanded=card.classList.toggle('event-expanded');
+    btn.textContent=expanded ? '收起' : '查看更多';
+    btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    setTimeout(function(){ resizePreview(previewSlide); }, 40);
+  }
+
+  dots.forEach(function(dot){
+    dot.addEventListener('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      const idx=Number(dot.getAttribute('data-slide-index') || 0);
+      const slideWidth=carousel.offsetWidth;
+      carousel.scrollTo({left:slideWidth * idx, behavior:'smooth'});
+      previewSlide=idx;
+      updatePreviewDots(idx);
+      updatePreviewQuick(idx);
+      setTimeout(function(){ resizePreview(idx); }, 360);
+    });
+  });
+
+  if(majorMoreBtn){
+    majorMoreBtn.addEventListener('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      togglePreviewExpand(majorCard, majorMoreBtn);
+    });
+  }
+  if(dailyMoreBtn){
+    dailyMoreBtn.addEventListener('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      togglePreviewExpand(dailyCard, dailyMoreBtn);
+    });
+  }
+
+  carousel.addEventListener('scroll', function(){
+    clearTimeout(previewTimer);
+    previewTimer=setTimeout(function(){
+      const idx=Math.round(carousel.scrollLeft / Math.max(carousel.offsetWidth,1));
+      if(idx!==previewSlide){
+        previewSlide=idx;
+        updatePreviewDots(idx);
+        updatePreviewQuick(idx);
+      }
+      resizePreview(idx);
+    }, 80);
+  }, {passive:true});
+
+  updatePreviewDots(0);
+  updatePreviewQuick(0);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      resizePreview(0);
+    });
+  });
+}
+
+function initPreviewMorningCarousel(shell){
+  const wrap=shell.querySelector('.mc-wrap');
+  if(!wrap) return;
+  const slides=Array.from(wrap.querySelectorAll('.mc-slide'));
+  if(!slides.length) return;
+  let idx=0;
+
+  function goTo(nextIdx){
+    idx=Math.max(0, Math.min(nextIdx, slides.length - 1));
+    wrap.scrollTo({left:wrap.clientWidth * idx, behavior:'smooth'});
+  }
+
+  shell.querySelectorAll('[data-preview-onclick="mcPrev()"]').forEach(function(btn){
+    btn.addEventListener('click', function(){ goTo(idx - 1); });
+  });
+  shell.querySelectorAll('[data-preview-onclick="mcNext()"]').forEach(function(btn){
+    btn.addEventListener('click', function(){ goTo(idx + 1); });
+  });
+
+  let timer=null;
+  wrap.addEventListener('scroll', function(){
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      idx=Math.round(wrap.scrollLeft / Math.max(wrap.clientWidth,1));
+    }, 80);
+  }, {passive:true});
+}
+
+function initPreviewHotspot(shell){
+  const list=shell.querySelector('.htl-list');
+  if(!list) return;
+  const prevBtn=shell.querySelector('[data-preview-onclick="hotspotMove(-1)"]');
+  const nextBtn=shell.querySelector('[data-preview-onclick="hotspotMove(1)"]');
+  const page=shell.querySelector('.htl-page');
+  const items=Array.from(list.querySelectorAll('.htl-item'));
+  if(!items.length) return;
+
+  function step(){
+    const item=items[0];
+    const style=getComputedStyle(list);
+    const gap=parseFloat(style.columnGap || style.gap) || 0;
+    return item.getBoundingClientRect().width + gap;
+  }
+
+  function update(){
+    const total=items.length;
+    const current=Math.min(Math.max(Math.round(list.scrollLeft / Math.max(step(),1)) + 1, 1), total);
+    if(page) page.textContent=current + ' / ' + total;
+    if(prevBtn) prevBtn.disabled=current<=1;
+    if(nextBtn) nextBtn.disabled=current>=total;
+  }
+
+  function move(delta){
+    const current=Math.round(list.scrollLeft / Math.max(step(),1));
+    const target=Math.min(Math.max(current + delta, 0), items.length - 1);
+    list.scrollTo({left:target * step(), behavior:'smooth'});
+    setTimeout(update, 260);
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click', function(){ move(-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ move(1); });
+
+  let timer=null;
+  list.addEventListener('scroll', function(){
+    clearTimeout(timer);
+    timer=setTimeout(update, 80);
+  }, {passive:true});
+  update();
+}
+
+function refreshConversationView(){
+  upsertActiveConversation();
+  ensureConversationVisible();
+  renderScenePresentation();
+  renderChatMessages();
+  renderHistoryList();
+}
+
+function bootstrapSceneVisitMessages(){
+  if(!sceneVisitOrder.length) return;
+  if(messages.some(function(item){ return item.role==='scene_visit'; })) return;
+  messages=sceneVisitOrder.map(function(sceneId){
+    return {role:'scene_visit',sceneId:sceneId};
+  }).concat(messages);
+}
+
+function startNewConversation(silent){
+  if(conversationId && messages.length){
+    upsertActiveConversation();
+    ensureConversationVisible();
+  }
+  conversationId=generateConversationId();
+  currentScene='home';
+  sourceScene='';
+  latestScene='';
+  messages=[];
+  sceneAskedState=createSceneStateMap(false);
+  sceneExpandedState=createSceneStateMap(false);
+  sceneVisitOrder=[];
+  renderHistoryList();
+  if(!silent){
+    showAiHome();
+    renderChatMessages();
+  }
+}
+
+function loadConversation(id){
+  const target=historyList.find(function(item){ return item.id===id; });
+  if(!target) return;
+  conversationId=target.id;
+  sourceScene=target.sourceScene || '';
+  latestScene=target.latestScene || target.sourceScene || 'chat';
+  currentScene=latestScene || 'chat';
+  messages=target.messages.map(function(item){ return Object.assign({}, item); });
+  sceneAskedState=cloneSceneStateMap(target.sceneAskedState || createSceneStateMap(false));
+  sceneExpandedState=cloneSceneStateMap(target.sceneExpandedState || createSceneStateMap(false));
+  sceneVisitOrder=cloneSceneVisitOrder(target.sceneVisitOrder || []);
+  bootstrapSceneVisitMessages();
+  if(currentScene==='home') openHomeConversationPanel();
+  else{
+    const tab=document.querySelector('.ai-tab[data-tab="' + currentScene + '"]');
+    if(tab) switchTab(currentScene,tab,'restore');
+    else showAiHome();
+  }
+  closeHistoryPanel();
+  renderHistoryList();
+}
+
+function focusSceneEntry(sceneId){
+  currentScene=sceneId;
+  collapseAllSceneBlocks();
+  sceneExpandedState[sceneId]=true;
+  document.querySelectorAll('.ai-tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.tab===sceneId);
+  });
+  renderScenePresentation();
+  renderChatMessages();
+  requestAnimationFrame(function(){
+    scrollToSceneTrail(sceneId,'smooth');
+  });
+}
+
+function openHistoryPanel(){
+  renderHistoryList();
+  document.getElementById('historyPanel').classList.add('open');
+}
+
+function closeHistoryPanel(event){
+  if(event && event.target !== event.currentTarget) return;
+  const panel=document.getElementById('historyPanel');
+  if(panel) panel.classList.remove('open');
+}
+
+function renderHistoryList(){
+  const list=document.getElementById('historyList');
+  if(!list) return;
+  const visible=historyList.filter(function(item){ return item.messages && item.messages.length; });
+  if(!visible.length){
+    list.innerHTML='<div class="history-empty">还没有保存的历史对话。<br>发起第一条问题后，这里会按对话沉淀记录。</div>';
+    return;
+  }
+  list.innerHTML=visible.map(function(item){
+    const active=item.id===conversationId ? ' active' : '';
+    return '<button class="history-item' + active + '" type="button" onclick="loadConversation(\'' + item.id + '\')">'
+      + '<div class="history-item-top">'
+      + '<span class="history-scene">' + getSceneName(item.sourceScene || item.latestScene || 'chat') + '</span>'
+      + '<span class="history-time">' + formatTime(item.updatedAt) + '</span>'
+      + '</div>'
+      + '<div class="history-title">' + esc(item.title || '新对话') + '</div>'
+      + '<div class="history-summary">' + esc(getConversationSummary(item.messages)) + '</div>'
+      + '</button>';
+  }).join('');
+}
+
+function updateHotspotPage(){
+  const list=document.querySelector('#panel-hotspot .htl-list');
+  const page=document.getElementById('hotspotPage');
+  const prev=document.getElementById('hotspotPrev');
+  const next=document.getElementById('hotspotNext');
+  if(!list||!page)return;
+  const total=list.querySelectorAll('.htl-item').length;
+  const step=getHotspotStep(list);
+  const idx=Math.min(Math.max(Math.round(list.scrollLeft/step)+1,1),total);
+  syncHotspotListHeight(list,idx);
+  page.textContent=idx+' / '+total;
+  if(prev)prev.disabled=idx<=1;
+  if(next)next.disabled=idx>=total;
+}
+
+function syncHotspotListHeight(list,idx){
+  const item=list.querySelectorAll('.htl-item')[idx-1];
+  if(!item)return;
+  const style=getComputedStyle(list);
+  const top=parseFloat(style.paddingTop)||0;
+  const bottom=parseFloat(style.paddingBottom)||0;
+  list.style.height=Math.ceil(item.getBoundingClientRect().height+top+bottom)+'px';
+}
+
+function getHotspotStep(list){
+  const item=list.querySelector('.htl-item');
+  if(!item)return list.clientWidth;
+  const style=getComputedStyle(list);
+  const gap=parseFloat(style.columnGap||style.gap)||0;
+  return item.getBoundingClientRect().width+gap;
+}
+
+function hotspotMove(delta){
+  const list=document.querySelector('#panel-hotspot .htl-list');
+  if(!list)return;
+  const total=list.querySelectorAll('.htl-item').length;
+  const step=getHotspotStep(list);
+  const current=Math.round(list.scrollLeft/step);
+  const target=Math.min(Math.max(current+delta,0),total-1);
+  list.scrollTo({left:target*step,behavior:'smooth'});
+  setTimeout(updateHotspotPage,260);
+}
+
+function initHotspotCards(){
+  const list=document.querySelector('#panel-hotspot .htl-list');
+  if(!list||list.dataset.hotspotInit==='1'){updateHotspotPage();return;}
+  list.dataset.hotspotInit='1';
+  let timer=null;
+  list.addEventListener('scroll',function(){
+    clearTimeout(timer);
+    timer=setTimeout(updateHotspotPage,80);
+  },{passive:true});
+  window.addEventListener('resize',updateHotspotPage);
+  updateHotspotPage();
 }
 
 // ── Settings ──
@@ -3247,14 +4704,9 @@ function cancelVoiceHold(){
 }
 
 function addUserMsg(text,img){
-  const c=document.getElementById('chatMessages');
-  const d=document.createElement('div');
-  d.className='msg-row user';d.style.marginBottom='14px';
-  const imgHtml=img?`<div class="msg-img"><img src="${img.url}" alt="${esc(img.name)}"></div>`:'';
-  const textHtml=text?`<div>${esc(text)}</div>`:'<div>请分析这张图片</div>';
-  d.innerHTML=`<div class="msg-av">👤</div><div class="msg-bub">${imgHtml}${textHtml}</div>`;
-  c.appendChild(d);
-  document.querySelector('.chat-scroll').scrollTop=99999;
+  const userText=img?(text?text + '（已上传图片：' + img.name + '）':'请分析这张图片：' + img.name):text;
+  messages.push({role:'user',text:userText,sceneId:currentScene});
+  refreshConversationView();
 }
 
 function sendMsg(){
@@ -3262,21 +4714,27 @@ function sendMsg(){
   const text=input.value.trim();
   const img=imageAttachment;
   if((!text&&!img)||responding)return;
-  // If not already on AI chat panel, switch with a smooth transition
-  const chatTab=document.querySelector('.ai-tab[onclick*="chat"]');
-  const wasOnOtherPanel = chatTab && !chatTab.classList.contains('active');
-  if(wasOnOtherPanel){
-    switchTab('chat',chatTab);
-    // Brief flash on input to confirm message was captured from another panel
-    input.classList.add('flash');
-    setTimeout(()=>input.classList.remove('flash'), 700);
-  }
-  addUserMsg(text,img);input.value='';
+  const originScene=currentScene==='home'?'home':currentScene;
+  if(!sourceScene) sourceScene=originScene;
+  latestScene=originScene;
+  collapseAllSceneBlocks();
+  if(originScene!=='home') sceneAskedState[originScene]=true;
+  addUserMsg(text,img);
+  input.value='';
   if(img)clearImageAttachment(false);
-  responding=true;showTyping();
+  responding=true;
+  refreshConversationView();
+  if(originScene==='home') openHomeConversationPanel();
+  else{
+    const targetTab=document.querySelector('.ai-tab[data-tab="' + originScene + '"]');
+    if(targetTab) switchTab(originScene,targetTab);
+  }
   const prompt=img?(text?text+'（已上传图片：'+img.name+'）':'请分析这张图片：'+img.name):text;
   if(mode==='api'&&apiKey)callAPI(prompt);
-  else setTimeout(()=>{hideTyping();addMsg(demoReply(prompt),'ai');responding=false;},700+Math.random()*800);
+  else setTimeout(function(){
+    responding=false;
+    addMsg(demoReply(prompt),'assistant',originScene);
+  },700+Math.random()*800);
 }
 function askQ(btn){
   // Strip any leading arrow from fi-stock-link elements
@@ -3288,22 +4746,13 @@ function askQ(btn){
 }
 function handleKey(e){if(e.key==='Enter')sendMsg();}
 
-function addMsg(text,type){
-  const c=document.getElementById('chatMessages');
-  const d=document.createElement('div');
-  d.className='msg-row '+type;d.style.marginBottom='14px';
-  d.innerHTML=`<div class="msg-av" style="${type==='ai'?AI_AV_STYLE:''}">${type==='ai'?AI_IMG:'👤'}</div><div class="msg-bub">${type==='ai'?fmt(text):esc(text)}</div>`;
-  c.appendChild(d);
-  document.querySelector('.chat-scroll').scrollTop=99999;
+function addMsg(text,type,sceneId){
+  const role=type==='ai'?'assistant':(type||'assistant');
+  messages.push({role:role,text:text,sceneId:sceneId || latestScene || currentScene || 'chat'});
+  refreshConversationView();
 }
-function showTyping(){
-  const c=document.getElementById('chatMessages');
-  const d=document.createElement('div');
-  d.className='msg-row ai';d.id='tyRow';d.style.marginBottom='14px';
-  d.innerHTML=`<div class="msg-av" style="${AI_AV_STYLE}">${AI_IMG}</div><div class="msg-bub"><div class="typing-ind"><span></span><span></span><span></span></div></div>`;
-  c.appendChild(d);document.querySelector('.chat-scroll').scrollTop=99999;
-}
-function hideTyping(){const el=document.getElementById('tyRow');if(el)el.remove();}
+function showTyping(){responding=true;renderChatMessages();}
+function hideTyping(){responding=false;renderChatMessages();}
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 function fmt(t){return t.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`(.*?)`/g,'<code>$1</code>');}
 
@@ -3311,9 +4760,9 @@ async function callAPI(msg){
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:modelId,max_tokens:1024,system:sysPrompt||'你是躺客AI助手，专业的证券投资分析助手。用专业但易懂的语言回答问题，始终提醒用户投资有风险。',messages:[{role:'user',content:msg}]})});
     const d=await r.json();hideTyping();
-    if(d.content&&d.content[0])addMsg(d.content[0].text,'ai');
-    else addMsg('API错误：'+(d.error?d.error.message:'未知错误'),'ai');
-  }catch(e){hideTyping();addMsg('网络错误：'+e.message,'ai');}
+    if(d.content&&d.content[0])addMsg(d.content[0].text,'assistant',latestScene||currentScene||'chat');
+    else addMsg('API错误：'+(d.error?d.error.message:'未知错误'),'assistant',latestScene||currentScene||'chat');
+  }catch(e){hideTyping();addMsg('网络错误：'+e.message,'assistant',latestScene||currentScene||'chat');}
   responding=false;
 }
 
@@ -4060,6 +5509,10 @@ function mcNext(){ if(mcIdx < MC_TOTAL - 1)  mcGoTo(mcIdx + 1); }
 
 // 手指直接滑动时同步状态
 document.addEventListener('DOMContentLoaded', function(){
+  startNewConversation(true);
+  renderHistoryList();
+  renderChatMessages();
+  showAiHome();
   const wrap = document.getElementById('morningCarousel');
   if(!wrap) return;
   let t = null;
