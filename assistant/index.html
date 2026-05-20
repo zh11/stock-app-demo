@@ -2838,6 +2838,7 @@ body.chat-open{overflow:hidden}
           </div>
 
           <!-- ② 早盘个股关注卡（轮播） -->
+          <div class="hh-section-title intraday-title">盘中提醒</div>
           <div class="mc-outer">
             <div class="mc-wrap" id="morningCarousel">
 
@@ -3011,7 +3012,7 @@ body.chat-open{overflow:hidden}
 
 
           <!-- ④ 优先级分层消息推送 -->
-          <div class="hh-section-title">🔔 重要消息推送</div>
+          <div class="hh-section-title postmarket-title">盘后消息</div>
           <div class="pm-list">
 
             <!-- 紧急 -->
@@ -4217,7 +4218,7 @@ function normalizePreviewScene(shell){
     if(label) label.textContent='继续了解';
   }
   if(sceneId==='remind'){
-    shell.querySelectorAll('.hh-section-title').forEach(function(node){
+    shell.querySelectorAll('.postmarket-title').forEach(function(node){
       node.textContent='盘后消息';
     });
   }
