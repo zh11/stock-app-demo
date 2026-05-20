@@ -850,7 +850,7 @@
 
 /* Panel containers */
 .ai-panels{flex:1;overflow:hidden;position:relative}
-.ai-panel{display:none;flex-direction:column;height:100%}
+.ai-panel{display:none;flex-direction:column;height:100%;min-height:0}
 .ai-panel.active{display:flex}
 
 /* ── Shared bottom input bar (all panels) ── */
@@ -899,7 +899,7 @@ body.chat-open{overflow:hidden}
 .shared-input-field{height:36px;min-width:0;border:0;border-radius:8px;background:transparent;box-shadow:none;padding:0 4px;font-size:15px}
 .shared-input-field:focus{border-color:#e8413a;background:#fff}
 .input-tool-btn,.mic-btn{width:34px;height:34px;border:0;border-radius:17px;background:#f7f8fa;color:#6f7681;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:none}
-.input-tool-btn.recording{border-color:#ffd5ce;background:#fff2ef;color:#e8413a}
+.input-tool-btn.recording,.text-toggle-btn.recording{border-color:#ffd5ce;background:#fff2ef;color:#e8413a}
 .mic-btn{border:0;background:#ffe8e5;color:#e8413a;box-shadow:none}
 .mic-btn svg{display:none}
 .mic-btn::before{content:'↑';font-size:20px;font-weight:700;line-height:1}
@@ -910,7 +910,7 @@ body.chat-open{overflow:hidden}
 .text-toggle-btn svg{width:18px;height:18px;display:block}
 .shared-input.voice-mode .shared-input-field{display:none}
 .shared-input.text-mode .voice-input-wrap{display:none}
-.shared-input.text-mode .text-toggle-btn{color:#e8413a;background:#fff2ef}
+.shared-input.text-mode .text-toggle-btn{color:#6f7681;background:#f7f8fa}
 .image-preview-chip{display:none;position:absolute;left:0;right:0;bottom:56px;min-height:34px;border:1px solid #edf0f4;border-radius:12px;background:rgba(255,255,255,.96);box-shadow:0 8px 20px rgba(15,23,42,.08);align-items:center;gap:8px;padding:6px 10px;font-size:12px;color:#555;z-index:2}
 .image-preview-chip.show{display:flex}
 .image-preview-chip img{width:24px;height:24px;border-radius:6px;object-fit:cover;flex:0 0 auto}
@@ -955,7 +955,7 @@ body.chat-open{overflow:hidden}
 .scene-preview-shell .event-carousel-wrap,
 .scene-preview-shell .mc-wrap,
 .scene-preview-shell .htl-list{
-  touch-action:pan-x;
+  touch-action:pan-x pan-y;
   overscroll-behavior-x:contain;
 }
 .scene-preview-shell .event-carousel-wrap,
@@ -1126,7 +1126,7 @@ body.chat-open{overflow:hidden}
 /* ================================================================ */
 /* PANEL 1: AI 对话                                                  */
 /* ================================================================ */
-.chat-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f7f7f8;scrollbar-width:thin;scrollbar-color:#cfd6df transparent}
+.chat-scroll{flex:1;min-height:0;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;background:#f7f7f8;scrollbar-width:thin;scrollbar-color:#cfd6df transparent}
 .chat-scroll::-webkit-scrollbar{width:6px}
 .chat-scroll::-webkit-scrollbar-thumb{background:#cfd6df;border-radius:999px}
 .chat-scroll::-webkit-scrollbar-track{background:transparent}
@@ -1397,10 +1397,27 @@ body.chat-open{overflow:hidden}
   margin-bottom:8px;
 }
 .scene-preview-panel[data-scene="remind"] .hh-section-title{
+  display:flex;
+  align-items:center;
+  gap:6px;
   margin:10px 2px 8px;
-  color:#9aa1aa;
-  font-size:11px;
-  letter-spacing:.2px;
+  color:#171a1f;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:0;
+}
+.scene-preview-panel[data-scene="remind"] .hh-section-title::before{
+  content:"";
+  width:11px;
+  height:13px;
+  flex:0 0 auto;
+  border:1px solid #ee9a33;
+  border-radius:2px;
+  background:
+    linear-gradient(#ee9a33,#ee9a33) 3px 4px/5px 1px no-repeat,
+    linear-gradient(#ee9a33,#ee9a33) 3px 7px/5px 1px no-repeat,
+    linear-gradient(#ee9a33,#ee9a33) 3px 10px/4px 1px no-repeat,
+    #fff8ee;
 }
 .scene-preview-panel[data-scene="remind"] .pm-list{gap:10px}
 .scene-preview-panel[data-scene="remind"] .pm-card{
@@ -1733,6 +1750,15 @@ body.chat-open{overflow:hidden}
 }
 @media(max-width:540px){
   .chat-page.open{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0}
+  .chat-page.open .ai-panels,
+  .chat-page.open .ai-panel.active,
+  .chat-page.open .chat-scroll{
+    min-height:0;
+  }
+  .chat-page.open .chat-scroll{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
 }
 
 /* ================================================================ */
@@ -2529,7 +2555,7 @@ body.chat-open{overflow:hidden}
       <div class="chat-hdr-title">新对话 <span class="mode-badge demo" id="modeBadge">演示模式</span></div>
       <div class="chat-hdr-sub">智能投资问答 &middot; 7&times;24小时在线</div>
     </div>
-    <button class="chat-new-btn" type="button" onclick="startNewConversation()"></button>
+    <button class="chat-new-btn" type="button" onclick="openNewConversationHome()"></button>
     <button class="chat-settings" type="button" onclick="openHistoryPanel()">&#9881;</button>
   </div>
 
@@ -3209,6 +3235,7 @@ body.chat-open{overflow:hidden}
   </div>
 
   <div class="ai-tabs">
+    <button class="ai-tab ai-return-tab" data-tab="home" onclick="returnToConversationHome(this)">返回对话</button>
     <button class="ai-tab" data-tab="remind" onclick="switchTab('remind',this)">自选消息</button>
     <button class="ai-tab" data-tab="hotspot" onclick="switchTab('hotspot',this)">事件前瞻</button>
     <button class="ai-tab" data-tab="chat" onclick="switchTab('chat',this)" hidden>AI对话</button>
@@ -3216,7 +3243,7 @@ body.chat-open{overflow:hidden}
   </div>
 
   <!-- Shared bottom input bar (visible across all panels) -->
-  <div class="shared-input voice-mode" id="sharedInputBar">
+  <div class="shared-input text-mode" id="sharedInputBar">
     <div class="image-preview-chip" id="imagePreviewChip">
       <img id="imagePreviewThumb" alt="">
       <span id="imagePreviewName"></span>
@@ -3229,8 +3256,8 @@ body.chat-open{overflow:hidden}
       <button class="voice-hold-btn" id="voiceHoldBtn" type="button" onpointerdown="startVoiceHold(event)" onpointerup="stopVoiceHold()" onpointercancel="cancelVoiceHold()" onpointerleave="cancelVoiceHold()">按住说话</button>
     </div>
     <input class="shared-input-field" id="chatInput" placeholder="发送问题" onkeydown="handleKey(event)" oninput="this.dataset.val=this.value">
-    <button class="text-toggle-btn" id="inputModeBtn" type="button" onclick="toggleInputMode()" aria-label="切换文字输入" title="切换文字输入">
-      <svg class="keyboard-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 10h.01M11 10h.01M15 10h.01M17 14H7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <button class="text-toggle-btn" id="inputModeBtn" type="button" onpointerdown="startVoiceHold(event)" onpointerup="stopVoiceHold()" onpointercancel="cancelVoiceHold()" onpointerleave="cancelVoiceHold()" aria-label="语音输入" title="语音输入">
+      <svg class="mic-icon" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
     <button class="mic-btn" onclick="sendMsg()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#aaa" stroke-width="1.8" fill="none"/><path d="M5 10a7 7 0 0 0 14 0" stroke="#aaa" stroke-width="1.8" stroke-linecap="round" fill="none"/><line x1="12" y1="17" x2="12" y2="22" stroke="#aaa" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -3723,6 +3750,10 @@ function getPresetQuestionKey(){
   return 'home';
 }
 
+function shouldHidePostAskPreset(){
+  return hasConversationMessages();
+}
+
 function getLastUserQuestion(){
   for(let i=messages.length-1;i>=0;i--){
     if(messages[i].role==='user') return messages[i].text || '';
@@ -3973,6 +4004,18 @@ function ensureConversationVisible(){
 // ── Stock data ──
 
 // ── Navigation ──
+function openNewConversationHome(){
+  closeHistoryPanel();
+  startNewConversation(false);
+  showAiHome();
+}
+
+function returnToConversationHome(el){
+  closeHistoryPanel();
+  showAiHome();
+  if(el) el.classList.add('active');
+}
+
 function openChat(tab){
   if(!document.getElementById('chatPage').classList.contains('open')){
     startNewConversation(true);
@@ -4001,6 +4044,8 @@ function showAiHome(){
   const home=document.getElementById('aiHome');
   if(home)home.classList.add('active');
   document.querySelectorAll('.ai-tab').forEach(t=>t.classList.remove('active'));
+  const homeTab=document.querySelector('.ai-tab[data-tab="home"]');
+  if(homeTab)homeTab.classList.add('active');
   document.querySelectorAll('.ai-panel').forEach(p=>p.classList.remove('active'));
   const input=document.getElementById('chatInput');
   if(input)input.placeholder=SCENE_CONFIG.home.inputPlaceholder;
@@ -4094,7 +4139,7 @@ function renderScenePresentation(){
   const title=document.querySelector('.chat-hdr-title');
   if(title) title.textContent='新对话';
   const showConversationFlow=shouldShowConversationFlow();
-  const shouldShowScenePreset=hasConversationMessages();
+  const shouldShowScenePreset=hasConversationMessages() && !shouldHidePostAskPreset();
   if(chatDefault){
     chatDefault.classList.add('hidden');
     if(chatInlineHost){
@@ -4172,7 +4217,7 @@ function normalizePreviewScene(shell){
   }
   if(sceneId==='remind'){
     shell.querySelectorAll('.hh-section-title').forEach(function(node){
-      node.textContent='重要提醒';
+      node.textContent='盘后消息';
     });
   }
 }
@@ -4656,6 +4701,7 @@ function startVoiceHold(e){
   const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
   const input=document.getElementById('chatInput');
   const btn=document.getElementById('voiceHoldBtn');
+  const inlineBtn=document.getElementById('inputModeBtn');
   if(!SpeechRecognition){
     if(input){
       switchInputMode('text');
@@ -4671,6 +4717,7 @@ function startVoiceHold(e){
   recognition.maxAlternatives=1;
   activeRecognition=recognition;
   if(btn){btn.classList.add('recording');btn.textContent='松开发送';}
+  if(inlineBtn)inlineBtn.classList.add('recording');
   recognition.onresult=function(event){
     const text=event.results&&event.results[0]&&event.results[0][0]?event.results[0][0].transcript:'';
     if(input&&text){
@@ -4688,6 +4735,7 @@ function startVoiceHold(e){
   recognition.onend=function(){
     activeRecognition=null;
     if(btn){btn.classList.remove('recording');btn.textContent='按住说话';}
+    if(inlineBtn)inlineBtn.classList.remove('recording');
   };
   recognition.start();
 }
