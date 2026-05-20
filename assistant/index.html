@@ -1659,6 +1659,12 @@ body.chat-open{overflow:hidden}
 .sc-arrow{width:26px;height:26px;border-radius:50%;border:1px solid #eee;background:#fff;font-size:14px;cursor:pointer;color:#aaa;display:flex;align-items:center;justify-content:center}
 .sc-arrow:not([disabled]):active{border-color:#e8413a;color:#e8413a}
 .sc-arrow[disabled]{opacity:.3;cursor:default}
+.sc-header-actions{align-self:flex-start;margin-top:-2px}
+.sc-header-actions .sc-arrow{
+  width:20px;height:20px;border:none;background:transparent;
+  color:#f05252;font-size:18px;font-weight:800;line-height:1;
+}
+.sc-header-actions .sc-arrow:not([disabled]):active{color:#d93030;background:#fff5f5}
 
 /* News feed below stock card */
 .remind-feed{padding:10px 14px}
@@ -2851,6 +2857,10 @@ body.chat-open{overflow:hidden}
                         <span class="sc-name">万华化学</span>
                         <span class="sc-code">600309.SH · 化工行业</span>
                       </div>
+                      <div class="sc-arrows sc-header-actions">
+                        <button class="sc-arrow sc-prev" disabled>&#8592;</button>
+                        <button class="sc-arrow sc-next" onclick="mcNext()">&#8594;</button>
+                      </div>
                     </div>
                   </div>
                   <div class="sc-keypoint">原油期货暴跌近15%，化工成本有望改善，但需观察传导节奏，短期情绪承压</div>
@@ -2876,8 +2886,8 @@ body.chat-open{overflow:hidden}
                     <span class="sc-num">1 / 4</span>
                     <span class="sc-hint">左右滑动查看更多自选股</span>
                     <div class="sc-arrows">
-                      <button class="sc-arrow" disabled>&#8249;</button>
-                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                      <button class="sc-arrow sc-prev" disabled>&#8249;</button>
+                      <button class="sc-arrow sc-next" onclick="mcNext()">&#8250;</button>
                     </div>
                   </div>
                 </div>
@@ -2891,6 +2901,10 @@ body.chat-open{overflow:hidden}
                       <div>
                         <span class="sc-name">宁德时代</span>
                         <span class="sc-code">300750.SZ · 电池行业</span>
+                      </div>
+                      <div class="sc-arrows sc-header-actions">
+                        <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8592;</button>
+                        <button class="sc-arrow sc-next" onclick="mcNext()">&#8594;</button>
                       </div>
                     </div>
                   </div>
@@ -2917,8 +2931,8 @@ body.chat-open{overflow:hidden}
                     <span class="sc-num">2 / 4</span>
                     <span class="sc-hint">左右滑动查看更多自选股</span>
                     <div class="sc-arrows">
-                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
-                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                      <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow sc-next" onclick="mcNext()">&#8250;</button>
                     </div>
                   </div>
                 </div>
@@ -2932,6 +2946,10 @@ body.chat-open{overflow:hidden}
                       <div>
                         <span class="sc-name">比亚迪</span>
                         <span class="sc-code">002594.SZ · 汽车行业</span>
+                      </div>
+                      <div class="sc-arrows sc-header-actions">
+                        <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8592;</button>
+                        <button class="sc-arrow sc-next" onclick="mcNext()">&#8594;</button>
                       </div>
                     </div>
                   </div>
@@ -2958,8 +2976,8 @@ body.chat-open{overflow:hidden}
                     <span class="sc-num">3 / 4</span>
                     <span class="sc-hint">左右滑动查看更多自选股</span>
                     <div class="sc-arrows">
-                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
-                      <button class="sc-arrow" onclick="mcNext()">&#8250;</button>
+                      <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow sc-next" onclick="mcNext()">&#8250;</button>
                     </div>
                   </div>
                 </div>
@@ -2973,6 +2991,10 @@ body.chat-open{overflow:hidden}
                       <div>
                         <span class="sc-name">招商银行</span>
                         <span class="sc-code">600036.SH · 银行行业</span>
+                      </div>
+                      <div class="sc-arrows sc-header-actions">
+                        <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8592;</button>
+                        <button class="sc-arrow sc-next" disabled>&#8594;</button>
                       </div>
                     </div>
                   </div>
@@ -2999,8 +3021,8 @@ body.chat-open{overflow:hidden}
                     <span class="sc-num">4 / 4</span>
                     <span class="sc-hint">左右滑动查看更多自选股</span>
                     <div class="sc-arrows">
-                      <button class="sc-arrow" onclick="mcPrev()">&#8249;</button>
-                      <button class="sc-arrow" disabled>&#8250;</button>
+                      <button class="sc-arrow sc-prev" onclick="mcPrev()">&#8249;</button>
+                      <button class="sc-arrow sc-next" disabled>&#8250;</button>
                     </div>
                   </div>
                 </div>
@@ -5550,9 +5572,12 @@ function mcUpdateArrows(idx){
   const wrap = document.getElementById('morningCarousel');
   if(!wrap) return;
   wrap.querySelectorAll('.mc-slide').forEach(function(slide){
-    const btns = slide.querySelectorAll('.sc-arrow');
-    if(btns[0]) btns[0].disabled = (idx === 0);
-    if(btns[1]) btns[1].disabled = (idx === MC_TOTAL - 1);
+    slide.querySelectorAll('.sc-prev').forEach(function(btn){
+      btn.disabled = (idx === 0);
+    });
+    slide.querySelectorAll('.sc-next').forEach(function(btn){
+      btn.disabled = (idx === MC_TOTAL - 1);
+    });
   });
 }
 
