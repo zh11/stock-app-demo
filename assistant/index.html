@@ -1703,7 +1703,8 @@ body.chat-open{overflow:hidden}
 .htl-stock-group{display:flex;flex-direction:column;gap:5px}
 .htl-stock-title{display:none}
 .htl-stock-chips{display:flex;flex-wrap:wrap;gap:5px}
-.htl-stock-chip{font-size:10px;line-height:1;padding:5px 7px;border-radius:999px;background:#f7f8fa;color:#111;border:1px solid #eceff3}
+.htl-stock-chip{font-size:10px;line-height:1;padding:5px 7px;border-radius:999px;background:#f7f8fa;color:#111;border:1px solid #eceff3;cursor:pointer;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.htl-stock-chip:active{border-color:#ffd5ce;background:#fff2ef;color:#e8413a}
 .htl-stock-chip.blue,.htl-stock-chip.green,.htl-stock-chip.gray{background:#f7f8fa;color:#111;border-color:#eceff3}
 .htl-card-foot{flex-shrink:0;padding:0 20px 10px;display:flex;align-items:center;justify-content:center;gap:8px;color:#b8bec8;font-size:11px;background:#f7f8fa}
 .htl-nav-btn{width:30px;height:30px;border-radius:50%;border:1px solid #e7ebf0;background:#fff;color:#333;font-size:18px;line-height:1;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(15,23,42,.06);cursor:pointer}
@@ -2556,7 +2557,7 @@ body.chat-open{overflow:hidden}
       <div class="chat-hdr-sub">智能投资问答 &middot; 7&times;24小时在线</div>
     </div>
     <button class="chat-new-btn" type="button" onclick="openNewConversationHome()"></button>
-    <button class="chat-settings" type="button" onclick="openHistoryPanel()">&#9881;</button>
+    <button class="chat-settings" type="button" aria-label="菜单"></button>
   </div>
 
   <div class="ai-panels">
@@ -3560,11 +3561,11 @@ const SCENE_CONFIG={
 };
 const PRESET_QUESTION_SETS={
   home:[
-    '宁德时代最近的资金变化，对我的自选股有什么影响？',
-    '万华化学受原油波动影响，现在需要重点看哪些信号？',
-    '我最近关注的新能源方向，短期还有哪些风险点？',
-    '现在市场最关注的主线板块有哪些？',
-    '股民最近讨论最多的股票，背后逻辑是什么？'
+    'AI算力产业链哪个方向最值得关注？',
+    'CPO/硅光/光模块龙头股怎么比较？',
+    '德明利和存储板块现在怎么看？',
+    '英维克和液冷板块还有机会吗？',
+    '高增长AI硬件股估值是否透支了？'
   ],
   remind:[
     '今天我的自选股里，哪一只最值得优先复盘？',
@@ -4810,6 +4811,22 @@ function submitPresetQuestion(text, originSceneOverride){
   },180);
 }
 
+function askHotspotStock(rawName){
+  const stockName=String(rawName || '').replace(/^#+/, '').trim();
+  if(!stockName) return;
+  submitPresetQuestion(stockName + '怎么样', 'hotspot');
+}
+
+function handleHotspotStockClick(event){
+  const chip=event.target && event.target.closest ? event.target.closest('.htl-stock-chip') : null;
+  if(!chip) return;
+  const inHotspot=chip.closest('#panel-hotspot') || chip.closest('.scene-preview-panel[data-scene="hotspot"]') || chip.closest('.scene-preview-source-hotspot');
+  if(!inHotspot) return;
+  event.preventDefault();
+  event.stopPropagation();
+  askHotspotStock(chip.textContent);
+}
+
 function askQ(btn){
   // Strip any leading arrow from fi-stock-link elements
   const raw = btn.textContent.replace(/^→\s*/, '');
@@ -4819,6 +4836,8 @@ function askQ(btn){
   submitPresetQuestion(prompt, currentScene==='home' ? 'home' : currentScene);
 }
 function handleKey(e){if(e.key==='Enter')sendMsg();}
+
+document.addEventListener('click', handleHotspotStockClick);
 
 function addMsg(text,type,sceneId){
   const role=type==='ai'?'assistant':(type||'assistant');
@@ -4860,7 +4879,7 @@ function demoReply(input){
     return '**电池龙头及热门板块**\n\n**电池龙头**：宁德时代(300750)、亿纬锂能(300014)、国轩高科(002074)\n\n**近期热门**：\n* **人工智能** — AI大模型国产替代，算力+应用活跃\n* **新能源车** — 出口超预期，比亚迪海外战略突破\n* **半导体** — 国产化政策持续加码\n\n以上仅供参考。';
   if(t.includes('均线')||t.includes('策略'))
     return '**均线策略入门**\n\n* MA5：短期趋势；MA20：中期趋势（最重要）\n* **金叉**：MA5上穿MA20 → 买入信号\n* **死叉**：MA5下穿MA20 → 减仓信号\n* **均线支撑**：回踩MA20不破可轻仓介入\n\n技术分析仅供参考。';
-  return `关于"**${input}**"，我可以帮你：\n\n* **个股诊断** — 告诉我股票代码或名称\n* **行情解读** — 大盘走势和板块热点\n* **投资知识** — 技术指标和策略讲解\n\n所有分析仅供参考，不构成投资建议。`;
+  return `**此处需要接入真实 AI 模型回答**\n\n用户问题：**${input}**\n\n这里应由真实 AI 模型结合实时行情、个股基本面、板块热度和风险提示生成完整分析。目前为演示占位内容，用于标注产品需要接入模型能力。\n\n模型接入后应输出：\n* **结论判断** — 先给出简洁观点\n* **核心逻辑** — 解释上涨/下跌/关注原因\n* **风险提示** — 明确不构成投资建议`;
 }
 
 // ── 事件卡片轮播 JS ──
@@ -5461,7 +5480,7 @@ const REMIND_DETAILS = {
       </div>`
   },
   pm1: {
-    title: '万华化学 · 行情异动分析',
+    title: '万华化学 · 异动分析',
     html: `
       <div class="d3-section">
         <div class="d3-section-title">原油暴跌对万华化学的影响分析</div>
