@@ -69,6 +69,76 @@ body{
   padding:52px 28px 84px;
 }
 
+.doc-nav{
+  position:sticky;
+  top:10px;
+  z-index:20;
+  max-width:var(--wrap);
+  margin:-24px auto 28px;
+  padding:0 28px;
+}
+
+.doc-nav-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:16px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 14px 28px rgba(15,23,42,.08);
+  backdrop-filter:blur(12px);
+}
+
+.doc-nav-meta{
+  min-width:0;
+}
+
+.doc-nav-kicker{
+  font-size:11px;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:var(--faint);
+  font-weight:700;
+}
+
+.doc-nav-title{
+  font-size:13px;
+  color:#2b3138;
+  font-weight:700;
+  line-height:1.5;
+}
+
+.doc-nav-links{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.doc-nav-link{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:0 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#4a525c;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.doc-nav-link.active{
+  border-color:#ffd4cc;
+  background:#fff2ef;
+  color:var(--brand);
+}
+
 .toc,.block,.table-card,.example-card{
   background:var(--card);
   border:1px solid var(--line);
@@ -228,7 +298,22 @@ tr:last-child td{border-bottom:none}
   .cover{padding:52px 24px 42px}
   .cover h1{font-size:30px}
   .wrap{padding:28px 16px 56px}
+  .doc-nav{
+    top:8px;
+    margin:-18px auto 22px;
+    padding:0 16px;
+  }
+  .doc-nav-card{padding:10px}
+  .doc-nav-title{font-size:12px}
   .toc ol,.grid{grid-template-columns:1fr}
+  .block,.toc{padding:18px 16px}
+  .chapter-title{font-size:22px}
+  .table-card{
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .table-card table{min-width:640px}
+  .tag-row{gap:6px}
 }
 </style>
 </head>
@@ -237,6 +322,20 @@ tr:last-child td{border-bottom:none}
     <h1>躺客AI<br>事件前瞻模块</h1>
     <p>围绕未来事件、主题催化与板块联动，建立一份适合在统一对话容器中浏览、定位、追问和持续回看的事件卡流需求文档。</p>
   </section>
+
+  <div class="doc-nav">
+    <div class="doc-nav-card">
+      <div class="doc-nav-meta">
+        <div class="doc-nav-kicker">PRD Links</div>
+        <div class="doc-nav-title">适配手机与电脑查看，支持直接切换相关文档</div>
+      </div>
+      <div class="doc-nav-links">
+        <a class="doc-nav-link active" href="https://zh11.github.io/stock-app-demo/assistant/prd-event-preview.html">事件前瞻</a>
+        <a class="doc-nav-link" href="https://zh11.github.io/stock-app-demo/assistant/prd-watchlist.html">自选消息</a>
+        <a class="doc-nav-link" href="https://zh11.github.io/stock-app-demo/assistant/">界面原型</a>
+      </div>
+    </div>
+  </div>
 
   <main class="wrap">
     <section class="toc">
