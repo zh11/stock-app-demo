@@ -348,9 +348,8 @@ tr:last-child td{border-bottom:none}
         <li><a href="#scope">5. 收录范围与排除规则</a></li>
         <li><a href="#card">6. 卡片结构与文案规范</a></li>
         <li><a href="#interaction">7. 对话态交互与时间流</a></li>
-        <li><a href="#recommend">8. 问题推荐与继续追问</a></li>
-        <li><a href="#logic">9. 规则与模型分工</a></li>
-        <li><a href="#accept">10. 验收标准</a></li>
+        <li><a href="#logic">8. 规则与模型分工</a></li>
+        <li><a href="#accept">9. 验收标准</a></li>
       </ol>
     </section>
 
@@ -402,7 +401,7 @@ tr:last-child td{border-bottom:none}
           <li>场景标题</li>
           <li>横向事件卡流</li>
           <li>页码与左右切换按钮</li>
-          <li>底部固定问题推荐、场景按钮、输入框</li>
+          <li>底部固定场景按钮、输入框</li>
         </ul>
         <h3>2.2 界面约束</h3>
         <ul>
@@ -410,7 +409,6 @@ tr:last-child td{border-bottom:none}
           <li>保留左右滑动、页码、左右切换按钮。</li>
           <li>不显示“默认内容”“来源场景”“已展开”等解释型文案。</li>
           <li>嵌入对话后，内容应适配聊天态宽度与留白，避免像独立页面硬塞进消息流。</li>
-          <li>只要同一会话中已经问过问题，底部问题推荐就持续显示，直到切换到新会话。</li>
         </ul>
         <div class="grid">
           <div class="card">
@@ -419,7 +417,7 @@ tr:last-child td{border-bottom:none}
           </div>
           <div class="card">
             <h4>提问入口</h4>
-            <p>用户可以围绕当前事件输入问题，也可以点击问题推荐继续追问。</p>
+            <p>用户可以围绕当前事件直接输入问题继续追问。</p>
           </div>
           <div class="card">
             <h4>定位入口</h4>
@@ -526,11 +524,6 @@ tr:last-child td{border-bottom:none}
                 <td>当前页 / 总页数、左右切换按钮</td>
                 <td>保留切换反馈，不展示原生滚动条。</td>
               </tr>
-              <tr>
-                <td><span class="tag">问题推荐</span></td>
-                <td>围绕当前事件与最近问题的推荐追问</td>
-                <td>固定在底部操作区，不进入时间流。</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -569,7 +562,7 @@ tr:last-child td{border-bottom:none}
         <p>板块标签建议采用低饱和、低对比的辅助色体系，例如灰蓝、雾蓝、浅紫、暖杏、青蓝、琥珀灰等。不同板块可以有固定色系，以帮助用户快速识别分类，但颜色本身不代表上涨、下跌、强弱或推荐程度。</p>
         <p>个股标签统一使用黑色文字和浅灰底，仅表示“关联标的”。如后续卡片需要展示“偏利好 / 偏利空 / 中性博弈”等方向字段，红色、绿色和灰色仅允许用于该方向字段，且需要和板块标签在样式上明显区分。</p>
         <h3>6.5 展示时间范围</h3>
-        <p>默认展示未来 14 天的事件窗口，并支持根据产品策略配置展示范围。其中临近发生的事件作为重点关注区，其余事件作为常规预期区。已过期事件自动置灰或下沉，不继续占据高位。</p>
+        <p>默认展示未来 1 个月的事件窗口，并支持根据产品策略配置展示范围。其中临近发生的事件作为重点关注区，其余事件作为常规预期区。已过期事件不再展示。</p>
       </div>
     </section>
 
@@ -610,31 +603,9 @@ tr:last-child td{border-bottom:none}
       </div>
     </section>
 
-    <section class="chapter" id="recommend">
-      <div class="chapter-head">
-        <div class="chapter-num">08</div>
-        <div class="chapter-title">问题推荐与继续追问</div>
-      </div>
-      <div class="block">
-        <p>事件前瞻场景的问题推荐使用横向卡片展示，固定在底部操作区，位于场景按钮上方。</p>
-        <ul>
-          <li>只有当前对话已经问过至少一个问题后，问题推荐才持续显示。</li>
-          <li>推荐内容根据当前场景与最近一条用户问题动态变化。</li>
-          <li>重点围绕催化强度、影响板块、龙头/补涨、预期落空风险、资金承接等方向。</li>
-          <li>问题推荐本身不进入时间流。</li>
-        </ul>
-        <h3>8.1 对话内推荐逻辑</h3>
-        <ul>
-          <li>如果当前展开的是事件主卡，优先推荐围绕该事件继续追问的问题。</li>
-          <li>如果最近一条问题已明确指向某个主题，则推荐向该主题进一步收敛。</li>
-          <li>推荐文案要像“下一步最自然的问题”，而不是泛化题库。</li>
-        </ul>
-      </div>
-    </section>
-
     <section class="chapter" id="logic">
       <div class="chapter-head">
-        <div class="chapter-num">09</div>
+        <div class="chapter-num">08</div>
         <div class="chapter-title">规则与模型分工</div>
       </div>
       <div class="block">
@@ -653,7 +624,7 @@ tr:last-child td{border-bottom:none}
                 <td>规则优先</td>
               </tr>
               <tr>
-                <td>标题润色、一句话预期描述、影响解释、推荐追问文案</td>
+                <td>标题润色、一句话预期描述、影响解释</td>
                 <td>模型生成</td>
               </tr>
               <tr>
@@ -669,7 +640,7 @@ tr:last-child td{border-bottom:none}
 
     <section class="chapter" id="accept">
       <div class="chapter-head">
-        <div class="chapter-num">10</div>
+        <div class="chapter-num">09</div>
         <div class="chapter-title">验收标准</div>
       </div>
       <div class="block">
@@ -679,7 +650,6 @@ tr:last-child td{border-bottom:none}
           <li>未提问前，场景默认内容不形成收缩入口。</li>
           <li>提问后，默认内容切换为收缩入口，并保留在时间流中。</li>
           <li>再次点击已看过的事件前瞻，可定位回原位置，不打乱顺序。</li>
-          <li>底部问题推荐固定显示在操作区，不跑到顶部，不进入时间流。</li>
           <li>文档中的规则层内容应足以支持开发直接拆解与实现，不依赖补充文档单独阅读。</li>
         </ul>
       </div>
