@@ -1,0 +1,1025 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD - 躺客AI 自选消息模块</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root{
+  --brand:#e8413a;
+  --ink:#1a1a1a;
+  --sub:#555;
+  --faint:#8d8d8d;
+  --line:#ececec;
+  --bg:#fafaf8;
+  --card:#fff;
+  --wrap:780px;
+  --white:var(--card);
+  --rule:var(--line);
+  --ink-sub:var(--sub);
+  --ink-faint:var(--faint);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.85;
+}
+.cover{
+  background:linear-gradient(135deg,#e8413a 0%,#c0392b 58%,#922b21 100%);
+  color:#fff;
+  padding:72px 48px 54px;
+  position:relative;
+  overflow:hidden;
+}
+.cover::before,.cover::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.05);
+}
+.cover::before{width:280px;height:280px;right:-80px;top:-80px}
+.cover::after{width:180px;height:180px;left:38%;bottom:-60px}
+.cover h1{
+  position:relative;
+  font-family:'Noto Serif SC',serif;
+  font-size:38px;
+  line-height:1.24;
+  margin-bottom:14px;
+}
+.cover p{
+  position:relative;
+  max-width:580px;
+  font-size:16px;
+  color:rgba(255,255,255,.82);
+}
+.wrap{
+  max-width:var(--wrap);
+  margin:0 auto;
+  padding:52px 28px 84px;
+}
+.toc,.block,.table-card,.example-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 10px 28px rgba(15,23,42,.04);
+}
+.toc{padding:26px 28px;margin-bottom:42px}
+.toc-title{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--faint);
+  font-weight:700;
+  margin-bottom:14px;
+}
+.toc ol{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 30px;
+}
+.toc a{
+  text-decoration:none;
+  color:var(--sub);
+  font-size:14px;
+}
+.chapter{margin-bottom:42px}
+.chapter-head{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:18px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--brand);
+}
+.chapter-num{
+  font-size:12px;
+  color:var(--brand);
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.chapter-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:24px;
+  font-weight:700;
+}
+.block{padding:22px 24px}
+h3{font-size:16px;margin:24px 0 10px}
+p{color:var(--sub);margin-bottom:12px}
+ul{padding-left:18px;color:var(--sub)}
+li{margin:6px 0}
+strong{color:var(--ink)}
+.callout{
+  margin:18px 0;
+  padding:14px 16px;
+  border-left:4px solid var(--brand);
+  background:#fff8f7;
+  border-radius:0 10px 10px 0;
+  color:var(--sub);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px 14px;
+  background:#fff;
+}
+.card h4{font-size:14px;margin-bottom:6px}
+.card p{font-size:13px;margin:0;color:var(--faint);line-height:1.65}
+.table-card{overflow:hidden}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+}
+th,td{
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+  text-align:left;
+}
+th{
+  font-size:13px;
+  color:#333;
+  background:#fff8f7;
+}
+tr:last-child td{border-bottom:none}
+.tag{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#fff1ef;
+  color:var(--brand);
+  font-size:11px;
+  font-weight:700;
+}
+.tag-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.priority{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
+}
+.priority-row{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:14px 16px;
+}
+.priority-bar{
+  width:4px;
+  border-radius:999px;
+  flex-shrink:0;
+  align-self:stretch;
+}
+.priority-main{flex:1}
+.priority-main h4{font-size:14px;margin-bottom:4px}
+.priority-main p{margin:0;font-size:13px;color:var(--faint)}
+.priority-high{background:#e8413a}
+.priority-mid{background:#f39c12}
+.priority-low{background:#95a5a6}
+.example-card{
+  padding:18px 18px 16px;
+  margin-top:18px;
+}
+.example-date{
+  font-size:12px;
+  color:var(--brand);
+  font-weight:700;
+  margin-bottom:6px;
+}
+.example-title{
+  font-size:16px;
+  font-weight:700;
+  line-height:1.55;
+  margin-bottom:8px;
+}
+.example-desc{
+  color:var(--sub);
+  font-size:14px;
+  line-height:1.75;
+}
+/* 消息类型标签体系：沿用 PRD_特自选消息1.html 原展示 */
+.tag-group { margin-bottom: 32px; }
+.tag-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.tag-group-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tag-group-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.tag-group-meaning {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-left: auto;
+}
+.tag-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px;
+}
+.tag-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sc-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  width: fit-content;
+}
+.tag-card-desc {
+  font-size: 11px;
+  color: var(--ink-faint);
+  line-height: 1.55;
+  margin: 0;
+}
+.tag-card-time {
+  font-size: 10px;
+  color: #bbb;
+}
+.tag-price-alert  { background:#fff0f0; color:#c62828; }
+.tag-limit        { background:#fff0f0; color:#c62828; }
+.tag-new-hl       { background:#fff0f0; color:#c62828; }
+.tag-unlock       { background:#fff3e0; color:#e65100; }
+.tag-shareholding { background:#fff3e0; color:#e65100; }
+.tag-pledge       { background:#fff3e0; color:#e65100; }
+.tag-notice-night { background:#e3f2fd; color:#1565c0; }
+.tag-notice-intra { background:#e3f2fd; color:#1565c0; }
+.tag-notice-post  { background:#e3f2fd; color:#1565c0; }
+.tag-report       { background:#e8eaf6; color:#3949ab; }
+.tag-earnings     { background:#e8eaf6; color:#3949ab; }
+.tag-ma           { background:#e8eaf6; color:#3949ab; }
+.tag-dividend     { background:#e8eaf6; color:#3949ab; }
+.tag-agm          { background:#e8eaf6; color:#3949ab; }
+.tag-bond         { background:#e8eaf6; color:#3949ab; }
+.tag-buyback      { background:#e8eaf6; color:#3949ab; }
+.tag-dragon       { background:#f3e5f5; color:#7b1fa2; }
+.tag-research     { background:#f3e5f5; color:#7b1fa2; }
+.tag-survey       { background:#f3e5f5; color:#7b1fa2; }
+.tag-xd           { background:#e8f5e9; color:#2e7d32; }
+.tag-news         { background:#e0f7fa; color:#00838f; }
+.tag-analysis     { background:#e0f7fa; color:#00838f; }
+.tag-overseas     { background:#fffde7; color:#f9a825; }
+.tag-futures      { background:#fffde7; color:#f9a825; }
+.tag-macro        { background:#fffde7; color:#f9a825; }
+.tag-daily-summary{ background:#fffde7; color:#f9a825; }
+.tag-weekly       { background:#fffde7; color:#f9a825; }
+.tag-margin       { background:#fce4ec; color:#880e4f; }
+.tag-block        { background:#fce4ec; color:#880e4f; }
+.tag-holders      { background:#fce4ec; color:#880e4f; }
+.impact-badge {
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:3px;
+  width:fit-content;
+}
+.impact-pos  { background:#fff0f0; color:#c62828; }
+.impact-neg  { background:#f0fff4; color:#27ae60; }
+.impact-neu  { background:#f5f5f5; color:#888888; }
+.impact-dual { background:#fffde7; color:#f9a825; }
+.color-legend {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 4px 12px 4px 8px;
+  font-size: 12px;
+  color: var(--ink-sub);
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tag-direction {
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  border-top:1px solid #f2f2f2;
+  padding-top:6px;
+  margin-top:2px;
+}
+.td-pos,.td-neg,.td-neu {
+  font-size:18px;
+  line-height:1.5;
+  padding:2px 6px;
+  border-radius:3px;
+  display:block;
+}
+.td-pos{background:#fff0f0;color:#c62828;}
+.td-neg{background:#f0fff4;color:#27ae60;}
+.td-neu{background:#f5f5f5;color:#888888;}
+@media (max-width:760px){
+  .cover{padding:52px 24px 42px}
+  .cover h1{font-size:30px}
+  .wrap{padding:28px 16px 56px}
+  .toc ol,.grid,.grid-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+  <section class="cover">
+    <h1>躺客AI<br>自选消息模块</h1>
+    <p>围绕用户自选股与持仓方向，提供盘前提醒、个股跟踪、重要提醒和对话内持续追问能力，形成更适合统一对话容器的个性化内容流。</p>
+  </section>
+
+  <main class="wrap">
+    <section class="toc">
+      <div class="toc-title">目录</div>
+      <ol>
+        <li><a href="#position">1. 模块定位与目标</a></li>
+        <li><a href="#principle">2. 设计原则</a></li>
+        <li><a href="#layout">3. 界面结构</a></li>
+        <li><a href="#tag">4. 消息类型标签体系</a></li>
+        <li><a href="#interaction">5. 对话态交互与时间流</a></li>
+        <li><a href="#context">6. 上下文、记忆与推荐问题</a></li>
+        <li><a href="#logic">7. 规则与模型分工</a></li>
+        <li><a href="#accept">8. 验收标准</a></li>
+      </ol>
+    </section>
+
+    <section class="chapter" id="position">
+      <div class="chapter-head">
+        <div class="chapter-num">01</div>
+        <div class="chapter-title">模块定位与目标</div>
+      </div>
+      <div class="block">
+        <p><strong>自选消息</strong>是躺客AI的场景之一，也是最强个性化场景。它围绕用户自选股和重点关注方向，把分散在不同来源的消息、公告、研报、盘面异动和重点风险，重新组织成一条适合“先看、再问、再跟”的内容流。</p>
+        <p>这个场景要解决的核心问题不是“今天市场上发生了什么”，而是<strong>“今天哪些消息和我的股票最相关，我现在最该先看什么”</strong>。</p>
+        <h3>1.1 用户价值</h3>
+        <ul>
+          <li>让用户一进入场景就先看到和自己最相关的内容，而不是看全市场噪声。</li>
+          <li>把信息告知升级为投资辅助判断，帮助用户建立观察、跟踪和预判动作。</li>
+          <li>把场景内容直接接入统一对话流，让浏览和追问成为一条连续链路。</li>
+        </ul>
+        <div class="grid">
+          <div class="card">
+            <h4>盘前优先级</h4>
+            <p>用一张盘前提醒卡快速建立今天与持仓最相关的整体认知。</p>
+          </div>
+          <div class="card">
+            <h4>个股深跟踪</h4>
+            <p>对每只重点股票提供时间轴消息、核心结论和继续追问入口。</p>
+          </div>
+          <div class="card">
+            <h4>重要提醒</h4>
+            <p>把风险、公告、研报和异常信号以更适合决策的方式补充进来。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="principle">
+      <div class="chapter-head">
+        <div class="chapter-num">02</div>
+        <div class="chapter-title">设计原则</div>
+      </div>
+      <div class="block">
+        <ul>
+          <li><strong>个性化优先</strong>：所有内容首先经过“是否与当前自选股或关注方向直接相关”的筛选。</li>
+          <li><strong>决策优先</strong>：不是把消息原样推给用户，而是告诉用户这条消息为什么值得看。</li>
+          <li><strong>可扫读优先</strong>：首屏内容优先压缩成可快速浏览的卡流，而不是长列表。</li>
+          <li><strong>对话承接优先</strong>：嵌入统一对话后，内容应像连续内容卡，而不是独立页面的硬搬运。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="layout">
+      <div class="chapter-head">
+        <div class="chapter-num">03</div>
+        <div class="chapter-title">界面结构</div>
+      </div>
+      <div class="block">
+        <p>自选消息界面围绕“先建立整体认知，再下钻个股，再补充重要提醒”的顺序组织，并适配到统一对话容器。</p>
+
+        <h3>3.1 盘前提醒</h3>
+        <p>盘前提醒位于内容顶部，承担“今日市场与持仓的一句话摘要”的角色。顶部展示数据更新时间；正文区域包含不超过 80 字的市场摘要和用户自选股的快速状态一览（红底代表利好（A股红涨），绿底代表利空（A股绿跌），灰底代表中性）；底部信号行给出整体消息面判断词，例如整体偏暖、需关注风险、无明显变化等。</p>
+
+        <h3>3.2 个股跟踪卡（轮播）</h3>
+        <p>针对每一只自选股提供详细的当日消息时间线。采用横向滑动轮播，每次只展示一只股票的卡片。每张卡片包含：股票名称与代码、一句话关键要点（今日核心信号），以及按时间顺序排列的消息时间线。时间线上每条消息都包含时间戳、消息类型标签和 40-80 字的内容摘要。</p>
+
+        <h3>3.3 重要提醒（优先级分层）</h3>
+        <p>把当日所有重要消息按优先级再次汇总，通过卡片左侧彩色竖线区分三个层级：</p>
+        <div class="priority">
+          <div class="priority-row">
+            <div class="priority-bar priority-high"></div>
+            <div class="priority-main">
+              <h4>紧急</h4>
+              <p>今日可能需要作出操作决策的消息，例如股价异动触发止损评估、重大事件改变持仓逻辑。提供「分析影响」深度分析入口。</p>
+            </div>
+          </div>
+          <div class="priority-row">
+            <div class="priority-bar priority-mid"></div>
+            <div class="priority-main">
+              <h4>重要</h4>
+              <p>对中期判断有影响的信息，需要关注但不需要今天立刻决定。</p>
+            </div>
+          </div>
+          <div class="priority-row">
+            <div class="priority-bar priority-low"></div>
+            <div class="priority-main">
+              <h4>背景</h4>
+              <p>对了解持仓有帮助的背景信息，可在有时间时阅读。</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>3.4 紧急消息详情页</h3>
+        <p>仅“紧急”级别消息提供深度分析入口。详情页从右侧滑入，内容分三块：事件完整分析（约 150 字，追求机制清晰）、持仓影响判断（区分短期情绪波动与中长期逻辑改变）、AI 操作建议（提供判断框架和观察指标，最终决策权留给用户）。</p>
+
+        <h3>3.5 界面约束</h3>
+        <ul>
+          <li>对话内容区左右留白继续压缩，在合理范围内尽量放大正文区域。</li>
+          <li>内部卡片 padding 优先让位给正文和时间轴信息，减少“缩在中间”的感觉。</li>
+          <li>横向卡流保留左右滑动、分页与切换交互。</li>
+          <li>进入对话后，内容应完整显示，超出内容走对话窗口整体滚动，不拆成多个内滚动盒。</li>
+        </ul>
+        <div class="grid">
+          <div class="card">
+            <h4>场景入口</h4>
+            <p>点击“自选消息”后，在当前对话窗口直接显示默认内容。</p>
+          </div>
+          <div class="card">
+            <h4>定位入口</h4>
+            <p>再次点击已看过的场景，回到它在当前对话中的原位置。</p>
+          </div>
+          <div class="card">
+            <h4>追问入口</h4>
+            <p>可以直接输入问题，也可以通过底部问题推荐继续追问。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="tag">
+      <div class="chapter-head">
+        <div class="chapter-num">04</div>
+        <div class="chapter-title">消息类型标签体系</div>
+      </div>
+      <div class="block">
+<p>系统共设 <strong>30 种标签</strong>，覆盖自选股从盘前到盘后全生命周期的所有消息类型。标签颜色按语义分为 10 个色系，用户看到颜色即可建立第一层分类判断，无需阅读标签文字。下方展示每种标签在产品中的真实外观、含义与典型推送时段。</p>
+
+    <!-- 颜色图例 + 影响方向图例 -->
+    <p style="font-size:13px;color:#777;margin-bottom:12px;line-height:1.7">
+      每张标签卡片展示两个维度的信息：<strong>标签颜色</strong>代表消息的类别归属，
+      <strong>影响方向徽标</strong>代表这类消息对自选股股价的典型影响方向，遵循
+      <strong style="color:#c62828">A股红涨绿跌</strong>原则标注。
+    </p>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+                background:#f9f9f9;border:1px solid #eee;border-radius:8px;
+                padding:10px 14px;margin-bottom:14px;font-size:12px;">
+      <span style="color:#999;font-weight:700;margin-right:4px;">影响方向</span>
+      <span class="impact-badge impact-pos">利好</span>
+      <span style="color:#bbb">通常带来上涨预期，A股显红</span>
+      <span style="color:#ddd;margin:0 6px">｜</span>
+      <span class="impact-badge impact-neg">利空</span>
+      <span style="color:#bbb">通常带来下跌压力，A股显绿</span>
+      <span style="color:#ddd;margin:0 6px">｜</span>
+      <span class="impact-badge impact-neu">中性</span>
+      <span style="color:#bbb">无明确方向影响</span>
+      <span style="color:#ddd;margin:0 6px">｜</span>
+      <span style="color:#bbb">视消息具体内容而定，需读详情判断</span>
+    </div>
+    <div class="color-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c62828"></div>红 · 行情信号</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e65100"></div>橙 · 股权风险</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div>蓝天 · 公告通知</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3949ab"></div>靛蓝 · 报告事件</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7b1fa2"></div>紫 · 机构行为</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2e7d32"></div>绿 · 除权除息日</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f57f17"></div>琥珀色·周期摘要</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#00695c"></div>青色系·资讯新闻</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f57f17"></div>琥珀·宏观市场</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#880e4f"></div>粉色系·资金流向</div>
+    </div>
+
+    <!-- 🔴 红色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#c62828"></div>
+        <span class="tag-group-name">红色系</span>
+        <span class="tag-group-meaning">今日行情信号 · 时效性最强，当天需要关注 · 方向由涨跌内容决定，不单独标注</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-price-alert">涨跌幅预警</span>
+          <p class="tag-card-desc">自选股达到涨跌幅阈值（±5%），提示价格出现显著波动</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：触发+5%阈值，上涨动能强</span>
+            <span class="td-neg">利空：触发-5%阈值，下跌压力大</span>
+          </div>
+          <span class="tag-card-time">盘中实时触发</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-limit">涨停 / 跌停</span>
+          <p class="tag-card-desc">自选股封涨停板或跌停板，是市场极端情绪的信号</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：涨停，资金共识强烈看多</span>
+            <span class="td-neg">利空：跌停，恐慌性卖出或重大负面</span>
+          </div>
+          <span class="tag-card-time">盘中实时触发</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-new-hl">创阶段新高/低</span>
+          <p class="tag-card-desc">收盘价创60日/半年/一年新高或新低，趋势信号</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：创新高，套牢盘解套，趋势向上</span>
+            <span class="td-neg">利空：创新低，持仓者亏损，抛压加重</span>
+          </div>
+          <span class="tag-card-time">盘后收盘后触发</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟠 橙色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#e65100"></div>
+        <span class="tag-group-name">橙色系</span>
+        <span class="tag-group-meaning">公司股权风险事件 · 影响中期持股判断</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-unlock">今日限售解禁</span>
+          <span class="impact-badge impact-neg">利空</span>
+          <p class="tag-card-desc">自选股今日有限售股解禁，关注潜在减持抛压</p>
+          <div class="tag-direction">
+            <span class="td-neg">利空：解禁规模越大、成本越低，潜在卖压越重，市场通常提前计价</span>
+          </div>
+          <span class="tag-card-time">盘前 07:30</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-shareholding">增减持计划</span>
+          <p class="tag-card-desc">大股东或高管发布增减持计划公告，反映内部人持股意向</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：增持——内部人认为股价被低估，愿意自掏腰包买入</span>
+            <span class="td-neg">利空：减持——内部人选择套现，对未来预期偏悲观</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-pledge">股权质押/解押</span>
+          <p class="tag-card-desc">大股东股权质押或解押公告，高比例质押是风险信号</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：解押——债务还清，平仓风险解除</span>
+            <span class="td-neg">利空：质押——大股东缺钱，触及平仓线时被动抛售形成踩踏</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔵 蓝色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#1565c0"></div>
+        <span class="tag-group-name">蓝色系</span>
+        <span class="tag-group-meaning">正式公告与报告 · 天蓝=通知公告，靛蓝=报告/公司事件</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-notice-night">隔夜公告提醒</span>
+          <p class="tag-card-desc">个股 21:00 至盘前发布的公告，次日开盘前汇总提醒</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：方向取决于公告内容，收到提醒后需读具体内容判断</span>
+          </div>
+          <span class="tag-card-time">次日盘前 07:30</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-notice-intra">盘中发布公告</span>
+          <p class="tag-card-desc">个股交易时段内发布的所有公告，实时推送</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：方向取决于公告内容，实时推送以便盘中快速响应</span>
+          </div>
+          <span class="tag-card-time">盘中实时</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-notice-post">盘后公告提醒</span>
+          <p class="tag-card-desc">收盘后至 21:00 发布的公告，A 股公告高峰期（占比>70%）</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：方向取决于公告内容，影响次日开盘走势</span>
+          </div>
+          <span class="tag-card-time">收盘后 ~19:00</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-report">定期报告发布</span>
+          <p class="tag-card-desc">年报、半年报、季报正式发布，含是否超业绩预期对比</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：业绩超预期，关键看与市场预期的偏差幅度</span>
+            <span class="td-neg">利空：业绩不及预期，绝对数字好但低于预期仍是利空</span>
+          </div>
+          <span class="tag-card-time">报告发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-earnings">业绩预告/快报</span>
+          <p class="tag-card-desc">预增 / 预减 / 扭亏 / 首亏等业绩预告发布，早于正式报告</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：预增、扭亏——提前确认盈利改善，是重要催化剂</span>
+            <span class="td-neg">利空：预减、首亏——盈利恶化，市场会提前反应</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-ma">并购重组进展</span>
+          <p class="tag-card-desc">重大资产重组、并购等公告，通常伴随停牌或重大价格波动</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：注入优质资产或被头部公司并购，提升股东价值</span>
+            <span class="td-neg">利空：高溢价收购劣质资产，可能是大股东利益输送</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-dividend">分红方案</span>
+          <span class="impact-badge impact-pos">利好</span>
+          <p class="tag-card-desc">利润分配 / 分红送转方案公告，影响估值与除权预期</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：公司愿意分红说明现金流充裕、经营健康，直接回报股东</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-agm">今日股东大会</span>
+          <span class="impact-badge impact-neu">中性</span>
+          <p class="tag-card-desc">自选股今日召开股东大会，关注重大决议投票结果</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：会前无法判断方向，若审议再融资/并购等重大事项则需关注结果</span>
+          </div>
+          <span class="tag-card-time">盘前提醒</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-bond">可转债申购/上市</span>
+          <span class="impact-badge impact-neu">中性</span>
+          <p class="tag-card-desc">自选股可转债申购或上市事件，影响股本与转股预期</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：最终转股会摊薄股本偏利空，但募资用于好项目则中长期利好</span>
+          </div>
+          <span class="tag-card-time">事件日盘前提醒</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-buyback">回购进展</span>
+          <span class="impact-badge impact-pos">利好</span>
+          <p class="tag-card-desc">公司股份回购进展公告，大额回购通常是正面信号</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：减少流通股本提升每股价值，传递管理层认为股价被低估的信号</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟣 紫色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#7b1fa2"></div>
+        <span class="tag-group-name">紫色系</span>
+        <span class="tag-group-meaning">机构行为 · 判断主力动向的核心依据</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-dragon">龙虎榜数据</span>
+          <p class="tag-card-desc">个股登上龙虎榜，附买卖席位详情，识别游资与机构动向</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：机构席位大幅净买入，实力资金主动建仓</span>
+            <span class="td-neg">利空：机构席位大幅净卖出，主力资金离场</span>
+            <span class="td-neu">中性：游资活跃但无机构，短线博弈为主，可持续性存疑</span>
+          </div>
+          <span class="tag-card-time">盘后 19:00</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-research">机构研报</span>
+          <p class="tag-card-desc">券商发布的个股研报，附评级变动（上调/下调/首次覆盖）</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：上调评级或目标价、首次覆盖给买入——机构看多</span>
+            <span class="td-neg">利空：下调评级或目标价——机构看法转悲观</span>
+          </div>
+          <span class="tag-card-time">研报发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-survey">机构调研</span>
+          <span class="impact-badge impact-pos">利好</span>
+          <p class="tag-card-desc">个股接待机构调研记录，反映机构对公司的关注程度</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：机构主动调研说明产生研究兴趣，可能触发后续研报或建仓</span>
+          </div>
+          <span class="tag-card-time">公告发布时推送</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟢 绿色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#27ae60"></div>
+        <span class="tag-group-name">绿色系</span>
+        <span class="tag-group-meaning">除权除息 · 除权当日股价技术性下调，A股行情软件显示绿色，与"跌"同色处理</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-xd">今日除权除息</span>
+          <span class="impact-badge impact-neu">中性</span>
+          <p class="tag-card-desc">自选股今日为除权除息日，股价技术性调整，注意区分真实涨跌与除权影响</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：除权本身不影响总资产，后续"填权"或"贴权"取决于公司基本面</span>
+          </div>
+          <span class="tag-card-time">当日盘前提醒</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🩵 青色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#00838f"></div>
+        <span class="tag-group-name">青色系</span>
+        <span class="tag-group-meaning">资讯与新闻 · 背景信息，辅助理解市场情绪</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-news">资讯通知</span>
+          <p class="tag-card-desc">盘中自选股涉及的热点事件、重大事件及时推送</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：政策支持行业、竞争对手出问题自家受益等</span>
+            <span class="td-neg">利空：监管处罚、行业整顿、供应链断裂、原材料涨价等</span>
+          </div>
+          <span class="tag-card-time">盘中实时</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-analysis">深度新闻解读</span>
+          <p class="tag-card-desc">与自选股相关的深度分析文章，帮助理解行业与公司逻辑</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：需阅读全文判断，深度解读本身不代表方向，是辅助决策的背景材料</span>
+          </div>
+          <span class="tag-card-time">不定时推送</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟡 琥珀色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#f9a825"></div>
+        <span class="tag-group-name">琥珀色系</span>
+        <span class="tag-group-meaning">宏观市场 + 周期摘要 · 影响整体市场情绪的外部信号及AI定期推送</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-overseas">关联外盘异动</span>
+          <p class="tag-card-desc">美股、港股表现（如 A+H 股联动），每日 7:50 定时推送</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：A+H 股港股大涨，通常带动 A 股跟涨</span>
+            <span class="td-neg">利空：港股大跌拖累 A 股，美股暴跌引发全球风险偏好下降</span>
+          </div>
+          <span class="tag-card-time">每日 07:50</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-futures">关联期货异动</span>
+          <p class="tag-card-desc">商品期货夜盘大幅波动（有色、原油等），每日 8:10 推送</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：对上游资源股——原油涨利好石油股，铜涨利好铜矿股</span>
+            <span class="td-neg">利空：对下游制造商——原油涨利空化工/航空，铜涨利空电器厂商</span>
+          </div>
+          <span class="tag-card-time">每日 08:10</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-macro">今日数据发布</span>
+          <p class="tag-card-desc">宏观数据发布（CPI、PMI 等），影响市场整体预期判断</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：PMI超预期（制造业景气）；CPI偏低（降息空间大）；GDP超预期</span>
+            <span class="td-neg">利空：PMI不及预期；CPI偏高（通胀压力大，可能收紧货币）</span>
+          </div>
+          <span class="tag-card-time">数据发布时推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-daily-summary">自选股今日看点</span>
+          <p class="tag-card-desc">AI 汇总所有自选股重要信息，每日 7:30 定时一条精华推送</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：综合摘要，方向由当日具体消息内容决定，是快速了解全局的入口</span>
+          </div>
+          <span class="tag-card-time">每日 07:30</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-weekly">自选股本周总结</span>
+          <span class="impact-badge impact-neu">中性</span>
+          <p class="tag-card-desc">本周表现、重大事件回顾、下周关注点，每周五盘后推送</p>
+          <div class="tag-direction">
+            <span class="td-neu">中性：周期性复盘，无方向倾向，帮助用户建立持仓的中期视角</span>
+          </div>
+          <span class="tag-card-time">每周五盘后</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 💗 粉色系 -->
+    <div class="tag-group">
+      <div class="tag-group-header">
+        <div class="tag-group-swatch" style="background:#880e4f"></div>
+        <span class="tag-group-name">粉色系</span>
+        <span class="tag-group-meaning">资金流向 · 反映场内资金的行为变化</span>
+      </div>
+      <div class="tag-cards">
+        <div class="tag-card">
+          <span class="sc-tag tag-margin">融资融券变动</span>
+          <p class="tag-card-desc">自选股融资余额大幅变化（日增>5%），反映杠杆资金动向</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：融资余额大幅增加，杠杆资金加仓，看多情绪浓厚</span>
+            <span class="td-neg">利空：融券余额大幅增加，有资金借券做空，预期股价下跌</span>
+          </div>
+          <span class="tag-card-time">盘后推送</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-block">大宗交易</span>
+          <p class="tag-card-desc">当日发生大宗交易，附折溢价信息，判断机构大额买卖意图</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：溢价大宗——买方愿意付出更高价格拿货，战略性建仓意图明显</span>
+            <span class="td-neg">利空：折价大宗——卖方急于出货宁愿打折，机构减仓信号</span>
+          </div>
+          <span class="tag-card-time">盘后 19:20</span>
+        </div>
+        <div class="tag-card">
+          <span class="sc-tag tag-holders">股东户数变化</span>
+          <p class="tag-card-desc">最新股东户数数据变动，反映筹码集中度变化</p>
+          <div class="tag-direction">
+            <span class="td-pos">利好：户数减少——筹码集中，大资金默默吸筹，散户离场主力接盘</span>
+            <span class="td-neg">利空：户数增加——筹码分散，大资金出货，散户接盘主力离场</span>
+          </div>
+          <span class="tag-card-time">数据披露时推送</span>
+        </div>
+      </div>
+    </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="interaction">
+      <div class="chapter-head">
+        <div class="chapter-num">05</div>
+        <div class="chapter-title">对话态交互与时间流</div>
+      </div>
+      <div class="block">
+        <h3>5.1 首次点击场景</h3>
+        <ul>
+          <li>在当前对话窗口中完整展示自选消息默认内容。</li>
+          <li>未提问前，不生成收缩入口。</li>
+          <li>用户可以直接滑动浏览个股卡流，交互不失效。</li>
+        </ul>
+
+        <h3>5.2 提问后</h3>
+        <ul>
+          <li>自选消息场景进入已提问状态。</li>
+          <li>当前默认内容切换为收缩入口，但仍保留在时间流中。</li>
+          <li>用户问题与 AI 回复继续追加在该场景节点之后。</li>
+        </ul>
+
+        <h3>5.3 再次点击已看过场景</h3>
+        <ul>
+          <li>直接定位到该场景在当前对话中的原位置。</li>
+          <li>如果当前是收缩入口，则定位到入口位置。</li>
+          <li>如果当前是展开内容，则定位到展开内容本身，并给予轻量高亮反馈。</li>
+        </ul>
+
+        <h3>5.4 对话态展示要求</h3>
+        <ul>
+          <li>进入对话后，应表现为连续内容卡流，而不是原页面整块搬运。</li>
+          <li>盘前提醒作为顶部摘要卡。</li>
+          <li>市场摘要与核心判断可以拆成更易读的正文卡。</li>
+          <li>时间轴节点用卡片化正文承接，避免信息挤压在一列里。</li>
+          <li>横向分页与滑动继续保留，场景内嵌后交互不能失效。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="context">
+      <div class="chapter-head">
+        <div class="chapter-num">06</div>
+        <div class="chapter-title">上下文、记忆与推荐问题</div>
+      </div>
+      <div class="block">
+        <h3>6.1 上下文规则</h3>
+        <ul>
+          <li>自选消息默认内容只负责展示，不自动进入长期记忆。</li>
+          <li>用户围绕某只股票、某条时间轴动态提问时，可作为当前轮回答的临时上下文。</li>
+          <li>只有用户明确长期关注的股票或方向，才允许进入长期记忆。</li>
+        </ul>
+
+        <h3>6.2 问题推荐规则</h3>
+        <ul>
+          <li>首页未提问前，中部显示纵向推荐问题。</li>
+          <li>进入对话并至少提问一次后，问题推荐固定显示在底部操作区上方。</li>
+          <li>自选消息场景的推荐问题应优先围绕持仓影响、优先级判断、短中线变化、资金与板块联动展开。</li>
+          <li>问题推荐是操作辅助，不进入时间流。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="logic">
+      <div class="chapter-head">
+        <div class="chapter-num">07</div>
+        <div class="chapter-title">规则与模型分工</div>
+      </div>
+      <div class="block">
+        <p>自选消息建议采用“规则先筛选，模型再表达”的方式落地。规则负责确定和用户相关、值得看、该排前面的内容；模型负责压缩、解释和组织成更易读的卡流。</p>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>字段 / 动作</th>
+                <th>职责归属</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>是否与用户自选股相关、优先级高低、时间轴归类、标签类别、去重合并、排序位置</td>
+                <td>规则优先</td>
+              </tr>
+              <tr>
+                <td>盘前提醒摘要、一句话核心结论、时间轴消息压缩、追问推荐文案</td>
+                <td>模型生成</td>
+              </tr>
+              <tr>
+                <td>方向判断字段</td>
+                <td>规则给边界，模型给自然语言表达</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">开发落地时，优先保证“相关性筛选、优先级排序、标签一致性、对话定位”这几项规则稳定，再逐步增强模型生成的文案表现。</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="accept">
+      <div class="chapter-head">
+        <div class="chapter-num">08</div>
+        <div class="chapter-title">验收标准</div>
+      </div>
+      <div class="block">
+        <ul>
+          <li>场景标题显示“自选消息”，顶部主卡显示“盘前提醒”。</li>
+          <li>界面结构章节已明确包含盘前提醒、个股跟踪卡（轮播）、重要提醒（优先级分层）与紧急消息详情页。</li>
+          <li>对话态下内容区应保持较高的信息密度与正文宽度，不出现明显“缩在中间”的观感。</li>
+          <li>横向个股卡仍支持滑动与分页。</li>
+          <li>时间轴正文完整显示，不出现明显挤压、裁切和换行异常。</li>
+          <li>提问后可进入收缩入口态，并保留在时间流中。</li>
+          <li>再次点击已看过场景，可定位回原位置。</li>
+          <li>默认内容不自动进入长期记忆，但可以作为当前轮问题的临时上下文。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+

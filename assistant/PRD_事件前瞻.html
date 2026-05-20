@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD - 躺客AI 事件前瞻模块</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root{
+  --brand:#e8413a;
+  --brand-deep:#c0392b;
+  --ink:#1a1a1a;
+  --sub:#555;
+  --faint:#8d8d8d;
+  --line:#ececec;
+  --bg:#fafaf8;
+  --card:#fff;
+  --wrap:780px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.85;
+}
+
+.cover{
+  background:linear-gradient(135deg,#e8413a 0%,#c0392b 58%,#922b21 100%);
+  color:#fff;
+  padding:72px 48px 54px;
+  position:relative;
+  overflow:hidden;
+}
+
+.cover::before,
+.cover::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.05);
+}
+
+.cover::before{width:280px;height:280px;right:-80px;top:-80px}
+.cover::after{width:180px;height:180px;left:38%;bottom:-60px}
+
+.cover h1{
+  position:relative;
+  font-family:'Noto Serif SC',serif;
+  font-size:38px;
+  line-height:1.24;
+  margin-bottom:14px;
+}
+
+.cover p{
+  position:relative;
+  max-width:580px;
+  font-size:16px;
+  color:rgba(255,255,255,.8);
+}
+
+.wrap{
+  max-width:var(--wrap);
+  margin:0 auto;
+  padding:52px 28px 84px;
+}
+
+.toc,.block,.table-card,.example-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 10px 28px rgba(15,23,42,.04);
+}
+
+.toc{padding:26px 28px;margin-bottom:42px}
+
+.toc-title{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--faint);
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.toc ol{
+  list-style:none;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 30px;
+}
+
+.toc a{
+  text-decoration:none;
+  color:var(--sub);
+  font-size:14px;
+}
+
+.chapter{margin-bottom:42px}
+
+.chapter-head{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:18px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--brand);
+}
+
+.chapter-num{
+  font-size:12px;
+  color:var(--brand);
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.chapter-title{
+  font-family:'Noto Serif SC',serif;
+  font-size:24px;
+  font-weight:700;
+}
+
+.block{padding:22px 24px}
+
+h3{font-size:16px;margin:24px 0 10px}
+p{color:var(--sub);margin-bottom:12px}
+ul{padding-left:18px;color:var(--sub)}
+li{margin:6px 0}
+strong{color:var(--ink)}
+
+.callout{
+  margin:18px 0;
+  padding:14px 16px;
+  border-left:4px solid var(--brand);
+  background:#fff8f7;
+  border-radius:0 10px 10px 0;
+  color:var(--sub);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px 14px;
+  background:#fff;
+}
+
+.card h4{font-size:14px;margin-bottom:6px}
+.card p{font-size:13px;margin:0;color:var(--faint);line-height:1.65}
+
+.table-card{overflow:hidden}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+}
+
+th,td{
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+  text-align:left;
+}
+
+th{
+  font-size:13px;
+  color:#333;
+  background:#fff8f7;
+}
+
+tr:last-child td{border-bottom:none}
+
+.tag{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#fff1ef;
+  color:var(--brand);
+  font-size:11px;
+  font-weight:700;
+}
+
+.tag-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.example-card{
+  padding:18px 18px 16px;
+  margin-top:18px;
+}
+
+.example-date{
+  font-size:12px;
+  color:var(--brand);
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.example-title{
+  font-size:16px;
+  font-weight:700;
+  line-height:1.55;
+  margin-bottom:8px;
+}
+
+.example-desc{
+  color:var(--sub);
+  font-size:14px;
+  line-height:1.75;
+}
+
+@media (max-width:760px){
+  .cover{padding:52px 24px 42px}
+  .cover h1{font-size:30px}
+  .wrap{padding:28px 16px 56px}
+  .toc ol,.grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+  <section class="cover">
+    <h1>躺客AI<br>事件前瞻模块</h1>
+    <p>围绕未来事件、主题催化与板块联动，建立一份适合在统一对话容器中浏览、定位、追问和持续回看的事件卡流需求文档。</p>
+  </section>
+
+  <main class="wrap">
+    <section class="toc">
+      <div class="toc-title">目录</div>
+      <ol>
+        <li><a href="#position">1. 模块定位与目标</a></li>
+        <li><a href="#layout">2. 界面结构</a></li>
+        <li><a href="#principle">3. 设计原则</a></li>
+        <li><a href="#admission">4. 内容准入标准</a></li>
+        <li><a href="#scope">5. 收录范围与排除规则</a></li>
+        <li><a href="#card">6. 卡片结构与文案规范</a></li>
+        <li><a href="#interaction">7. 对话态交互与时间流</a></li>
+        <li><a href="#recommend">8. 问题推荐与继续追问</a></li>
+        <li><a href="#logic">9. 规则与模型分工</a></li>
+        <li><a href="#accept">10. 验收标准</a></li>
+      </ol>
+    </section>
+
+    <section class="chapter" id="position">
+      <div class="chapter-head">
+        <div class="chapter-num">01</div>
+        <div class="chapter-title">模块定位与目标</div>
+      </div>
+      <div class="block">
+        <p><strong>事件前瞻</strong>是躺客AI的场景之一，用于提前筛选未来一段时间内可能被市场交易的关键事件，并将其压缩为用户可快速理解的“时间 + 事件 + 预期方向 + 关联板块”信息。</p>
+        <p>它不承担新闻复盘职责，也不承接单只个股公告流。这个场景要回答的核心问题不是“今天发生了什么”，而是<strong>“接下来几天，市场可能先交易什么预期”</strong>。</p>
+        <h3>1.1 模块目标</h3>
+        <ul>
+          <li>从未来事件中筛出真正具备交易预期价值的内容。</li>
+          <li>把复杂事件翻译成用户能快速理解的板块机会、风险或风格变化。</li>
+          <li>帮助用户在事件发生前建立关注清单，而不是在事件落地后被动接收资讯。</li>
+          <li>将事件节点与问答节点统一放入同一条对话时间流，支持持续回看与继续追问。</li>
+        </ul>
+        <div class="grid">
+          <div class="card">
+            <h4>未来关注清单</h4>
+            <p>将未来短中期的重要事件压缩为适合快速浏览的事件流。</p>
+          </div>
+          <div class="card">
+            <h4>板块预期翻译</h4>
+            <p>从事件出发，直接告诉用户可能先交易什么方向。</p>
+          </div>
+          <div class="card">
+            <h4>对话内持续追问</h4>
+            <p>让场景内容、用户问题和 AI 回答自然衔接，而不是分散在不同页面。</p>
+          </div>
+          <div class="card">
+            <h4>提供提前关注价值</h4>
+            <p>帮助用户建立观察、跟踪和预判动作，而非被动接收资讯。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="layout">
+      <div class="chapter-head">
+        <div class="chapter-num">02</div>
+        <div class="chapter-title">界面结构</div>
+      </div>
+      <div class="block">
+        <p>事件前瞻位于输入框上方的场景按钮区域，和其他场景并列展示。用户点击后，内容直接进入当前对话窗口，而不是跳转独立页面。</p>
+        <h3>2.1 显示结构</h3>
+        <ul>
+          <li>场景标题</li>
+          <li>横向事件卡流</li>
+          <li>页码与左右切换按钮</li>
+          <li>底部固定问题推荐、场景按钮、输入框</li>
+        </ul>
+        <h3>2.2 界面约束</h3>
+        <ul>
+          <li>不显示原生横向滚动条本体。</li>
+          <li>保留左右滑动、页码、左右切换按钮。</li>
+          <li>不显示“默认内容”“来源场景”“已展开”等解释型文案。</li>
+          <li>嵌入对话后，内容应适配聊天态宽度与留白，避免像独立页面硬塞进消息流。</li>
+          <li>只要同一会话中已经问过问题，底部问题推荐就持续显示，直到切换到新会话。</li>
+        </ul>
+        <div class="grid">
+          <div class="card">
+            <h4>浏览入口</h4>
+            <p>点击场景按钮后，直接在当前对话中展示默认内容。</p>
+          </div>
+          <div class="card">
+            <h4>提问入口</h4>
+            <p>用户可以围绕当前事件输入问题，也可以点击问题推荐继续追问。</p>
+          </div>
+          <div class="card">
+            <h4>定位入口</h4>
+            <p>再次点击看过的场景时，返回该场景在当前对话中的原位置。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="principle">
+      <div class="chapter-head">
+        <div class="chapter-num">03</div>
+        <div class="chapter-title">设计原则</div>
+      </div>
+      <div class="block">
+        <p>事件前瞻场景遵循以下四个基础原则：</p>
+        <ul>
+          <li><strong>未来性</strong>：只展示未来即将发生的事件，不做已发生事件复盘。</li>
+          <li><strong>交易性</strong>：只有那些可能被市场提前交易的事件，才值得进入该场景。</li>
+          <li><strong>板块性</strong>：关注的是板块、风格和主题联动，而不是单只个股信息流。</li>
+          <li><strong>压缩性</strong>：让用户快速知道“哪天、什么事、可能影响什么方向”，而不是读长文。</li>
+        </ul>
+        <div class="callout">这个场景的核心价值是“预期建立”，不是“资讯补充”。用户打开这里，最需要拿到的是未来关注清单，而不是过去事件总结。</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="admission">
+      <div class="chapter-head">
+        <div class="chapter-num">04</div>
+        <div class="chapter-title">内容准入标准</div>
+      </div>
+      <div class="block">
+        <p>一条内容进入事件前瞻，必须同时满足以下四个条件：</p>
+        <h3>4.1 有明确时间锚点</h3>
+        <p>事件必须存在明确日期、时间窗口或生效节点，例如公布日、召开日、生效日、落地周期等。没有明确时间锚点的泛趋势判断，不应进入该场景。</p>
+        <h3>4.2 可映射到明确板块</h3>
+        <p>事件至少能对应 1 个板块，通常以 1-3 个板块为宜，不宜过散。事件前瞻不是知识库，而是方向预测列表。</p>
+        <p>对应的板块标签中，凡涉及行业或概念的，应统一使用同花顺行业或概念口径。对于这类行业 / 概念标签，需要基于已计算的个股与行业或概念的相关性系数，在每个板块标签下分别列出相关性系数最高的三只个股。</p>
+        <h3>4.3 存在预期交易空间</h3>
+        <p>市场可能在事件真正发生前就开始提前布局、博弈或形成分歧，事件具备“预期先行”的特征。</p>
+        <h3>4.4 对用户有提前知道的价值</h3>
+        <p>用户在事件发生前知道这件事后，可以据此形成关注清单、观察路径或预判方向。如果提前知道也无法形成动作价值，则不应进入。</p>
+        <div class="callout">一句话判断标准：如果一条内容不能回答“这件事为什么值得提前关注”，它就不应该进入事件前瞻。</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="scope">
+      <div class="chapter-head">
+        <div class="chapter-num">05</div>
+        <div class="chapter-title">收录范围与排除规则</div>
+      </div>
+      <div class="block">
+        <h3>5.1 优先收录内容类型</h3>
+        <ul>
+          <li><strong>宏观数据与利率窗口</strong>：如 GDP、PMI、CPI、社融、LPR、MLF、美联储议息等。</li>
+          <li><strong>政策与监管落地</strong>：如行业新规生效、补贴细则落地、监管规则实施等。</li>
+          <li><strong>产业大会、论坛与展会</strong>：如储能大会、机器人大会、车企技术发布会等。</li>
+          <li><strong>行业关键经营节点</strong>：如销量、装机、交付、旺季备货、票房档期等。</li>
+          <li><strong>国际重大事件窗口</strong>：如 OPEC 会议、关税节点、海外政策表决、地缘风险窗口等。</li>
+        </ul>
+
+        <h3>5.2 条件性收录内容</h3>
+        <p>以下内容不是默认进入，但在具备明显板块外溢效应时可以收录：龙头公司新品发布、龙头公司业绩预告、海外龙头大会或发布会、资金面重大调整事件。</p>
+        <p>判断原则是：如果只影响单只股票，不进入；如果能够带动产业链、板块情绪或市场风格变化，可以进入。</p>
+
+        <h3>5.3 不收录内容</h3>
+        <ul>
+          <li>已发生且市场已反应完成的资讯。</li>
+          <li>没有明确日期的泛趋势判断。</li>
+          <li>单只个股公告、研报、普通公司动态。</li>
+          <li>低可信度传闻。</li>
+          <li>没有预期交易价值的普通通知。</li>
+        </ul>
+        <div class="callout">事件前瞻不是新闻列表，也不是个股提醒，更不是把所有未来事件都排成日历。它只保留那些值得用户提前建立预期的内容。</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="card">
+      <div class="chapter-head">
+        <div class="chapter-num">06</div>
+        <div class="chapter-title">卡片结构与文案规范</div>
+      </div>
+      <div class="block">
+        <p>每一条事件前瞻内容，本质上都是一张“未来事件卡”。每张卡只回答三个问题：什么时候会发生什么事、为什么值得提前关注、可能影响哪些板块。</p>
+
+        <h3>6.1 标准字段</h3>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>卡片层</th>
+                <th>内容组成</th>
+                <th>设计要求</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tag">事件主卡</span></td>
+                <td>日期、年份、事件标题、预期说明、1-3 个板块标签，如板块标签属于行业或概念，还应包含“板块相关个股 TOP3”</td>
+                <td>一屏内优先保证事件标题和预期说明可读，支持横滑查看后续事件。</td>
+              </tr>
+              <tr>
+                <td><span class="tag">页码区</span></td>
+                <td>当前页 / 总页数、左右切换按钮</td>
+                <td>保留切换反馈，不展示原生滚动条。</td>
+              </tr>
+              <tr>
+                <td><span class="tag">问题推荐</span></td>
+                <td>围绕当前事件与最近问题的推荐追问</td>
+                <td>固定在底部操作区，不进入时间流。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>6.2 文案结构</h3>
+        <p>建议采用三段式表达：第一段写事件本体，第二段写预期说明，第三段写板块标签及板块相关个股 TOP3。</p>
+
+        <div class="example-card">
+          <div class="example-date">示例卡片</div>
+          <div class="example-title">第一段｜事件本体：LPR 报价将公布，市场关注是否下调及对银行、房地产开发的影响</div>
+          <div class="example-desc">第二段｜预期说明：若利率继续下调，稳增长与宽信用预期有望升温，银行与房地产开发板块分化可能加大。</div>
+          <div class="tag-row">
+            <span class="tag">银行</span>
+            <span class="tag">房地产开发</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag">银行 TOP3</span>
+            <span class="tag">招商银行</span>
+            <span class="tag">平安银行</span>
+            <span class="tag">宁波银行</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag">房地产开发 TOP3</span>
+            <span class="tag">万科A</span>
+            <span class="tag">保利发展</span>
+            <span class="tag">招商蛇口</span>
+          </div>
+          <p class="example-desc" style="margin-top:14px;">第三段｜板块标签：标签使用同花顺行业或概念口径；每个行业 / 概念标签下分别展示相关性系数最高的三个个股。</p>
+        </div>
+
+        <h3>6.3 标签体系与排序逻辑</h3>
+        <p>统一使用“板块标签”，不使用“消息类型标签”。推荐标签包括：大盘、银行、地产、新能源、储能、算力、消费、券商、物流、军工、黄金、化工等。</p>
+        <p>排序采用“时间优先，影响校正”的原则，综合考虑时间临近度、影响范围、预期交易强度、与当前市场主线关联度、与用户关注方向相关度。</p>
+        <h3>6.4 颜色设计规则</h3>
+        <p>板块标签颜色只表达“分类”，不表达涨跌方向或利好利空判断。考虑到 A 股用户对红涨绿跌有强认知，板块标签不使用高饱和红色或绿色作为主色，避免用户误以为系统正在给出方向性判断。</p>
+        <p>板块标签建议采用低饱和、低对比的辅助色体系，例如灰蓝、雾蓝、浅紫、暖杏、青蓝、琥珀灰等。不同板块可以有固定色系，以帮助用户快速识别分类，但颜色本身不代表上涨、下跌、强弱或推荐程度。</p>
+        <p>个股标签统一使用黑色文字和浅灰底，仅表示“关联标的”。如后续卡片需要展示“偏利好 / 偏利空 / 中性博弈”等方向字段，红色、绿色和灰色仅允许用于该方向字段，且需要和板块标签在样式上明显区分。</p>
+        <h3>6.5 展示时间范围</h3>
+        <p>默认展示未来 14 天的事件窗口，并支持根据产品策略配置展示范围。其中临近发生的事件作为重点关注区，其余事件作为常规预期区。已过期事件自动置灰或下沉，不继续占据高位。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="interaction">
+      <div class="chapter-head">
+        <div class="chapter-num">07</div>
+        <div class="chapter-title">对话态交互与时间流</div>
+      </div>
+      <div class="block">
+        <h3>7.1 首次点击场景</h3>
+        <ul>
+          <li>在当前对话窗口中直接展示事件前瞻默认内容。</li>
+          <li>未提问前，不生成收缩入口。</li>
+          <li>按用户点击顺序加入场景节点。</li>
+        </ul>
+
+        <h3>7.2 提问后</h3>
+        <ul>
+          <li>事件前瞻进入已提问状态。</li>
+          <li>原默认内容在时间流中切换为收缩入口。</li>
+          <li>用户问题与 AI 回复继续追加在该节点之后。</li>
+        </ul>
+
+        <h3>7.3 再次点击已看过场景</h3>
+        <ul>
+          <li>直接定位到该场景在当前对话中的原位置。</li>
+          <li>如果当前处于收缩状态，则定位到收缩入口。</li>
+          <li>提供轻量高亮反馈，不重排时间顺序。</li>
+        </ul>
+
+        <h3>7.4 时间流硬规则</h3>
+        <ul>
+          <li>只有用户真实点击过的场景，才进入当前对话时间流。</li>
+          <li>场景节点按首次点击时间进入，不因后续再次点击而改序。</li>
+          <li>先点场景再提问，则场景节点排在问题前。</li>
+          <li>后点的新场景出现在那个时点之后，不允许插到旧问题前面。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="recommend">
+      <div class="chapter-head">
+        <div class="chapter-num">08</div>
+        <div class="chapter-title">问题推荐与继续追问</div>
+      </div>
+      <div class="block">
+        <p>事件前瞻场景的问题推荐使用横向卡片展示，固定在底部操作区，位于场景按钮上方。</p>
+        <ul>
+          <li>只有当前对话已经问过至少一个问题后，问题推荐才持续显示。</li>
+          <li>推荐内容根据当前场景与最近一条用户问题动态变化。</li>
+          <li>重点围绕催化强度、影响板块、龙头/补涨、预期落空风险、资金承接等方向。</li>
+          <li>问题推荐本身不进入时间流。</li>
+        </ul>
+        <h3>8.1 对话内推荐逻辑</h3>
+        <ul>
+          <li>如果当前展开的是事件主卡，优先推荐围绕该事件继续追问的问题。</li>
+          <li>如果最近一条问题已明确指向某个主题，则推荐向该主题进一步收敛。</li>
+          <li>推荐文案要像“下一步最自然的问题”，而不是泛化题库。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="logic">
+      <div class="chapter-head">
+        <div class="chapter-num">09</div>
+        <div class="chapter-title">规则与模型分工</div>
+      </div>
+      <div class="block">
+        <p>事件前瞻建议采用“规则优先，模型补全”的设计方式。规则负责稳定性和边界，模型负责表达和压缩。</p>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>字段 / 动作</th>
+                <th>职责归属</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>是否准入、事件时间、是否过期、排序分数、候选板块标签、去重合并、来源可信度校验</td>
+                <td>规则优先</td>
+              </tr>
+              <tr>
+                <td>标题润色、一句话预期描述、影响解释、推荐追问文案</td>
+                <td>模型生成</td>
+              </tr>
+              <tr>
+                <td>最终显示标签</td>
+                <td>规则给候选，模型筛选 1-3 个用于展示</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">产品原则应明确为：准入、排序、标签边界由规则优先；标题、摘要与解释由模型生成。模型不决定事件能不能进入场景，只决定如何更清楚地表达。</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="accept">
+      <div class="chapter-head">
+        <div class="chapter-num">10</div>
+        <div class="chapter-title">验收标准</div>
+      </div>
+      <div class="block">
+        <ul>
+          <li>点击事件前瞻场景后，在当前对话中展示完整默认内容。</li>
+          <li>卡片支持左右滑动，页码与左右按钮可用，但不显示原生滚动条。</li>
+          <li>未提问前，场景默认内容不形成收缩入口。</li>
+          <li>提问后，默认内容切换为收缩入口，并保留在时间流中。</li>
+          <li>再次点击已看过的事件前瞻，可定位回原位置，不打乱顺序。</li>
+          <li>底部问题推荐固定显示在操作区，不跑到顶部，不进入时间流。</li>
+          <li>文档中的规则层内容应足以支持开发直接拆解与实现，不依赖补充文档单独阅读。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
