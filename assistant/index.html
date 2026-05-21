@@ -4688,9 +4688,9 @@ function renderStandaloneScene(sceneId, mode){
   const isHotspotReview=sceneId==='hotspot' && mode==='pastWeek';
   title.textContent=isHotspotReview ? '近一周回顾' : getSceneName(sceneId);
   if(action){
-    action.hidden=sceneId!=='hotspot';
-    action.textContent=isHotspotReview ? '事件前瞻' : '近一周回顾';
-    action.onclick=function(){ renderStandaloneScene('hotspot', isHotspotReview ? 'future' : 'pastWeek'); };
+    action.hidden=sceneId!=='hotspot' || isHotspotReview;
+    action.textContent='近一周回顾';
+    action.onclick=function(){ renderStandaloneScene('hotspot', 'pastWeek'); };
   }
   const actionHtml=sceneId==='remind'
     ? '<div class="standalone-scene-action-row"><button class="watchlist-empty-toggle" type="button" onclick="showNoWatchlistState(this)">无自选状态页</button></div>'
