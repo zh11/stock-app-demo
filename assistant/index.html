@@ -113,6 +113,7 @@
       flex-direction: column;
       background: var(--bg);
       overflow-x: hidden;
+      padding-bottom: 82px;
     }
 
     body.flat .page {
@@ -248,6 +249,18 @@
 
     .section {
       padding: 12px 12px 0;
+    }
+    .page[data-main-tab="watchlist"] .hero,
+    .page[data-main-tab="watchlist"] .banner,
+    .page[data-main-tab="watchlist"] .home-content {
+      display: none;
+    }
+    .watchlist-page {
+      display: none;
+      padding: 0 12px 12px;
+    }
+    .page[data-main-tab="watchlist"] .watchlist-page {
+      display: block;
     }
 
     .tool-grid {
@@ -514,6 +527,271 @@
       text-decoration: none;
       font-weight: 700;
     }
+    .home-event-card {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #ffe0dc;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+    .home-event-head,
+    .watch-message-head,
+    .watch-stock-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .home-event-title,
+    .watch-message-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #171a1f;
+    }
+.home-event-more,
+.watch-message-more {
+      border:0;
+      background:transparent;
+      padding:0;
+      color: var(--brand);
+      font-size: 12px;
+      font-family:inherit;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor:pointer;
+    }
+    .home-event-desc {
+      margin-top: 6px;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .home-event-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .home-event-item {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #fff8f6;
+      border: 1px solid #ffe8e3;
+    }
+    .home-event-date {
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+    .home-event-date .home-event-year {
+      display: block;
+      margin-top: 1px;
+      color: #b5bac3;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .home-event-name {
+      color: #20242a;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .home-event-tags {
+      margin-top: 4px;
+      color: #8c949e;
+      font-size: 11px;
+    }
+    .watchlist-top {
+      margin: 0 -12px;
+      padding: 22px 14px 14px;
+      background: var(--brand);
+      color: #fff;
+    }
+    .watchlist-top-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+    .watchlist-page-title {
+      grid-column: 2;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .watchlist-actions {
+      grid-column: 3;
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .94;
+    }
+    .watchlist-note {
+      margin: 0 -12px 12px;
+      padding: 8px 14px;
+      background: #fff7ed;
+      color: #b58a43;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .watch-message-card {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #ffe0dc;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+    .watch-message-summary {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .watch-message-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #f8f9fb;
+      color: #4f5865;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .watch-message-row strong {
+      color: #20242a;
+      white-space: nowrap;
+    }
+    .watch-stock-list {
+      display: flex;
+      flex-direction: column;
+      margin: 14px 0 0;
+      background: #fff;
+    }
+    .watch-stock-card {
+      padding: 16px 0 12px;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+      border: 0;
+      border-bottom: 1px solid #eceff3;
+    }
+    .watch-stock-card:last-child {
+      border-bottom: 0;
+    }
+    .watch-stock-name {
+      color: #20242a;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .watch-stock-code {
+      margin-left: 8px;
+      color: #9aa1aa;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .watch-fundamental {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .watch-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 12px;
+      padding: 14px 12px 12px;
+      border-radius: 0;
+      background: #fafafa;
+    }
+    .watch-metric {
+      min-height: 92px;
+      border-right: 1px solid #e4e7eb;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .watch-metric:last-child {
+      border-right: 0;
+    }
+    .watch-metric-label {
+      color: #8b929c;
+      font-size: 12px;
+    }
+    .watch-metric-value {
+      color: #111827;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .watch-metric-link {
+      margin-top: auto;
+      color: #1683ff;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+    .watch-metric-link.red {
+      color: #ef2d1f;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .watch-stock-foot {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 30px;
+      margin-top: 12px;
+      color: #8f949b;
+      font-size: 13px;
+      font-weight: 500;
+      padding-right: 2px;
+    }
+    .watch-stock-foot span:first-child {
+      color: #575c63;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .watch-stock-foot span:last-child {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .watch-stock-foot span:last-child::before {
+      content: "";
+      display: inline-flex;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      border-radius: 50%;
+      background: #b8b8b8;
+      flex: 0 0 auto;
+    }
+    .watch-stock-foot span:last-child::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 50%;
+      width: 10px;
+      height: 2px;
+      border-radius: 2px;
+      background: #111;
+      transform: translateY(-50%);
+    }
 
     .strength-head {
       display: flex;
@@ -716,15 +994,18 @@
     }
 
     .bottom-nav {
-      margin-top: auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 22px;
+      z-index: 30;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 2px;
       padding: 8px 6px 6px;
       width: 100%;
-      background: rgba(255,255,255,.97);
+      background: #fff;
       border-top: 1px solid var(--line);
-      backdrop-filter: blur(12px);
       overflow: hidden;
     }
 
@@ -746,11 +1027,27 @@
     .nav-item.active { color: var(--brand); }
 
     .home-indicator {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      z-index: 31;
       width: 124px;
       height: 4px;
-      margin: 6px auto 6px;
+      margin: 0;
+      transform: translateX(-50%);
       border-radius: 999px;
       background: #0f1115;
+    }
+    .home-indicator::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -8px;
+      width: 100vw;
+      height: 28px;
+      transform: translateX(-50%);
+      background: #fff;
+      z-index: -1;
     }
 
     @media (max-width: 540px) {
@@ -875,8 +1172,13 @@ body.chat-open{overflow:hidden}
 .chat-settings::before{content:'☰';font-size:24px;line-height:1}
 
 .ai-panels{order:1;flex:1;min-height:0;overflow:hidden;background:#fff}
-.ai-home{display:none;height:100%;padding:18px 22px 0;background:radial-gradient(circle at 50% 45%,rgba(245,42,23,.06),transparent 22%),#fff;flex-direction:column}
+.ai-home{display:none;height:100%;padding:18px 22px 0;background:#fff;flex-direction:column}
 .ai-home.active{display:flex}
+.ai-home-identity{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 0 18px}
+.ai-home-logo{width:74px;height:74px;border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#ff6c3c,#d82318);box-shadow:0 12px 28px rgba(232,65,58,.18)}
+.ai-home-logo img{width:100%;height:100%;object-fit:contain}
+.ai-home-ai{margin-top:22px;font-size:30px;font-weight:900;letter-spacing:.5px;color:#0f1115}
+.ai-home-subtitle{margin-top:10px;font-size:22px;font-weight:500;color:#7b8088}
 .ai-home-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex-shrink:0}
 .ai-feature-card{min-height:106px;border:1px solid #edf0f4;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 10px 24px rgba(15,23,42,.055);padding:15px 14px;text-align:left;cursor:pointer}
 .ai-feature-card.active{border-color:rgba(232,65,58,.34);box-shadow:0 12px 28px rgba(232,65,58,.09)}
@@ -887,7 +1189,7 @@ body.chat-open{overflow:hidden}
 .ai-feature-title{min-width:0;font-size:16px;font-weight:800;white-space:nowrap;color:#111}
 .ai-feature-card p{font-size:13px;line-height:1.48;color:#717781;margin:0}
 .ai-feature-meta{display:inline-flex;margin-top:11px;padding:4px 8px;border-radius:999px;background:#fff2ef;color:#e8413a;font-size:11px;font-weight:720}
-.ai-home-questions{flex:1;min-height:260px;display:flex;align-items:flex-start;justify-content:center;padding:18px 0 8px}
+.ai-home-questions{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center;padding:8px 0 12px}
 .ai-question-list{width:100%;display:flex;flex-direction:column;gap:8px}
 .ai-question-btn{width:100%;min-height:44px;border:1px solid #edf0f4;border-radius:12px;background:rgba(255,255,255,.96);box-shadow:0 7px 18px rgba(15,23,42,.045);padding:10px 34px 10px 13px;text-align:left;font-family:inherit;font-size:13px;line-height:1.45;color:#20242a;position:relative;cursor:pointer}
 .ai-question-btn::after{content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;line-height:1;color:#b8bec8}
@@ -915,6 +1217,22 @@ body.chat-open{overflow:hidden}
 .image-preview-chip.show{display:flex}
 .image-preview-chip img{width:24px;height:24px;border-radius:6px;object-fit:cover;flex:0 0 auto}
 .image-preview-chip button{margin-left:auto;border:0;background:#f4f5f7;color:#7b818b;width:22px;height:22px;border-radius:11px;line-height:1;cursor:pointer}
+
+.scene-standalone-page{
+  position:absolute;inset:0;background:#f5f6fa;z-index:1200;
+  display:flex;flex-direction:column;overflow:hidden;border-radius:20px;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.scene-standalone-page.open{transform:translateX(0)}
+.scene-standalone-hdr{
+  height:54px;flex:0 0 auto;background:var(--brand);border-bottom:0;
+  display:grid;grid-template-columns:48px 1fr 48px;align-items:center;
+}
+.scene-standalone-back{width:38px;height:38px;margin-left:6px;border:0;background:transparent;color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.scene-standalone-title{text-align:center;font-size:17px;font-weight:900;color:#fff}
+.scene-standalone-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px}
+.scene-standalone-body::-webkit-scrollbar{width:0}
+.scene-standalone-shell{border:0!important;border-radius:0!important;background:transparent!important;margin:0!important;overflow:visible!important}
 
 .ai-tabs{display:flex;gap:5px;background:transparent;border-bottom:0;flex-shrink:0;overflow-x:auto;padding:0 20px 2px;scrollbar-width:none}
 .ai-tabs::-webkit-scrollbar{display:none}
@@ -1209,9 +1527,10 @@ body.chat-open{overflow:hidden}
 .scene-visit-sub{font-size:11px;color:#8c949e}
 .scene-preview-panel{border:1px solid #eef1f5;border-radius:16px;background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%);box-shadow:0 10px 24px rgba(15,23,42,.05);overflow:hidden}
 .scene-preview-panel + .scene-preview-panel{margin-top:10px}
-.scene-preview-bar{display:flex;align-items:center;justify-content:flex-start;padding:11px 8px 10px;border-bottom:1px solid #f1f3f6;background:rgba(255,255,255,.88)}
+.scene-preview-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 8px 10px;border-bottom:1px solid #f1f3f6;background:rgba(255,255,255,.88)}
 .scene-preview-bar-main{min-width:0;display:flex;align-items:center;gap:8px}
 .scene-preview-name{font-size:14px;font-weight:700;color:#20242a;min-width:0}
+.scene-preview-action{flex:0 0 auto}
 .scene-preview-body{padding:0;background:#f7f8fa}
 .scene-preview-panel[data-scene="chat"] .scene-preview-body{background:#f7f8fa}
 .scene-preview-panel[data-scene="chat"] .scene-preview-shell{
@@ -2102,6 +2421,32 @@ body.chat-open{overflow:hidden}
 .remind-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f5f6fa}
 .remind-wrap::-webkit-scrollbar{width:0}
 .remind-inner{padding:10px 14px 20px;display:flex;flex-direction:column;gap:10px}
+.watchlist-empty-toggle{height:28px;border:1px solid #ffd7d2;border-radius:15px;background:#fff;color:#e8413a;padding:0 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.watchlist-empty-toggle:active{background:#fff2ef}
+.watchlist-filled-content{display:flex;flex-direction:column;gap:10px}
+.no-watchlist-view{display:none;flex-direction:column;gap:10px}
+.remind-inner.show-empty .watchlist-filled-content{display:none}
+.remind-inner.show-empty .no-watchlist-view{display:flex}
+.empty-watch-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.empty-watch-hero{border:1px solid #ffe0dc;background:linear-gradient(135deg,#fff8f6,#fff);padding:16px 14px}
+.empty-watch-kicker{font-size:11px;font-weight:800;color:#e8413a;margin-bottom:6px}
+.empty-watch-title{font-size:18px;font-weight:850;color:#151922;line-height:1.25;margin-bottom:8px}
+.empty-watch-desc{font-size:12px;color:#606875;line-height:1.7}
+.empty-watch-actions{display:flex;gap:8px;margin-top:12px}
+.empty-watch-primary,.empty-watch-secondary{height:32px;border-radius:16px;padding:0 12px;font-size:12px;font-weight:800;cursor:pointer}
+.empty-watch-primary{border:0;background:#e8413a;color:#fff}
+.empty-watch-secondary{border:1px solid #edf0f4;background:#fff;color:#3d444f}
+.empty-watch-section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.empty-watch-section-title strong{font-size:13px;color:#151922}
+.empty-watch-section-title span{font-size:11px;color:#9aa1aa}
+.empty-candidate-list{display:flex;flex-direction:column;gap:8px}
+.empty-candidate{border:1px solid #edf0f4;border-radius:12px;padding:11px 12px;background:#fff}
+.empty-candidate-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.empty-candidate-name{font-size:14px;font-weight:850;color:#151922}
+.empty-candidate-code{font-size:10px;color:#9aa1aa;margin-top:1px}
+.empty-add-btn{height:26px;border:1px solid #ffd7d2;background:#fff2ef;color:#e8413a;border-radius:13px;padding:0 9px;font-size:11px;font-weight:800;white-space:nowrap}
+.empty-candidate-reason{font-size:12px;color:#4f5865;line-height:1.62}
+.empty-risk-note{font-size:11px;color:#9aa1aa;line-height:1.6;padding:0 3px 2px}
 
 /* ── 今日概要卡 ── */
 .rsc-card{
@@ -2268,9 +2613,9 @@ body.chat-open{overflow:hidden}
 /* 每张卡内部：概要行（在时间线之前） */
 .sc-keypoint{
   font-size:12px;color:#c0392b;font-weight:600;
-  line-height:1.65;padding:9px 14px 7px;
+  line-height:1.65;padding:9px 16px 7px;
   background:linear-gradient(90deg,#fff5f5,#fff9f9);
-  border-left:3px solid #e8413a;margin:0;
+  border-left:0;margin:0;
 }
 .mc-dots{display:flex;justify-content:center;gap:5px;padding:6px 0 2px}
 .mc-dot{width:5px;height:5px;border-radius:50%;background:#ddd;transition:all .25s;cursor:pointer}
@@ -2366,6 +2711,158 @@ body.chat-open{overflow:hidden}
   border-bottom:none;
 }
 
+/* Refined shared back affordance */
+.chat-back,
+.scene-standalone-back{
+  position:relative;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:0;
+  line-height:1;
+}
+.scene-standalone-back{margin-left:6px;color:#fff}
+.chat-back::before,
+.scene-standalone-back::before{
+  content:"";
+  width:12px;
+  height:12px;
+  border-left:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg);
+  margin-left:4px;
+}
+.detail-back,
+.sector-detail-back,
+.detail2-back,
+.detail3-back{
+  position:relative;
+  width:36px;
+  height:36px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:0;
+  line-height:1;
+}
+.detail-back svg,
+.sector-detail-back svg,
+.detail2-back svg,
+.detail3-back svg{display:none}
+.detail-back::before,
+.sector-detail-back::before,
+.detail2-back::before,
+.detail3-back::before{
+  content:"";
+  width:12px;
+  height:12px;
+  border-left:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg);
+  margin-left:4px;
+}
+.deep-think-row{
+  display:flex;
+  padding:8px 20px 4px;
+}
+#chatBottomDock > .ai-tabs{display:none!important}
+.deep-think-btn{
+  height:34px;
+  border:0;
+  border-radius:10px;
+  background:#f7f7f8;
+  color:#202124;
+  font-size:14px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0 12px;
+  font-family:inherit;
+}
+.deep-think-icon{
+  width:17px;
+  height:17px;
+  border:1.7px solid currentColor;
+  border-radius:50%;
+  position:relative;
+  display:inline-block;
+  transform:rotate(-18deg);
+}
+.deep-think-icon::before,
+.deep-think-icon::after{
+  content:"";
+  position:absolute;
+  inset:3px -4px;
+  border-top:1.5px solid currentColor;
+  border-radius:50%;
+}
+.deep-think-icon::after{transform:rotate(62deg)}
+.scene-standalone-body .scene-preview-panel[data-scene="hotspot"] .htl-scroll{
+  display:block;
+  overflow:visible;
+  background:transparent;
+}
+.scene-standalone-body .scene-standalone-shell[data-preview-scene="hotspot"] .htl-scroll{
+  display:block;
+  overflow:visible;
+  background:transparent;
+}
+.scene-standalone-body .scene-preview-panel[data-scene="hotspot"] .htl-list{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  overflow:visible;
+  height:auto!important;
+  scroll-snap-type:none;
+  padding:0;
+  gap:12px;
+}
+.scene-standalone-body .scene-standalone-shell[data-preview-scene="hotspot"] .htl-list{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  overflow:visible;
+  height:auto!important;
+  scroll-snap-type:none;
+  padding:0;
+  gap:12px;
+}
+.scene-standalone-body .scene-preview-panel[data-scene="hotspot"] .htl-item{
+  width:100%;
+  min-width:0;
+  scroll-snap-align:none;
+}
+.scene-standalone-body .scene-standalone-shell[data-preview-scene="hotspot"] .htl-item{
+  width:100%;
+  min-width:0;
+  scroll-snap-align:none;
+}
+.scene-standalone-body .scene-preview-panel[data-scene="hotspot"] .htl-card-foot{display:none}
+.scene-standalone-body .scene-standalone-shell[data-preview-scene="hotspot"] .htl-card-foot{display:none}
+.standalone-scene-action-row{
+  display:flex;
+  justify-content:flex-end;
+  padding:0 2px 8px;
+}
+.standalone-scene-action-row .watchlist-empty-toggle{
+  background:#fff;
+  box-shadow:0 4px 12px rgba(232,65,58,.08);
+}
+
 
 </style>
 </head>
@@ -2375,7 +2872,7 @@ body.chat-open{overflow:hidden}
       <div class="screen">
         <div class="island"></div>
         <div class="safe">
-          <div class="page">
+          <div class="page" data-main-tab="home">
             <div class="status">
               <span>10:41</span>
               <div class="status-icons">
@@ -2399,7 +2896,7 @@ body.chat-open{overflow:hidden}
 
             <section class="banner" aria-label="首页横幅"></section>
 
-            <section class="section">
+            <section class="section home-content" id="homeContent">
               <div class="tool-grid">
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
@@ -2456,6 +2953,32 @@ body.chat-open{overflow:hidden}
                   <div class="rating-row"><span>算力产业:</span><span class="stars">★★★☆☆</span></div>
                 </div>
                 <div class="flame"></div>
+              </article>
+
+              <article class="home-event-card">
+                <div class="home-event-head">
+                  <div>
+                    <div class="home-event-title">事件前瞻</div>
+                    <div class="home-event-desc">提前关注未来可能被市场交易的催化事件。</div>
+                  </div>
+                  <button class="home-event-more" type="button" onclick="openStandaloneScene('hotspot')">查看全部</button>
+                </div>
+                <div class="home-event-list">
+                  <div class="home-event-item">
+                    <div class="home-event-date"><span>04-01</span><span class="home-event-year">2026</span></div>
+                    <div>
+                      <div class="home-event-name">储能国际峰会暨展览会</div>
+                      <div class="home-event-tags">储能 · 固态电池 · 新能源科技</div>
+                    </div>
+                  </div>
+                  <div class="home-event-item">
+                    <div class="home-event-date"><span>04-15</span><span class="home-event-year">2026</span></div>
+                    <div>
+                      <div class="home-event-name">LPR报价窗口</div>
+                      <div class="home-event-tags">银行 · 地产链 · 高股息</div>
+                    </div>
+                  </div>
+                </div>
               </article>
 
               <article class="guide-card">
@@ -2539,24 +3062,68 @@ body.chat-open{overflow:hidden}
               </article>
             </section>
 
-            <nav class="bottom-nav">
-              <div class="nav-item active"><div class="nav-icon"></div>首页</div>
-              <div class="nav-item"><div class="nav-icon"></div>自选</div>
-              <div class="nav-item"><div class="nav-icon"></div>资讯</div>
-              <div class="nav-item"><div class="nav-icon"></div>商城</div>
-              <div class="nav-item"><div class="nav-icon"></div>我</div>
-            </nav>
-            <div class="home-indicator"></div>
+            <section class="watchlist-page" id="watchlistPage">
+              <div class="watchlist-top">
+                <div class="watchlist-top-row">
+                  <div class="watchlist-page-title">自选</div>
+                  <div class="watchlist-actions"><span>智能选股</span><span>搜索</span></div>
+                </div>
+              </div>
+              <article class="watch-message-card">
+                <div class="watch-message-head">
+                  <div class="watch-message-title">自选消息</div>
+                  <button class="watch-message-more" type="button" onclick="openStandaloneScene('remind')">查看提醒</button>
+                </div>
+                <div class="watch-message-summary">
+                  <div class="watch-message-row"><strong>盘前提醒</strong><span>市场中性偏暖，新能源与化工分化。</span></div>
+                  <div class="watch-message-row"><strong>盘中提醒</strong><span>万华化学受原油波动影响，短线承压。</span></div>
+                  <div class="watch-message-row"><strong>盘后消息</strong><span>重点消息已按紧急、重要、背景分层。</span></div>
+                </div>
+              </article>
+              <div class="watch-stock-list">
+                <article class="watch-stock-card">
+                  <div class="watch-stock-head">
+                    <div><span class="watch-stock-name">中科曙光</span><span class="watch-stock-code">603019 &gt;&gt;</span></div>
+                    <span class="watch-fundamental">见基本面</span>
+                  </div>
+                  <div class="watch-metrics">
+                    <div class="watch-metric"><div class="watch-metric-label">最新收盘价</div><div class="watch-metric-value">98.38</div><div class="watch-metric-link">股价被溢估<br>81%&gt;&gt;</div></div>
+                    <div class="watch-metric"><div class="watch-metric-label">市 值</div><div class="watch-metric-value">1439.41亿</div><div class="watch-metric-label">市盈TTM</div><div class="watch-metric-value">64.91</div></div>
+                    <div class="watch-metric"><div class="watch-metric-label">股息率</div><div class="watch-metric-value">0.27%</div><div class="watch-metric-link red">算法诊股</div></div>
+                  </div>
+                  <div class="watch-stock-foot"><span>模拟操盘</span><span>删自选</span></div>
+                </article>
+                <article class="watch-stock-card">
+                  <div class="watch-stock-head">
+                    <div><span class="watch-stock-name">三一重工</span><span class="watch-stock-code">600031 &gt;&gt;</span></div>
+                    <span class="watch-fundamental">见基本面</span>
+                  </div>
+                  <div class="watch-metrics">
+                    <div class="watch-metric"><div class="watch-metric-label">最新收盘价</div><div class="watch-metric-value">19.4</div><div class="watch-metric-link">股价被低估<br>36%&gt;&gt;</div></div>
+                    <div class="watch-metric"><div class="watch-metric-label">市 值</div><div class="watch-metric-value">1783.83亿</div><div class="watch-metric-label">市盈TTM</div><div class="watch-metric-value">21.19</div></div>
+                    <div class="watch-metric"><div class="watch-metric-label">股息率</div><div class="watch-metric-value">1.7%</div><div class="watch-metric-link red">算法诊股</div></div>
+                  </div>
+                  <div class="watch-stock-foot"><span>模拟操盘</span><span>删自选</span></div>
+                </article>
+              </div>
+            </section>
           </div>
         </div>
 
-        <button class="ai-fab" onclick="openChat()"><div class="fab-ico">🤖</div><div>AI助手</div></button>
+        <nav class="bottom-nav">
+          <div class="nav-item active" data-main-tab="home" onclick="showMainTab('home',this)"><div class="nav-icon"></div>首页</div>
+          <div class="nav-item" data-main-tab="watchlist" onclick="showMainTab('watchlist',this)"><div class="nav-icon"></div>自选</div>
+          <div class="nav-item" data-main-tab="news" onclick="showMainTab('news',this)"><div class="nav-icon"></div>资讯</div>
+          <div class="nav-item" data-main-tab="mall" onclick="showMainTab('mall',this)"><div class="nav-icon"></div>商城</div>
+          <div class="nav-item" data-main-tab="profile" onclick="showMainTab('profile',this)"><div class="nav-icon"></div>我</div>
+        </nav>
+        <div class="home-indicator"></div>
 
 <!-- ══════════ AI CHAT PAGE ══════════ -->
 <div class="chat-page" id="chatPage">
 
   <div class="chat-hdr">
-    <button class="chat-back" onclick="closeChat()">&lt;</button>
+    <button class="chat-back" aria-label="返回" onclick="closeChat()"></button>
     <div class="chat-hdr-av" style="background:none;padding:0;overflow:hidden;"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div>
     <div class="chat-hdr-info">
       <div class="chat-hdr-title">新对话 <span class="mode-badge demo" id="modeBadge">演示模式</span></div>
@@ -2569,27 +3136,10 @@ body.chat-open{overflow:hidden}
   <div class="ai-panels">
 
     <div class="ai-home active" id="aiHome">
-      <section class="ai-home-features">
-        <button class="ai-feature-card" onclick="switchTab('remind',document.querySelector('.ai-tab[data-tab=&quot;remind&quot;]'),'force-panel')">
-          <div class="ai-feature-top">
-            <span class="ai-feature-icon alert">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-            </span>
-            <span class="ai-feature-title">自选消息</span>
-          </div>
-          <p>自选异动、公告、研报和盘中波动优先推送。</p>
-          <span class="ai-feature-meta">8条待看</span>
-        </button>
-        <button class="ai-feature-card" onclick="switchTab('hotspot',document.querySelector('.ai-tab[data-tab=&quot;hotspot&quot;]'),'force-panel')">
-          <div class="ai-feature-top">
-            <span class="ai-feature-icon hot">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-            </span>
-            <span class="ai-feature-title">事件前瞻</span>
-          </div>
-          <p>未来事件、题材催化和影响板块提前观察。</p>
-          <span class="ai-feature-meta">3个催化</span>
-        </button>
+      <section class="ai-home-identity" aria-label="躺客AI">
+        <div class="ai-home-logo"><img src="./logo2.png" alt="躺客AI" /></div>
+        <div class="ai-home-ai">AI</div>
+        <div class="ai-home-subtitle">躺客AI</div>
       </section>
       <section class="ai-home-questions" aria-label="首页推荐问题">
         <div class="ai-question-list" id="aiHomePresetList"></div>
@@ -2816,7 +3366,50 @@ body.chat-open{overflow:hidden}
     <div class="ai-panel" id="panel-remind">
       <div class="remind-wrap">
         <div class="remind-inner">
+          <div class="no-watchlist-view">
+            <section class="empty-watch-card empty-watch-hero">
+              <div class="empty-watch-kicker">建立自选池</div>
+              <div class="empty-watch-title">还没有自选股</div>
+              <div class="empty-watch-desc">添加自选后，系统会围绕你的自选股生成盘前提醒、盘中提醒和盘后消息。</div>
+              <div class="empty-watch-actions">
+                <button class="empty-watch-primary" type="button">去添加自选</button>
+                <button class="empty-watch-secondary" type="button" onclick="showWatchlistState(this)">查看示例</button>
+              </div>
+            </section>
 
+            <section class="empty-watch-card">
+              <div class="empty-watch-section-title">
+                <strong>热点候选股</strong>
+                <span>添加后开启提醒</span>
+              </div>
+              <div class="empty-candidate-list">
+                <article class="empty-candidate">
+                  <div class="empty-candidate-top">
+                    <div><div class="empty-candidate-name">寒武纪</div><div class="empty-candidate-code">688256.SH · 芯片概念</div></div>
+                    <button class="empty-add-btn" type="button">加自选</button>
+                  </div>
+                  <div class="empty-candidate-reason">AI算力链热度延续，芯片国产化和服务器需求是当前市场关注主线。</div>
+                </article>
+                <article class="empty-candidate">
+                  <div class="empty-candidate-top">
+                    <div><div class="empty-candidate-name">中际旭创</div><div class="empty-candidate-code">300308.SZ · 共封装光学(cpo)</div></div>
+                    <button class="empty-add-btn" type="button">加自选</button>
+                  </div>
+                  <div class="empty-candidate-reason">CPO和高速光模块景气度较高，适合作为算力硬件方向的观察样本。</div>
+                </article>
+                <article class="empty-candidate">
+                  <div class="empty-candidate-top">
+                    <div><div class="empty-candidate-name">德明利</div><div class="empty-candidate-code">001309.SZ · 存储芯片</div></div>
+                    <button class="empty-add-btn" type="button">加自选</button>
+                  </div>
+                  <div class="empty-candidate-reason">存储价格周期改善预期升温，可关注业绩弹性和板块资金承接。</div>
+                </article>
+              </div>
+            </section>
+            <div class="empty-risk-note">以上仅用于帮助建立关注列表，不构成投资建议。</div>
+          </div>
+
+          <div class="watchlist-filled-content">
           <!-- ① 概要卡 -->
           <div class="rsc-card">
             <!-- 顶部标题条 -->
@@ -3121,6 +3714,7 @@ body.chat-open{overflow:hidden}
             </div>
 
           </div><!-- /pm-list -->
+          </div><!-- /watchlist-filled-content -->
 
         </div><!-- /remind-inner -->
       </div><!-- /remind-wrap -->
@@ -3288,9 +3882,21 @@ body.chat-open{overflow:hidden}
     </button>
     <input type="file" id="imageUploadInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
   </div>
+  <div class="deep-think-row">
+    <button class="deep-think-btn" type="button"><span class="deep-think-icon" aria-hidden="true"></span>深度思考</button>
+  </div>
   </div>
 
 </div><!-- /chat-page -->
+
+<div class="scene-standalone-page" id="standaloneScenePage">
+  <div class="scene-standalone-hdr">
+    <button class="scene-standalone-back" type="button" aria-label="返回" onclick="closeStandaloneScene()"></button>
+    <div class="scene-standalone-title" id="standaloneSceneTitle">内容详情</div>
+    <div></div>
+  </div>
+  <div class="scene-standalone-body" id="standaloneSceneBody"></div>
+</div>
 
 <div class="history-overlay" id="historyPanel" onclick="closeHistoryPanel(event)">
   <div class="history-panel" onclick="event.stopPropagation()">
@@ -3566,6 +4172,8 @@ let mode='demo', apiKey='', modelId='claude-sonnet-4-6', sysPrompt='', respondin
 let stockIdx=0;
 let conversationId='';
 let currentScene='home';
+let currentMainTab='home';
+let chatReturnTarget=null;
 let sourceScene='';
 let latestScene='';
 let messages=[];
@@ -3722,9 +4330,6 @@ function markSceneVisited(sceneId){
   if(sceneVisitOrder.indexOf(sceneId)===-1){
     sceneVisitOrder.push(sceneId);
   }
-  if(!hasSceneVisitMessage(sceneId)){
-    messages.push({role:'scene_visit',sceneId:sceneId});
-  }
 }
 
 function hasConversationMessages(){
@@ -3760,11 +4365,7 @@ function renderSceneVisitItem(sceneId, hasConversation){
 }
 
 function renderSceneVisitTrail(){
-  if(!sceneVisitOrder.length) return '';
-  const hasConversation=hasConversationMessages();
-  return sceneVisitOrder.map(function(sceneId){
-    return renderSceneVisitItem(sceneId, hasConversation);
-  }).join('');
+  return '';
 }
 
 function getPresetQuestionKey(){
@@ -3964,11 +4565,45 @@ function renderScenePreviewPanel(sceneId){
     + '<div class="scene-preview-bar-main">'
     + '<span class="scene-preview-name">' + getSceneName(sceneId) + '</span>'
     + '</div>'
+    + renderScenePreviewAction(sceneId)
     + '</div>'
     + '<div class="scene-preview-body">'
     + '<div class="scene-preview-shell">' + getScenePreviewHtml(sceneId) + '</div>'
     + '</div>'
     + '</section>';
+}
+function renderScenePreviewAction(sceneId){
+  if(sceneId==='remind'){
+    return '<button class="watchlist-empty-toggle scene-preview-action" type="button" onclick="showNoWatchlistState(this)">无自选状态页</button>';
+  }
+  return '';
+}
+
+function openStandaloneScene(sceneId){
+  const page=document.getElementById('standaloneScenePage');
+  const title=document.getElementById('standaloneSceneTitle');
+  const body=document.getElementById('standaloneSceneBody');
+  if(!page || !title || !body) return;
+  title.textContent=getSceneName(sceneId);
+  const actionHtml=sceneId==='remind'
+    ? '<div class="standalone-scene-action-row"><button class="watchlist-empty-toggle" type="button" onclick="showNoWatchlistState(this)">无自选状态页</button></div>'
+    : '';
+  body.innerHTML=actionHtml + '<div class="scene-preview-shell scene-standalone-shell" data-preview-scene="' + sceneId + '">' + getScenePreviewHtml(sceneId) + '</div>';
+  const shell=body.querySelector('.scene-preview-shell');
+  if(shell){
+    normalizePreviewScene(shell);
+    bindPreviewActions(shell);
+    initPreviewCarousel(shell);
+    initPreviewMorningCarousel(shell);
+    initPreviewHotspot(shell);
+    fixPreviewLayout(shell);
+  }
+  page.classList.add('open');
+  body.scrollTop=0;
+}
+function closeStandaloneScene(){
+  const page=document.getElementById('standaloneScenePage');
+  if(page) page.classList.remove('open');
 }
 
 function flashSceneTrail(sceneId){
@@ -4040,28 +4675,75 @@ function returnToConversationHome(el){
   if(el) el.classList.add('active');
 }
 
-function openChat(tab){
-  if(!document.getElementById('chatPage').classList.contains('open')){
+function showMainTab(tab, el){
+  currentMainTab = tab === 'watchlist' ? 'watchlist' : 'home';
+  const page=document.querySelector('.page');
+  if(page) page.setAttribute('data-main-tab', currentMainTab);
+  document.querySelectorAll('.nav-item').forEach(function(item){
+    const isTarget=el ? item===el : item.getAttribute('data-main-tab')===currentMainTab;
+    item.classList.toggle('active', isTarget);
+  });
+}
+
+function getCurrentChatReturnTarget(){
+  const standalone=document.getElementById('standaloneScenePage');
+  const standaloneBody=document.getElementById('standaloneSceneBody');
+  if(standalone && standalone.classList.contains('open')){
+    const shell=standaloneBody && standaloneBody.querySelector('.scene-standalone-shell');
+    return {
+      type:'standalone',
+      sceneId:(shell && shell.getAttribute('data-preview-scene')) || '',
+      mainTab:currentMainTab || 'home',
+      scrollTop:standaloneBody ? standaloneBody.scrollTop : 0
+    };
+  }
+  return {type:'main',tab:currentMainTab || 'home'};
+}
+
+function restoreChatReturnTarget(target){
+  const safeTarget=target || {type:'main',tab:currentMainTab || 'home'};
+  const mainTab=safeTarget.mainTab || safeTarget.tab || currentMainTab || 'home';
+  showMainTab(mainTab);
+  if(safeTarget.type==='standalone' && safeTarget.sceneId){
+    requestAnimationFrame(function(){
+      openStandaloneScene(safeTarget.sceneId);
+      requestAnimationFrame(function(){
+        const body=document.getElementById('standaloneSceneBody');
+        if(body) body.scrollTop=safeTarget.scrollTop || 0;
+      });
+    });
+  }
+}
+
+function openChat(tab, returnTarget){
+  const chatPage=document.getElementById('chatPage');
+  const isAlreadyOpen=chatPage && chatPage.classList.contains('open');
+  if(!isAlreadyOpen){
+    chatReturnTarget=returnTarget || getCurrentChatReturnTarget();
     startNewConversation(true);
   }
   document.body.classList.add('chat-open');
-  document.getElementById('chatPage').classList.add('open');
-  document.querySelector('.ai-fab').style.display='none';
+  if(chatPage) chatPage.classList.add('open');
+  const fab=document.querySelector('.ai-fab');
+  if(fab) fab.style.display='none';
   document.querySelectorAll('.tab-bar,.bottom-nav,.home-indicator').forEach(el=>el.style.display='none');
   if(tab){
     const el=document.querySelector(`.ai-tab[data-tab="${tab}"]`)||document.querySelector(`.ai-tab[onclick*="${tab}"]`);
-    if(el)switchTab(tab,el);
+    switchTab(tab,el);
   }else{
     showAiHome();
   }
 }
 function closeChat(){
   closeHistoryPanel();
+  const target=chatReturnTarget;
+  chatReturnTarget=null;
   document.body.classList.remove('chat-open');
   document.getElementById('chatPage').classList.remove('open');
-  document.querySelector('.ai-fab').style.display='flex';
+  const fab=document.querySelector('.ai-fab');
+  if(fab) fab.style.display='flex';
   document.querySelectorAll('.tab-bar,.bottom-nav,.home-indicator').forEach(el=>el.style.display='');
-  document.querySelectorAll('.tab-item,.nav-item').forEach((t,i)=>t.classList.toggle('active',i===0));
+  restoreChatReturnTarget(target);
 }
 function showAiHome(){
   currentScene='home';
@@ -4191,7 +4873,7 @@ function renderChatMessages(){
   if(!container) return;
   const hasConversation=hasConversationMessages();
   const messageHtml=messages.filter(function(item){
-    return item.role!=='scene_entry' && item.role!=='scene_view';
+    return item.role!=='scene_entry' && item.role!=='scene_view' && item.role!=='scene_visit';
   }).map(function(item){
     if(item.role==='scene_visit'){
       return renderSceneVisitItem(item.sceneId, hasConversation);
@@ -4497,11 +5179,6 @@ function refreshConversationView(){
 }
 
 function bootstrapSceneVisitMessages(){
-  if(!sceneVisitOrder.length) return;
-  if(messages.some(function(item){ return item.role==='scene_visit'; })) return;
-  messages=sceneVisitOrder.map(function(sceneId){
-    return {role:'scene_visit',sceneId:sceneId};
-  }).concat(messages);
 }
 
 function startNewConversation(silent){
@@ -4837,7 +5514,12 @@ function submitPresetQuestion(text, originSceneOverride){
 function askHotspotStock(rawName){
   const stockName=String(rawName || '').replace(/^#+/, '').trim();
   if(!stockName) return;
-  submitPresetQuestion(stockName + '怎么样', 'hotspot');
+  const returnTarget=getCurrentChatReturnTarget();
+  closeStandaloneScene();
+  openChat(null, returnTarget);
+  setTimeout(function(){
+    submitPresetQuestion(stockName + '怎么样？', 'home');
+  }, 80);
 }
 
 function handleHotspotStockClick(event){
@@ -5555,6 +6237,38 @@ function openRemindDetail(key) {
 }
 function closeDetail3() {
   document.getElementById('detailPage3').classList.remove('open');
+}
+
+function getRemindInnerFromNode(node){
+  if(node && node.closest){
+    const inner=node.closest('.remind-inner');
+    if(inner) return inner;
+    const preview=node.closest('.scene-preview-panel');
+    if(preview){
+      const previewInner=preview.querySelector('.remind-inner');
+      if(previewInner) return previewInner;
+    }
+    const standalone=node.closest('.scene-standalone-body');
+    if(standalone){
+      const standaloneInner=standalone.querySelector('.remind-inner');
+      if(standaloneInner) return standaloneInner;
+    }
+  }
+  return document.querySelector('#panel-remind .remind-inner');
+}
+function showNoWatchlistState(node){
+  const inner=getRemindInnerFromNode(node);
+  if(!inner) return;
+  inner.classList.add('show-empty');
+  const wrap=inner.closest('.remind-wrap');
+  if(wrap) wrap.scrollTop=0;
+}
+function showWatchlistState(node){
+  const inner=getRemindInnerFromNode(node);
+  if(!inner) return;
+  inner.classList.remove('show-empty');
+  const wrap=inner.closest('.remind-wrap');
+  if(wrap) wrap.scrollTop=0;
 }
 
 
