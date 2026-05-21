@@ -1051,6 +1051,9 @@
     }
 
     @media (max-width: 540px) {
+      body {
+        padding-bottom: calc(92px + env(safe-area-inset-bottom));
+      }
       .wrap { padding: 0; }
       .phone {
         width: 100%;
@@ -1062,11 +1065,30 @@
       .screen {
         aspect-ratio: auto;
         min-height: 100vh;
+        min-height: 100dvh;
         border-radius: 0;
+        overflow: visible;
       }
       .island { top: 10px; }
-      .safe { min-height: 100vh; }
+      .safe {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow: visible;
+      }
       .page { min-height: 100vh; box-shadow: none; }
+      .bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: calc(22px + env(safe-area-inset-bottom));
+        z-index: 3000;
+      }
+      .home-indicator {
+        position: fixed;
+        bottom: calc(8px + env(safe-area-inset-bottom));
+        z-index: 3001;
+      }
       .hero-top { gap: 6px; }
       .logo-image { width: 82px; }
       .search { height: 40px; padding: 0 9px; font-size: 12px; }
@@ -1226,13 +1248,17 @@ body.chat-open{overflow:hidden}
 .scene-standalone-page.open{transform:translateX(0)}
 .scene-standalone-hdr{
   height:54px;flex:0 0 auto;background:var(--brand);border-bottom:0;
-  display:grid;grid-template-columns:48px 1fr 48px;align-items:center;
+  display:flex;align-items:center;justify-content:space-between;position:relative;
+  padding:0 10px 0 6px;
 }
-.scene-standalone-back{width:38px;height:38px;margin-left:6px;border:0;background:transparent;color:#fff;font-size:28px;line-height:1;cursor:pointer}
-.scene-standalone-title{text-align:center;font-size:17px;font-weight:900;color:#fff}
+.scene-standalone-back{width:38px;height:38px;border:0;background:transparent;color:#fff;font-size:28px;line-height:1;cursor:pointer;position:relative;z-index:1}
+.scene-standalone-title{position:absolute;left:86px;right:86px;text-align:center;font-size:17px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scene-standalone-action{height:28px;min-width:78px;border:1px solid rgba(255,255,255,.5);border-radius:14px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:750;padding:0 9px;position:relative;z-index:1;cursor:pointer}
+.scene-standalone-action[hidden]{display:none}
 .scene-standalone-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px}
 .scene-standalone-body::-webkit-scrollbar{width:0}
 .scene-standalone-shell{border:0!important;border-radius:0!important;background:transparent!important;margin:0!important;overflow:visible!important}
+.htl-empty{margin:72px 12px 0;padding:24px 18px;border-radius:16px;background:#fff;border:1px solid #edf0f4;text-align:center;color:#8d94a0;font-size:14px;font-weight:700;box-shadow:0 10px 24px rgba(15,23,42,.045)}
 
 .ai-tabs{display:flex;gap:5px;background:transparent;border-bottom:0;flex-shrink:0;overflow-x:auto;padding:0 20px 2px;scrollbar-width:none}
 .ai-tabs::-webkit-scrollbar{display:none}
@@ -3884,7 +3910,7 @@ body.chat-open{overflow:hidden}
   <div class="scene-standalone-hdr">
     <button class="scene-standalone-back" type="button" aria-label="返回" onclick="closeStandaloneScene()"></button>
     <div class="scene-standalone-title" id="standaloneSceneTitle">内容详情</div>
-    <div></div>
+    <button class="scene-standalone-action" id="standaloneSceneAction" type="button" hidden></button>
   </div>
   <div class="scene-standalone-body" id="standaloneSceneBody"></div>
 </div>
@@ -4578,16 +4604,77 @@ function renderScenePreviewAction(sceneId){
   return '';
 }
 
-function openStandaloneScene(sceneId){
-  const page=document.getElementById('standaloneScenePage');
+const PAST_WEEK_HOTSPOT_EVENTS=[
+  {
+    date:'03-24',
+    year:'2026',
+    title:'英伟达 GTC 大会闭幕，AI 算力与液冷服务器方向热度延续。',
+    expect:'回顾：大会期间 AI 芯片、服务器液冷和光模块方向持续被资金关注，相关板块出现阶段性交易。',
+    tags:[{text:'算力概念',cls:'blue'}],
+    stocks:['#工业富联','#中际旭创','#高澜股份']
+  },
+  {
+    date:'03-27',
+    year:'2026',
+    title:'存储芯片价格周度数据发布，部分品类报价继续上行。',
+    expect:'回顾：存储价格改善强化行业景气修复预期，存储芯片和半导体设备方向出现轮动表现。',
+    tags:[{text:'存储芯片',cls:'purple'}],
+    stocks:['#德明利','#佰维存储','#兆易创新']
+  },
+  {
+    date:'03-31',
+    year:'2026',
+    title:'新能源车月度交付预告密集披露，市场关注头部车企销量变化。',
+    expect:'回顾：交付数据预期带动新能源整车、汽车零部件和智能驾驶方向短线活跃。',
+    tags:[{text:'新能源汽车',cls:''}],
+    stocks:['#比亚迪','#赛力斯','#拓普集团']
+  }
+];
+
+function renderHotspotEventCard(eventItem){
+  const tagHtml=(eventItem.tags || []).map(function(tag){
+    return '<span class="htl-tag ' + (tag.cls || '') + '">' + tag.text + '</span>';
+  }).join('');
+  const stockHtml=(eventItem.stocks || []).map(function(stock){
+    return '<span class="htl-stock-chip">' + stock + '</span>';
+  }).join('');
+  return '<div class="htl-item">'
+    + '<div class="htl-card-head"><div class="htl-date-col"><div class="htl-date-main">' + eventItem.date + '</div><div class="htl-date-y">' + eventItem.year + '</div></div></div>'
+    + '<div class="htl-body">'
+    + '<div class="htl-event">' + eventItem.title + '</div>'
+    + '<div class="htl-expect">' + eventItem.expect + '</div>'
+    + '<div class="htl-tags">' + tagHtml + '</div>'
+    + '<div class="htl-stock-groups"><div class="htl-stock-group"><div class="htl-stock-chips">' + stockHtml + '</div></div></div>'
+    + '</div>'
+    + '</div>';
+}
+
+function renderPastWeekHotspotHtml(){
+  if(!PAST_WEEK_HOTSPOT_EVENTS.length){
+    return '<div class="htl-scroll scene-preview-source-hotspot"><div class="htl-empty">过去一周暂无事件</div></div>';
+  }
+  return '<div class="htl-scroll scene-preview-source-hotspot"><div class="htl-list">'
+    + PAST_WEEK_HOTSPOT_EVENTS.map(renderHotspotEventCard).join('')
+    + '</div></div>';
+}
+
+function renderStandaloneScene(sceneId, mode){
   const title=document.getElementById('standaloneSceneTitle');
   const body=document.getElementById('standaloneSceneBody');
-  if(!page || !title || !body) return;
-  title.textContent=getSceneName(sceneId);
+  const action=document.getElementById('standaloneSceneAction');
+  if(!title || !body) return;
+  const isHotspotReview=sceneId==='hotspot' && mode==='pastWeek';
+  title.textContent=isHotspotReview ? '近一周回顾' : getSceneName(sceneId);
+  if(action){
+    action.hidden=sceneId!=='hotspot';
+    action.textContent=isHotspotReview ? '事件前瞻' : '近一周回顾';
+    action.onclick=function(){ renderStandaloneScene('hotspot', isHotspotReview ? 'future' : 'pastWeek'); };
+  }
   const actionHtml=sceneId==='remind'
     ? '<div class="standalone-scene-action-row"><button class="watchlist-empty-toggle" type="button" onclick="showNoWatchlistState(this)">无自选状态页</button></div>'
     : '';
-  body.innerHTML=actionHtml + '<div class="scene-preview-shell scene-standalone-shell" data-preview-scene="' + sceneId + '">' + getScenePreviewHtml(sceneId) + '</div>';
+  const contentHtml=isHotspotReview ? renderPastWeekHotspotHtml() : getScenePreviewHtml(sceneId);
+  body.innerHTML=actionHtml + '<div class="scene-preview-shell scene-standalone-shell" data-preview-scene="' + sceneId + '">' + contentHtml + '</div>';
   const shell=body.querySelector('.scene-preview-shell');
   if(shell){
     normalizePreviewScene(shell);
@@ -4597,8 +4684,14 @@ function openStandaloneScene(sceneId){
     initPreviewHotspot(shell);
     fixPreviewLayout(shell);
   }
-  page.classList.add('open');
   body.scrollTop=0;
+}
+
+function openStandaloneScene(sceneId){
+  const page=document.getElementById('standaloneScenePage');
+  if(!page) return;
+  renderStandaloneScene(sceneId, 'future');
+  page.classList.add('open');
 }
 function closeStandaloneScene(){
   const page=document.getElementById('standaloneScenePage');
@@ -5524,7 +5617,7 @@ function askHotspotStock(rawName){
 function handleHotspotStockClick(event){
   const chip=event.target && event.target.closest ? event.target.closest('.htl-stock-chip') : null;
   if(!chip) return;
-  const inHotspot=chip.closest('#panel-hotspot') || chip.closest('.scene-preview-panel[data-scene="hotspot"]') || chip.closest('.scene-preview-source-hotspot');
+  const inHotspot=chip.closest('#panel-hotspot') || chip.closest('.scene-preview-panel[data-scene="hotspot"]') || chip.closest('[data-preview-scene="hotspot"]') || chip.closest('.scene-preview-source-hotspot');
   if(!inHotspot) return;
   event.preventDefault();
   event.stopPropagation();
