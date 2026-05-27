@@ -3938,7 +3938,7 @@ body.chat-open{overflow:hidden}
 
 <div class="scene-standalone-page" id="standaloneScenePage">
   <div class="scene-standalone-hdr">
-    <button class="scene-standalone-back" type="button" aria-label="返回" onclick="closeStandaloneScene()"></button>
+    <button class="scene-standalone-back" type="button" aria-label="返回" onclick="handleStandaloneSceneBack()"></button>
     <div class="scene-standalone-title" id="standaloneSceneTitle">内容详情</div>
     <button class="scene-standalone-action" id="standaloneSceneAction" type="button" hidden></button>
   </div>
@@ -4631,7 +4631,7 @@ const PAST_WEEK_HOTSPOT_EVENTS=[
     date:'03-24',
     year:'2026',
     title:'英伟达 GTC 大会闭幕，AI 算力与液冷服务器方向热度延续。',
-    expect:'回顾：大会期间 AI 芯片、服务器液冷和光模块方向持续被资金关注，相关板块出现阶段性交易。',
+    expect:'预期：大会期间 AI 芯片、服务器液冷和光模块方向持续被资金关注，相关板块出现阶段性交易。',
     tags:[{text:'算力概念',cls:'blue'}],
     stocks:['#工业富联','#中际旭创','#高澜股份']
   },
@@ -4639,7 +4639,7 @@ const PAST_WEEK_HOTSPOT_EVENTS=[
     date:'03-27',
     year:'2026',
     title:'存储芯片价格周度数据发布，部分品类报价继续上行。',
-    expect:'回顾：存储价格改善强化行业景气修复预期，存储芯片和半导体设备方向出现轮动表现。',
+    expect:'预期：存储价格改善强化行业景气修复预期，存储芯片和半导体设备方向出现轮动表现。',
     tags:[{text:'存储芯片',cls:'purple'}],
     stocks:['#德明利','#佰维存储','#兆易创新']
   },
@@ -4647,7 +4647,7 @@ const PAST_WEEK_HOTSPOT_EVENTS=[
     date:'03-31',
     year:'2026',
     title:'新能源车月度交付预告密集披露，市场关注头部车企销量变化。',
-    expect:'回顾：交付数据预期带动新能源整车、汽车零部件和智能驾驶方向短线活跃。',
+    expect:'预期：交付数据预期带动新能源整车、汽车零部件和智能驾驶方向短线活跃。',
     tags:[{text:'新能源汽车',cls:''}],
     stocks:['#比亚迪','#赛力斯','#拓普集团']
   }
@@ -4686,6 +4686,11 @@ function renderStandaloneScene(sceneId, mode){
   const action=document.getElementById('standaloneSceneAction');
   if(!title || !body) return;
   const isHotspotReview=sceneId==='hotspot' && mode==='pastWeek';
+  const page=document.getElementById('standaloneScenePage');
+  if(page){
+    page.dataset.sceneId=sceneId;
+    page.dataset.sceneMode=isHotspotReview ? 'pastWeek' : (mode || 'future');
+  }
   title.textContent=isHotspotReview ? '近一周回顾' : getSceneName(sceneId);
   if(action){
     action.hidden=sceneId!=='hotspot' || isHotspotReview;
@@ -4718,6 +4723,15 @@ function openStandaloneScene(sceneId){
 function closeStandaloneScene(){
   const page=document.getElementById('standaloneScenePage');
   if(page) page.classList.remove('open');
+}
+
+function handleStandaloneSceneBack(){
+  const page=document.getElementById('standaloneScenePage');
+  if(page && page.dataset.sceneId==='hotspot' && page.dataset.sceneMode==='pastWeek'){
+    renderStandaloneScene('hotspot', 'future');
+    return;
+  }
+  closeStandaloneScene();
 }
 
 function flashSceneTrail(sceneId){
