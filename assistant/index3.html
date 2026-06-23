@@ -1267,6 +1267,7 @@
 
     .tool {
       text-align: center;
+      cursor: pointer;
     }
 
     .tool-icon {
@@ -1343,6 +1344,142 @@
       font-size: 11px;
       font-weight: 700;
       line-height: 1.3;
+    }
+
+    .algo-diagnosis-mask {
+      position: absolute;
+      inset: 0;
+      z-index: 1500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0,0,0,.48);
+    }
+
+    .algo-diagnosis-mask.active {
+      display: flex;
+    }
+
+    .algo-diagnosis-dialog {
+      width: 100%;
+      max-width: 286px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(15,23,42,.24);
+    }
+
+    .algo-diagnosis-body {
+      padding: 22px 22px 18px;
+      color: #535b66;
+    }
+
+    .algo-diagnosis-title {
+      margin-bottom: 18px;
+      color: #272b31;
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .algo-diagnosis-text {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    .algo-diagnosis-link {
+      margin: 14px 0 12px;
+      color: #35aee2;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .algo-pe-box {
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #f7f8fa;
+      border: 1px solid #edf0f4;
+    }
+
+    .algo-pe-title {
+      margin-bottom: 7px;
+      color: #3b414b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .algo-pe-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 22px;
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .algo-pe-row strong {
+      color: #343a43;
+      font-weight: 700;
+    }
+
+    .algo-g-card {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #fbfbfc;
+      border: 1px solid #edf0f4;
+    }
+
+    .algo-g-copy {
+      color: #626a76;
+      font-size: 13px;
+      line-height: 1.52;
+      text-align: left;
+    }
+
+    .algo-g-copy strong {
+      color: #3b414b;
+      font-weight: 800;
+    }
+
+    .algo-g-copy p {
+      margin: 0 0 6px;
+    }
+
+    .algo-g-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .algo-g-line {
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .algo-g-line::-webkit-scrollbar {
+      display: none;
+    }
+
+    .algo-diagnosis-actions {
+      border-top: 1px solid #edf0f4;
+      text-align: center;
+    }
+
+    .algo-diagnosis-actions button {
+      min-width: 110px;
+      min-height: 48px;
+      border: 0;
+      background: #fff;
+      color: #ef2d1f;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
     }
 
     .dual-cards {
@@ -4335,6 +4472,68 @@ body.chat-open{overflow:hidden}
   grid-template-columns: auto minmax(0,1fr);
   gap: 8px;
 }
+.stock-info-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: #f2f2f2;
+}
+.stock-info-tabs::-webkit-scrollbar { display: none; }
+.stock-info-tab {
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #e6e9ef;
+  border-radius: 6px;
+  background: #fff;
+  color: #555d68;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: default;
+  pointer-events: none;
+}
+.stock-info-tab.active {
+  border-color: #ffd2cd;
+  background: #fff3f1;
+  color: #ef2d1f;
+}
+.stock-info-panel { display: none; }
+.stock-info-panel.active { display: block; }
+.stock-placeholder-card {
+  margin: 10px 14px 0;
+  padding: 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15,23,42,.04);
+}
+.stock-placeholder-title {
+  color: #30343b;
+  font-size: 14px;
+  font-weight: 800;
+}
+.stock-placeholder-desc {
+  margin-top: 8px;
+  color: #707783;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.stock-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.stock-tag {
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #f6f7f9;
+  color: #555d68;
+  font-size: 12px;
+  font-weight: 700;
+}
 .stock-card {
   margin: 10px 14px 0;
   padding: 12px 14px;
@@ -4814,7 +5013,7 @@ body.chat-open{overflow:hidden}
 
             <section class="section home-content" id="homeContent">
               <div class="tool-grid">
-                <div class="tool"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
+                <div class="tool" onclick="openAlgoDiagnosisDialog()"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
@@ -5318,6 +5517,35 @@ body.chat-open{overflow:hidden}
         </nav>
         <div class="home-indicator"></div>
 
+<div class="algo-diagnosis-mask" id="algoDiagnosisDialog" role="dialog" aria-modal="true" aria-labelledby="algoDiagnosisTitle" onclick="closeAlgoDiagnosisDialog(event)">
+  <div class="algo-diagnosis-dialog" onclick="event.stopPropagation()">
+    <div class="algo-diagnosis-body">
+      <div class="algo-diagnosis-title" id="algoDiagnosisTitle">温馨提示</div>
+      <p class="algo-diagnosis-text">星源材质(300568)因预期业绩波动太大，暂不完全适合“算法诊股”。</p>
+      <div class="algo-diagnosis-link">可点击展望牛市峰值&gt;&gt;</div>
+      <div class="algo-pe-box" aria-label="预测市盈率">
+        <div class="algo-pe-title">预测市盈率</div>
+        <div class="algo-pe-row"><span>2026年</span><strong>41.47倍</strong></div>
+        <div class="algo-pe-row"><span>2027年</span><strong>33.14倍</strong></div>
+        <div class="algo-pe-row"><span>2028年</span><strong>28.21倍</strong></div>
+      </div>
+      <div class="algo-g-card" aria-label="G值说明">
+        <div class="algo-g-copy">
+          <p>G值为未来三年预期盈利增长率。根据机构一致性预期盈利增长率：</p>
+          <div class="algo-g-line">G1:2026年预期盈利增长率<strong>1756.04%</strong>;</div>
+          <div class="algo-g-line">G2:2027年预期盈利增长率<strong>64.59%</strong>;</div>
+          <div class="algo-g-line">G3:2028年预期盈利增长率<strong>23.04%</strong>;</div>
+          <div class="algo-g-line">计算得G值为<strong>234.98%</strong>。</div>
+          <div class="algo-g-line">波动校正值G’值为<strong>110.07%</strong>。</div>
+        </div>
+      </div>
+    </div>
+    <div class="algo-diagnosis-actions">
+      <button type="button" onclick="closeAlgoDiagnosisDialog()">知道了</button>
+    </div>
+  </div>
+</div>
+
 <div class="tk-message-page" id="messagePage">
   <div class="app-statusbar red">
     <span>12:00</span>
@@ -5402,11 +5630,23 @@ body.chat-open{overflow:hidden}
       <div class="kline-date-row"><span>2026-03-11</span><span>04-23</span><span>05-21</span><span>06-15</span></div>
     </div>
 
-    <div class="stock-source-note">注：数据来源于2026年一季报</div>
-    <div class="stock-company-meta">
-      <div>所属行业：<strong id="stockIndustry">计算机</strong>（同花顺二级）</div>
-      <div class="stock-company-business"><span>主营业务：</span><strong id="stockBusiness">研究、开发、生产制造高性能计算机、通用服务器及存储产品、软件开发、...</strong></div>
+    <div class="stock-info-tabs" aria-label="个股资料分类">
+      <button class="stock-info-tab active" type="button">基本面</button>
+      <button class="stock-info-tab" type="button">基本信息</button>
+      <button class="stock-info-tab" type="button">概念分析</button>
+      <button class="stock-info-tab" type="button">财务评分</button>
+      <button class="stock-info-tab" type="button">主力持仓</button>
+      <button class="stock-info-tab" type="button">主营结构</button>
+      <button class="stock-info-tab" type="button">最新研报</button>
+      <button class="stock-info-tab" type="button">AI风险扫描</button>
     </div>
+
+    <section class="stock-info-panel active">
+      <div class="stock-source-note">注：数据来源于2026年一季报</div>
+      <div class="stock-company-meta">
+        <div>所属行业：<strong id="stockIndustry">计算机</strong>（同花顺二级）</div>
+        <div class="stock-company-business"><span>主营业务：</span><strong id="stockBusiness">研究、开发、生产制造高性能计算机、通用服务器及存储产品、软件开发、...</strong></div>
+      </div>
 
     <div class="stock-card">
       <div class="stock-section-title" style="margin:0 0 8px"><span>盈利预测</span></div>
@@ -5458,6 +5698,8 @@ body.chat-open{overflow:hidden}
       <div class="metric-row"><span>投资性现金流</span><strong>-11.06亿</strong></div>
       <div class="metric-row"><span>筹资性现金流</span><strong>-8424.99万</strong></div>
     </div>
+    </section>
+
     <div class="stock-bottom-space"></div>
   </div>
   <div class="adjust-mask" id="adjustDialog" onclick="closeAdjustDialog(event)">
@@ -7238,6 +7480,17 @@ let messageCurrentView = {type:'main'};
 
 function getMessageCategory(id){
   return MESSAGE_CATEGORIES.find(function(item){ return item.id===id; });
+}
+
+function openAlgoDiagnosisDialog(){
+  const dialog=document.getElementById('algoDiagnosisDialog');
+  if(dialog) dialog.classList.add('active');
+}
+
+function closeAlgoDiagnosisDialog(event){
+  if(event && event.target && event.currentTarget && event.target!==event.currentTarget) return;
+  const dialog=document.getElementById('algoDiagnosisDialog');
+  if(dialog) dialog.classList.remove('active');
 }
 
 function openMessageCenter(){
