@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -130,17 +130,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px 6px;
-      background: linear-gradient(180deg, var(--brand), var(--brand));
+      height: 42px;
+      padding: 12px 18px 5px;
+      background: linear-gradient(180deg, #f43328 0%, var(--brand) 100%);
       color: #fff;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: .1px;
+      position: relative;
+      z-index: 2;
     }
 
     .status-icons {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
+      height: 18px;
     }
 
     .signal,
@@ -151,26 +157,81 @@
     }
 
     .signal {
-      width: 18px;
-      height: 12px;
-      border-bottom: 3px solid #fff;
-      border-left: 3px solid #fff;
-      border-right: 3px solid #fff;
-      border-radius: 0 0 3px 3px;
+      width: 17px;
+      height: 13px;
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .signal::before {
+      content: "";
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: currentColor;
+      box-shadow:
+        5px -3px 0 currentColor,
+        10px -6px 0 currentColor,
+        15px -9px 0 rgba(255,255,255,.72);
     }
 
     .wifi {
-      width: 16px;
-      height: 12px;
-      border-top: 3px solid #fff;
+      width: 17px;
+      height: 13px;
+      overflow: hidden;
+    }
+
+    .wifi::before,
+    .wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 2px solid transparent;
+      border-top-color: currentColor;
       border-radius: 50%;
     }
 
+    .wifi::before {
+      top: 1px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .wifi::after {
+      top: 6px;
+      width: 10px;
+      height: 10px;
+    }
+
+    .wifi i {
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      width: 4px;
+      height: 4px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: currentColor;
+    }
+
     .battery {
-      width: 24px;
+      width: 25px;
       height: 12px;
-      border: 2px solid #fff;
+      border: 1.8px solid currentColor;
       border-radius: 4px;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 16px;
+      height: 6px;
+      border-radius: 2px;
+      background: currentColor;
     }
 
     .battery::after {
@@ -179,9 +240,139 @@
       right: -4px;
       top: 3px;
       width: 2px;
-      height: 4px;
+      height: 5px;
+      background: currentColor;
+      border-radius: 0 2px 2px 0;
+      opacity: .88;
+    }
+
+    .app-statusbar {
+      height: 32px;
+      flex: 0 0 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 8px 18px 5px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: .1px;
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .app-statusbar.light {
+      color: #111;
       background: #fff;
-      border-radius: 1px;
+    }
+
+    .app-statusbar.red {
+      background: var(--brand);
+    }
+
+    .app-statusbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .app-signal,
+    .app-wifi,
+    .app-battery {
+      position: relative;
+      display: inline-block;
+      color: currentColor;
+      flex: 0 0 auto;
+    }
+
+    .app-signal {
+      width: 17px;
+      height: 13px;
+    }
+
+    .app-signal::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: currentColor;
+      box-shadow:
+        5px -3px 0 currentColor,
+        10px -6px 0 currentColor,
+        15px -9px 0 currentColor;
+    }
+
+    .app-wifi {
+      width: 17px;
+      height: 13px;
+      overflow: hidden;
+    }
+
+    .app-wifi::before,
+    .app-wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+    }
+
+    .app-wifi::before {
+      top: 1px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .app-wifi::after {
+      top: 6px;
+      width: 10px;
+      height: 10px;
+    }
+
+    .app-wifi i {
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      width: 4px;
+      height: 4px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .app-battery {
+      width: 25px;
+      height: 12px;
+      border: 1.8px solid currentColor;
+      border-radius: 4px;
+    }
+
+    .app-battery::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 16px;
+      height: 6px;
+      border-radius: 2px;
+      background: currentColor;
+    }
+
+    .app-battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 3px;
+      width: 2px;
+      height: 5px;
+      background: currentColor;
+      border-radius: 0 2px 2px 0;
+      opacity: .88;
     }
 
     .hero {
@@ -268,6 +459,804 @@
       display: block;
     }
 
+    .page[data-main-tab="profile"] .hero,
+    .page[data-main-tab="profile"] .banner,
+    .page[data-main-tab="profile"] .home-content,
+    .page[data-main-tab="profile"] .watchlist-page {
+      display: none;
+    }
+
+    .profile-page {
+      display: none;
+      min-height: 100%;
+      background: linear-gradient(180deg, #fff 0, #fff 34%, #f7f8fb 100%);
+      padding-bottom: 128px;
+    }
+
+    .page[data-main-tab="profile"] .profile-page {
+      display: block;
+    }
+
+    .profile-header {
+      height: 88px;
+      padding-top: 38px;
+      background: var(--brand);
+      color: #fff;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .profile-section-title {
+      padding: 20px 24px 8px;
+      color: #8d94a0;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .profile-list {
+      padding: 0 24px;
+      background: #fff;
+    }
+
+    .profile-row {
+      width: 100%;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 0;
+      border-bottom: 1px solid #edf1f5;
+      background: transparent;
+      color: #20242a;
+      text-align: left;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .profile-row.static {
+      cursor: default;
+    }
+
+    .profile-row:last-child {
+      border-bottom-color: #e6e8ec;
+    }
+
+    .profile-row-label {
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .profile-row-value {
+      color: #8d94a0;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .profile-user-card {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 15px;
+      align-items: center;
+      margin: 18px 20px 12px;
+      padding: 16px;
+      border: 1px solid #f0f2f5;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at top right, rgba(239,45,31,.08), transparent 32%),
+        #fff;
+      box-shadow: 0 12px 30px rgba(15,23,42,.06);
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border: 3px solid var(--brand);
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(0,0,0,.05)),
+        url("./assets/profile-avatar-landscape.png") center / cover no-repeat;
+      box-shadow:
+        0 0 0 4px rgba(239, 45, 31, .06),
+        0 10px 24px rgba(239, 45, 31, .16);
+    }
+
+    .profile-user-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #30343b;
+      line-height: 1.35;
+    }
+
+    .profile-user-id {
+      margin-top: 5px;
+      color: #7c8490;
+      font-size: 13px;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .profile-stat {
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #fff6f4;
+    }
+
+    .profile-stat-value {
+      color: #c43a32;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .profile-stat-label {
+      margin-top: 2px;
+      color: #8d94a0;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .profile-paid-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 20px 18px;
+      min-height: 58px;
+      padding: 0 16px;
+      border: 1px solid #ffe4dc;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff9f4, #fff1ee);
+      color: #b65b39;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(239,45,31,.06);
+    }
+
+    .profile-paid-card strong {
+      margin-left: 6px;
+      color: #b62d25;
+      letter-spacing: 1px;
+    }
+
+    .profile-paid-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .profile-paid-icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #c46c49;
+      box-shadow: inset 0 0 0 1px rgba(196,108,73,.14);
+    }
+
+    .profile-paid-sub {
+      margin-top: 2px;
+      color: #a88c82;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .profile-reward-list {
+      margin: 0 20px 18px;
+      padding: 0;
+      border: 1px solid #ffe4dc;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff, #fff7f5);
+      box-shadow: 0 8px 20px rgba(239,45,31,.05);
+      overflow: hidden;
+    }
+
+    .profile-reward-list .profile-row {
+      min-height: 58px;
+      padding: 0 16px;
+      border-bottom: 0;
+      background: transparent;
+    }
+
+    .profile-reward-row .profile-row-label {
+      color: #b62d25;
+      font-weight: 700;
+    }
+
+    .profile-order-title {
+      padding: 0 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #30343b;
+    }
+
+    .profile-service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 14px;
+      background: #fff8f1;
+      color: #c77947;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(199,121,71,.08);
+    }
+
+    .profile-service-link .profile-chevron {
+      width: 7px;
+      height: 7px;
+      border-width: 1.5px;
+    }
+
+    .profile-order-card {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      margin: 0 20px 12px;
+      padding: 16px 8px 14px;
+      border: 1px solid #f0f2f5;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .07);
+    }
+
+    .profile-order-item {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      color: #30343b;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .profile-order-icon {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #edf0f4;
+      border-radius: 10px;
+      position: relative;
+      background: #fafbfc;
+      color: #6f7681;
+    }
+
+    .profile-order-icon::before,
+    .profile-order-icon::after {
+      content: "";
+      position: absolute;
+      box-sizing: border-box;
+    }
+
+    .profile-order-icon.all::before {
+      left: 9px;
+      top: 8px;
+      width: 14px;
+      height: 17px;
+      border: 2px solid currentColor;
+      border-radius: 4px;
+    }
+
+    .profile-order-icon.all::after {
+      left: 12px;
+      top: 13px;
+      width: 8px;
+      height: 2px;
+      background: currentColor;
+      box-shadow: 0 5px 0 currentColor;
+    }
+
+    .profile-order-icon.wallet {
+      border-radius: 10px;
+    }
+
+    .profile-order-icon.wallet::before {
+      left: 8px;
+      top: 10px;
+      width: 18px;
+      height: 14px;
+      border: 2px solid currentColor;
+      border-radius: 5px;
+    }
+
+    .profile-order-icon.wallet::after {
+      right: 8px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .profile-order-icon.shop {
+      border-radius: 10px;
+    }
+
+    .profile-order-icon.shop::before {
+      left: 8px;
+      top: 12px;
+      width: 18px;
+      height: 12px;
+      border: 2px solid currentColor;
+      border-radius: 3px;
+    }
+
+    .profile-order-icon.shop::after {
+      left: 10px;
+      top: 8px;
+      width: 14px;
+      height: 7px;
+      border: 2px solid currentColor;
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .profile-order-icon.truck::before {
+      left: 8px;
+      top: 10px;
+      width: 18px;
+      height: 14px;
+      border: 2px solid currentColor;
+      border-radius: 4px;
+      background: transparent;
+    }
+
+    .profile-order-icon.truck::after {
+      left: 12px;
+      top: 8px;
+      width: 10px;
+      height: 5px;
+      border: 2px solid currentColor;
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .profile-order-icon.shield {
+      border-radius: 10px;
+    }
+
+    .profile-order-icon.shield::before {
+      left: 9px;
+      top: 8px;
+      width: 16px;
+      height: 18px;
+      border: 2px solid currentColor;
+      border-radius: 8px 8px 10px 10px;
+    }
+
+    .profile-order-icon.shield::after {
+      left: 14px;
+      top: 14px;
+      width: 7px;
+      height: 4px;
+      border-left: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+    }
+
+    .profile-row-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .profile-chevron {
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid #9aa2ad;
+      border-right: 2px solid #9aa2ad;
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+    }
+
+    .profile-logout-row {
+      margin-top: 10px;
+      margin-bottom: 22px;
+      background: #fff;
+      border-bottom-color: #dde1e7;
+    }
+
+    .profile-bottom-spacer {
+      height: 88px;
+    }
+
+    .cancel-drawer-mask,
+    .benefit-confirm-mask {
+      position: absolute;
+      inset: 0;
+      display: none;
+      background: rgba(0, 0, 0, .48);
+      z-index: 2200;
+    }
+
+    .cancel-drawer-mask.active,
+    .benefit-confirm-mask.active {
+      display: flex;
+    }
+
+    .cancel-drawer-mask {
+      align-items: flex-end;
+    }
+
+    .benefit-confirm-mask {
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+      z-index: 2300;
+    }
+
+    .cancel-panel {
+      width: 100%;
+      max-height: 92%;
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px 18px 0 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .cancel-panel-header {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid #edf1f5;
+      flex: 0 0 auto;
+    }
+
+    .cancel-close {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #4b5563;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .cancel-panel-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .cancel-body {
+      padding: 16px;
+      overflow: auto;
+      flex: 1 1 auto;
+    }
+
+    .cancel-stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .cancel-step {
+      height: 4px;
+      border-radius: 999px;
+      background: #ebeef2;
+    }
+
+    .cancel-step.active {
+      background: var(--brand);
+    }
+
+    .cancel-screen {
+      display: none;
+    }
+
+    .cancel-screen.active {
+      display: block;
+    }
+
+    .cancel-screen h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .cancel-subtext {
+      margin: 0 0 14px;
+      color: #69707c;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .cancel-asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .cancel-asset-item {
+      padding: 12px;
+      border: 1px solid #edf1f5;
+      border-radius: 8px;
+      background: #fafbfc;
+    }
+
+    .cancel-asset-value {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .cancel-asset-label {
+      margin-top: 3px;
+      color: #8d94a0;
+      font-size: 13px;
+    }
+
+    .cancel-risk-card,
+    .cancel-notice-card,
+    .cancel-success-card {
+      padding: 13px 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cancel-risk-card {
+      border: 1px solid #ffa39e;
+      background: #fff1f0;
+    }
+
+    .cancel-notice-card {
+      border: 1px solid #ffd591;
+      background: #fff7e8;
+    }
+
+    .cancel-success-card {
+      border: 1px solid #8ce0b8;
+      background: #effaf4;
+    }
+
+    .cancel-card-title {
+      margin-bottom: 6px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .cancel-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cancel-list li {
+      display: flex;
+      gap: 8px;
+      padding: 6px 0;
+      color: #4d5562;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .cancel-list li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      margin-top: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .cancel-block-list {
+      border: 1px solid #edf1f5;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .cancel-block-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid #edf1f5;
+      font-size: 14px;
+    }
+
+    .cancel-block-item:last-child {
+      border-bottom: 0;
+    }
+
+    .cancel-status-tag {
+      color: var(--brand);
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .cancel-verify-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin: 14px 0 10px;
+    }
+
+    .cancel-code-input {
+      min-width: 0;
+      height: 46px;
+      padding: 0 12px;
+      border: 1px solid #d9dde3;
+      border-radius: 8px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .cancel-ghost-button {
+      min-width: 96px;
+      height: 46px;
+      border: 1px solid var(--brand);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--brand);
+      cursor: pointer;
+    }
+
+    .cancel-confirm-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 12px 0;
+      color: #4e5663;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .cancel-confirm-line input {
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .cancel-action-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 12px 16px 14px;
+      border-top: 1px solid #edf1f5;
+      background: #fff;
+      flex: 0 0 auto;
+    }
+
+    .cancel-action-bar.single {
+      grid-template-columns: 1fr;
+    }
+
+    .cancel-button {
+      min-height: 46px;
+      border: 0;
+      border-radius: 8px;
+      font-weight: 750;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .cancel-button.secondary {
+      background: #f1f2f4;
+      color: #404753;
+    }
+
+    .cancel-button.primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .cancel-button.primary:disabled,
+    .cancel-button.danger:disabled {
+      background: #f0a39e;
+      cursor: not-allowed;
+    }
+
+    .cancel-button.danger {
+      background: var(--brand-deep);
+      color: #fff;
+    }
+
+    .cancel-final-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      background: #eaf8f1;
+      color: #19a15f;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .benefit-dialog {
+      width: 100%;
+      max-width: 340px;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .benefit-dialog-body {
+      padding: 24px 22px 18px;
+      text-align: center;
+    }
+
+    .benefit-dialog-title {
+      margin-bottom: 10px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .benefit-dialog-text {
+      margin: 0;
+      color: #505866;
+      font-size: 15px;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .benefit-dialog-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid #edf1f5;
+    }
+
+    .benefit-dialog-actions.center {
+      display: flex;
+      justify-content: center;
+      padding: 10px 16px;
+    }
+
+    .benefit-dialog-actions button {
+      min-height: 50px;
+      border: 0;
+      background: #fff;
+      font-weight: 750;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .benefit-dialog-actions button + button {
+      border-left: 1px solid #edf1f5;
+    }
+
+    .benefit-dialog-actions.center button {
+      min-width: 104px;
+      min-height: 40px;
+      border-left: 0;
+      border-radius: 8px;
+    }
+
+    .benefit-cancel {
+      color: #5f6672;
+    }
+
+    .benefit-danger {
+      color: var(--brand);
+    }
+
     .tool-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -278,6 +1267,7 @@
 
     .tool {
       text-align: center;
+      cursor: pointer;
     }
 
     .tool-icon {
@@ -354,6 +1344,142 @@
       font-size: 11px;
       font-weight: 700;
       line-height: 1.3;
+    }
+
+    .algo-diagnosis-mask {
+      position: absolute;
+      inset: 0;
+      z-index: 1500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0,0,0,.48);
+    }
+
+    .algo-diagnosis-mask.active {
+      display: flex;
+    }
+
+    .algo-diagnosis-dialog {
+      width: 100%;
+      max-width: 286px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(15,23,42,.24);
+    }
+
+    .algo-diagnosis-body {
+      padding: 22px 22px 18px;
+      color: #535b66;
+    }
+
+    .algo-diagnosis-title {
+      margin-bottom: 18px;
+      color: #272b31;
+      font-size: 18px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .algo-diagnosis-text {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    .algo-diagnosis-link {
+      margin: 14px 0 12px;
+      color: #35aee2;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .algo-pe-box {
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #f7f8fa;
+      border: 1px solid #edf0f4;
+    }
+
+    .algo-pe-title {
+      margin-bottom: 7px;
+      color: #3b414b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .algo-pe-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 22px;
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .algo-pe-row strong {
+      color: #343a43;
+      font-weight: 700;
+    }
+
+    .algo-g-card {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #fbfbfc;
+      border: 1px solid #edf0f4;
+    }
+
+    .algo-g-copy {
+      color: #626a76;
+      font-size: 13px;
+      line-height: 1.52;
+      text-align: left;
+    }
+
+    .algo-g-copy strong {
+      color: #3b414b;
+      font-weight: 800;
+    }
+
+    .algo-g-copy p {
+      margin: 0 0 6px;
+    }
+
+    .algo-g-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .algo-g-line {
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .algo-g-line::-webkit-scrollbar {
+      display: none;
+    }
+
+    .algo-diagnosis-actions {
+      border-top: 1px solid #edf0f4;
+      text-align: center;
+    }
+
+    .algo-diagnosis-actions button {
+      min-width: 110px;
+      min-height: 48px;
+      border: 0;
+      background: #fff;
+      color: #ef2d1f;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
     }
 
     .dual-cards {
@@ -612,6 +1738,122 @@
       color: #8c949e;
       font-size: 11px;
     }
+
+    .dual-tool-card {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 0;
+      margin-top: 14px;
+      padding: 14px 0;
+      border: 1px solid #ffe0dc;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff7f4 0%, #fff 42%, #fff9f8 100%);
+      box-shadow: 0 10px 24px rgba(232,65,58,.06);
+      overflow: hidden;
+    }
+
+    .dual-tool-pane {
+      min-width: 0;
+      padding: 0 14px;
+      text-align: left;
+      border: 0;
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .dual-tool-pane + .dual-tool-pane {
+      border-left: 1px solid #f0e4e1;
+    }
+
+    .dual-tool-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #171a1f;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .dual-tool-more {
+      color: var(--brand);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .dual-rating-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .dual-rating-row {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 6px;
+      align-items: center;
+      color: #4f2c20;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .dual-stars {
+      color: #ff4b22;
+      font-size: 13px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .dual-event-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .dual-event-item {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 7px;
+      align-items: start;
+    }
+
+    .dual-event-date {
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .dual-event-date span {
+      display: block;
+      margin-top: 1px;
+      color: #b5bac3;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .dual-event-name {
+      color: #20242a;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .dual-event-tags {
+      margin-top: 3px;
+      color: #8c949e;
+      font-size: 10px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .watchlist-top {
       margin: 0 -12px;
       padding: 22px 14px 14px;
@@ -690,6 +1932,7 @@
       box-shadow: none;
       border: 0;
       border-bottom: 1px solid #eceff3;
+      cursor: pointer;
     }
     .watch-stock-card:last-child {
       border-bottom: 0;
@@ -2911,6 +4154,1223 @@ body.chat-open{overflow:hidden}
   box-shadow:0 4px 12px rgba(232,65,58,.08);
 }
 
+.tk-message-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1450;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f6f7fb;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.tk-message-page.open { transform: translateX(0); }
+.tk-message-header {
+  height: 50px;
+  flex: 0 0 50px;
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr) 82px;
+  align-items: center;
+  background: linear-gradient(180deg, #f43328 0%, #ef2d1f 100%);
+  color: #fff;
+}
+.tk-message-back {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.tk-message-back::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  width: 14px;
+  height: 14px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: rotate(45deg);
+}
+.tk-message-title {
+  min-width: 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.tk-message-read {
+  justify-self: end;
+  min-width: 70px;
+  height: 32px;
+  margin-right: 8px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+}
+.tk-message-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px 22px;
+  background: #f6f7fb;
+}
+.tk-message-scroll::-webkit-scrollbar { width: 0; }
+.tk-message-item {
+  position: relative;
+  padding: 14px 14px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #edf0f4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .045);
+}
+.tk-message-item.with-dot {
+  padding-left: 18px;
+}
+.tk-message-item.with-dot::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f5222d;
+}
+.tk-message-row-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  color: #20242a;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+.tk-message-badge {
+  min-width: 22px;
+  height: 15px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #f04b42;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 15px;
+  text-align: center;
+}
+.tk-message-preview {
+  margin-top: 8px;
+  color: #30343b;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 500;
+  word-break: break-word;
+}
+.tk-message-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+.tk-message-time {
+  color: #b5bac3;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tk-message-link {
+  border: 0;
+  background: transparent;
+  color: #1683ff;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tk-message-detail-text {
+  color: #20242a;
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: 600;
+  white-space: pre-line;
+}
+.tk-message-media {
+  float: right;
+  width: 84px;
+  height: 46px;
+  margin: 0 0 8px 12px;
+  display: grid;
+  place-items: center;
+  background: #eee;
+  color: #8da0ad;
+  font-size: 18px;
+  border-radius: 8px;
+}
+.tk-reward-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: calc(100% - 76px);
+  margin: 4px auto 16px;
+  border: 1px solid #f5222d;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tk-reward-tab {
+  height: 32px;
+  border: 0;
+  background: #fff;
+  color: #f5222d;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.tk-reward-tab.active {
+  background: #f52212;
+  color: #fff;
+}
+.tk-reward-card {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 12px 16px;
+  border: 1px solid #edf0f4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .045);
+}
+.tk-reward-amount {
+  color: #20242a;
+  font-size: 15px;
+  font-weight: 700;
+}
+.tk-reward-time {
+  margin-top: 10px;
+  color: #a8adb6;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tk-reward-button {
+  min-width: 56px;
+  height: 24px;
+  border: 0;
+  border-radius: 9px;
+  background: #f52212;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+}
+.tk-message-empty {
+  padding: 80px 12px 0;
+  text-align: center;
+  color: #b5bac3;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.smart-pick-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1480;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f6f8;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.smart-pick-page.open { transform: translateX(0); }
+.smart-pick-header {
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  grid-template-columns: 54px minmax(0,1fr) 54px;
+  align-items: center;
+  background: linear-gradient(180deg, #fb2117 0%, #f01810 100%);
+  color: #fff;
+}
+.smart-pick-back {
+  width: 54px;
+  height: 54px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.smart-pick-back::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 18px;
+  width: 15px;
+  height: 15px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: rotate(45deg);
+}
+.smart-pick-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: .2px;
+}
+.smart-pick-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f5f6f8;
+  padding-bottom: 96px;
+}
+.smart-pick-scroll::-webkit-scrollbar { width: 0; }
+.smart-note {
+  padding: 10px 18px;
+  color: #b58324;
+  background: #fff8ec;
+  border-bottom: 1px solid #f4e5cc;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+.smart-ai-card {
+  margin: 14px 18px 0;
+  padding: 10px 14px;
+  border: 1px solid #d7e5ff;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fbfdff, #f6faff);
+  box-shadow: 0 5px 14px rgba(20, 99, 220, .045);
+}
+.smart-ai-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.smart-ai-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #161b22;
+  font-size: 14px;
+  font-weight: 780;
+}
+.smart-ai-spark {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  flex: 0 0 auto;
+}
+.smart-ai-spark::before,
+.smart-ai-spark::after {
+  content: "";
+  position: absolute;
+  background: #1677ff;
+  transform: rotate(45deg);
+}
+.smart-ai-spark::before {
+  left: 3px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  clip-path: polygon(50% 0, 64% 36%, 100% 50%, 64% 64%, 50% 100%, 36% 64%, 0 50%, 36% 36%);
+}
+.smart-ai-spark::after {
+  right: 3px;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  background: #ff4d3d;
+  clip-path: polygon(50% 0, 64% 36%, 100% 50%, 64% 64%, 50% 100%, 36% 64%, 0 50%, 36% 36%);
+}
+.smart-ai-help {
+  border: 0;
+  background: transparent;
+  color: #1677ff;
+  font-size: 12px;
+  font-weight: 760;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-ai-desc {
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 1.55;
+  font-weight: 520;
+}
+.smart-ai-input {
+  margin-top: 12px;
+  height: 42px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 13px;
+  border: 1px solid #c9ddff;
+  border-radius: 8px;
+  background: #fff;
+}
+.smart-ai-placeholder {
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 560;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.smart-ai-send {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2f8cff, #0f6ff2);
+  color: #fff;
+  font-size: 0;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(22, 119, 255, .22);
+}
+.smart-ai-send::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  clip-path: polygon(6% 47%, 93% 8%, 61% 92%, 47% 59%);
+  transform: rotate(-8deg);
+}
+.smart-ai-send::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  width: 8px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: #1677ff;
+  transform: rotate(-31deg);
+  opacity: .95;
+}
+.smart-ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+.smart-ai-chip {
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid #cfe1ff;
+  border-radius: 5px;
+  background: #fff;
+  color: #1666d8;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-method-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 14px 18px 22px;
+  padding: 4px;
+  border-radius: 9px;
+  background: #eef0f3;
+}
+.smart-method-tab {
+  height: 40px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #3a3f47;
+  font-size: 15px;
+  font-weight: 650;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-method-tab.active {
+  background: linear-gradient(180deg, #ff2a1d, #f51d12);
+  color: #fff;
+  font-weight: 780;
+  box-shadow: 0 5px 14px rgba(245, 34, 18, .22);
+}
+.smart-section {
+  padding: 0 18px 22px;
+  background: #fff;
+}
+.smart-section + .smart-section {
+  border-top: 9px solid #f0f2f5;
+  padding-top: 20px;
+}
+.smart-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.smart-section-title {
+  color: #1f242b;
+  font-size: 17px;
+  font-weight: 780;
+}
+.smart-reset {
+  border: 0;
+  background: transparent;
+  color: #1683d8;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.smart-reset::before {
+  content: "↻";
+  margin-right: 5px;
+  font-size: 16px;
+  vertical-align: -1px;
+}
+.smart-industry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px 16px;
+}
+.smart-industry {
+  height: 43px;
+  border: 1px solid #e6e8ec;
+  border-radius: 6px;
+  background: #fff;
+  color: #5f6570;
+  font-size: 14px;
+  font-weight: 650;
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(15,23,42,.035);
+}
+.smart-industry.active {
+  border-color: #ffd9dc;
+  background: linear-gradient(180deg, #fff0f2, #fde3e7);
+  color: #d92720;
+  font-weight: 760;
+  box-shadow: 0 5px 12px rgba(245,34,18,.08);
+}
+.smart-panel { display: none; }
+.smart-panel.active { display: block; }
+.smart-condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smart-condition {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 126px;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f1f3;
+}
+.smart-condition:last-child {
+  border-bottom: 0;
+}
+.smart-condition-name {
+  color: #242931;
+  font-size: 15px;
+  font-weight: 620;
+  line-height: 1.32;
+}
+.smart-condition-range {
+  margin-top: 5px;
+  color: #a2a8b2;
+  font-size: 12px;
+  font-weight: 520;
+}
+.smart-condition-control {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto 38px;
+  align-items: center;
+  gap: 7px;
+}
+.smart-value {
+  min-width: 0;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #f4f5f7;
+  color: #242931;
+  font-size: 18px;
+  font-weight: 680;
+  box-shadow: inset 0 0 0 1px rgba(15,23,42,.025);
+}
+.smart-unit {
+  color: #333941;
+  font-size: 14px;
+  font-weight: 650;
+  min-width: 14px;
+}
+.smart-switch {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: #16c777;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.smart-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.16);
+}
+.smart-edit-hint {
+  grid-column: 1 / 3;
+  margin-top: -4px;
+  color: #9aa0a9;
+  font-size: 12px;
+  font-weight: 520;
+  text-align: left;
+}
+.smart-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,.7), #fff 30%);
+  border-top: 1px solid #f0f1f3;
+}
+.smart-start-btn {
+  width: 100%;
+  height: 52px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ff271a, #f51f13);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 760;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(245, 34, 18, .20);
+}
+
+.stock-detail-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f2f2f2;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.stock-detail-page.open { transform: translateX(0); }
+.stock-detail-hdr {
+  min-height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  grid-template-columns: 42px minmax(0,1fr) 42px;
+  align-items: center;
+  background: #f71912;
+  color: #fff;
+}
+.stock-detail-back {
+  width: 42px;
+  height: 52px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.stock-detail-back::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 16px;
+  width: 13px;
+  height: 13px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.stock-detail-title {
+  min-width: 0;
+  text-align: center;
+  line-height: 1.12;
+  font-weight: 600;
+}
+.stock-detail-name {
+  display: block;
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stock-detail-code {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: .88;
+}
+.stock-detail-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f2f2f2;
+}
+.stock-detail-scroll::-webkit-scrollbar { width: 0; }
+.stock-source-note {
+  padding: 10px 18px;
+  background: #fff6ea;
+  color: #d59a3f;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.stock-company-meta {
+  padding: 10px 16px 2px;
+  color: #999;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.stock-company-meta strong {
+  color: #30343b;
+  font-weight: 500;
+}
+.stock-company-business {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  gap: 8px;
+}
+.stock-info-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: #f2f2f2;
+}
+.stock-info-tabs::-webkit-scrollbar { display: none; }
+.stock-info-tab {
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #e6e9ef;
+  border-radius: 6px;
+  background: #fff;
+  color: #555d68;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: default;
+  pointer-events: none;
+}
+.stock-info-tab.active {
+  border-color: #ffd2cd;
+  background: #fff3f1;
+  color: #ef2d1f;
+}
+.stock-info-panel { display: none; }
+.stock-info-panel.active { display: block; }
+.stock-placeholder-card {
+  margin: 10px 14px 0;
+  padding: 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15,23,42,.04);
+}
+.stock-placeholder-title {
+  color: #30343b;
+  font-size: 14px;
+  font-weight: 800;
+}
+.stock-placeholder-desc {
+  margin-top: 8px;
+  color: #707783;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.stock-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.stock-tag {
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #f6f7f9;
+  color: #555d68;
+  font-size: 12px;
+  font-weight: 700;
+}
+.stock-card {
+  margin: 10px 14px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15,23,42,.04);
+}
+.stock-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 14px 7px;
+  color: #30343b;
+  font-size: 14px;
+  font-weight: 700;
+}
+.stock-section-title span:last-child {
+  color: #8b9098;
+  font-weight: 700;
+}
+.forecast-table {
+  display: grid;
+  grid-template-columns: .9fr 1fr 1fr .9fr;
+  column-gap: 12px;
+  row-gap: 8px;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.forecast-head {
+  color: #777;
+  font-size: 14px;
+  font-weight: 600;
+}
+.forecast-tag {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 4px 2px;
+  border-radius: 4px;
+  background: #fff0ed;
+  color: #f44336;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 32px;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.metric-row span {
+  font-size: 14px;
+}
+.metric-row strong {
+  color: #30343b;
+  font-size: 16px;
+  font-weight: 600;
+}
+.metric-row strong.red { color: #f71912; }
+.stock-card-note {
+  margin-top: 8px;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.stock-kline-card {
+  margin: 0;
+  padding: 0;
+  border-radius: 0 0 14px 14px;
+  box-shadow: none;
+}
+.stock-quote-row {
+  display: grid;
+  grid-template-columns: 86px 76px minmax(0,1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px 10px 9px;
+  border-bottom: 1px solid #f0f2f5;
+}
+.stock-price {
+  color: #f71912;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 1;
+}
+.stock-price.down,
+.stock-change.down,
+.quote-down {
+  color: #1ca672 !important;
+}
+.stock-price.flat,
+.stock-change.flat,
+.quote-flat {
+  color: #30343b !important;
+}
+.stock-change {
+  margin-top: 5px;
+  color: #f71912;
+  font-size: 13px;
+  font-weight: 700;
+}
+.stock-trade-info {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  gap: 5px 6px;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.25;
+}
+.stock-trade-info.compact {
+  grid-template-columns: auto minmax(58px,1fr) auto minmax(42px,.7fr);
+  gap: 5px 7px;
+  font-size: 12px;
+  align-items: baseline;
+}
+.stock-trade-info span:nth-child(even) {
+  color: #30343b;
+  font-weight: 700;
+}
+.stock-trade-info.compact span {
+  white-space: nowrap;
+}
+.stock-trade-info.compact span:nth-child(odd) {
+  color: #7d838c;
+  font-size: 12px;
+  font-weight: 500;
+}
+.stock-trade-info.compact span:nth-child(even) {
+  color: #242832;
+  font-size: 12px;
+  font-weight: 800;
+}
+.stock-trade-info.compact .ttm {
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: 0;
+}
+.stock-trade-info .red {
+  color: #f71912;
+}
+.stock-trade-info.compact span.red {
+  color: #f71912;
+}
+.quote-up,
+.quote-hot {
+  color: #f71912 !important;
+}
+.kline-period-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) 34px;
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid #f0f2f5;
+  background: #fff;
+}
+.kline-period-tab {
+  position: relative;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #555;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.kline-period-tab.active {
+  color: #1f2329;
+}
+.kline-period-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 24px;
+  height: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #ef2d1f;
+}
+.kline-gear {
+  width: 30px;
+  height: 30px;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.kline-gear img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.kline-gear:active {
+  background: #fff3f1;
+}
+.kline-toolbar,
+.indicator-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.kline-toolbar::-webkit-scrollbar,
+.indicator-tabs::-webkit-scrollbar { display: none; }
+.kline-pill,
+.indicator-tab,
+.kline-zoom {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #edf0f4;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.kline-pill.active,
+.indicator-tab.active {
+  border-color: #ffd0ca;
+  background: #fff3f1;
+  color: #ef2d1f;
+}
+.kline-select {
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid #edf0f4;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.ma-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0;
+  padding: 7px 10px 5px;
+  border-bottom: 1px solid #f0f2f5;
+  color: #737b86;
+  font-size: 12px;
+  font-weight: 700;
+}
+.ma-legend strong {
+  color: #30343b;
+  font-weight: 800;
+}
+.ma-legend .kline-adjust-label {
+  margin-left: auto;
+  color: #30343b;
+}
+.ma-legend .ma5 { color: #f0a500; }
+.ma-legend .ma10 { color: #2d8cff; }
+.ma-legend .ma20 { color: #9b59b6; }
+.ma-legend .ma30 { color: #1ca672; }
+.kline-canvas-wrap {
+  position: relative;
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  overflow: hidden;
+}
+#stockKlineCanvas {
+  display: block;
+  width: 100%;
+  height: 420px;
+  cursor: crosshair;
+  touch-action: none;
+}
+.indicator-tabs { display: none; }
+.indicator-floating {
+  position: absolute;
+  left: 14px;
+  right: 12px;
+  top: 292px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.indicator-select {
+  flex: 0 0 auto;
+  height: 25px;
+  min-width: 76px;
+  padding: 0 24px 0 10px;
+  border: 1px solid #dfe4ea;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, #7f8790 50%) right 12px center/6px 6px no-repeat,
+    linear-gradient(135deg, #7f8790 50%, transparent 50%) right 8px center/6px 6px no-repeat,
+    rgba(255,255,255,.94);
+  color: #30343b;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(15,23,42,.06);
+  pointer-events: auto;
+}
+.indicator-select:focus {
+  outline: none;
+  border-color: #ffb3ad;
+  box-shadow: 0 0 0 2px rgba(239,45,31,.08);
+}
+.indicator-info-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 24px;
+  padding: 0;
+  color: #555;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.indicator-info-row::-webkit-scrollbar { display: none; }
+.indicator-name-pill {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 3px;
+  background: #f5f5f5;
+  color: #555;
+}
+.indicator-muted { color: #8d94a0; }
+.indicator-orange { color: #f0a500; }
+.indicator-purple { color: #a331d5; }
+.indicator-blue { color: #1f4ba8; }
+.indicator-sky { color: #2d8cff; }
+.indicator-red { color: #ef2d1f; }
+.indicator-green { color: #1ca672; }
+.indicator-gray { color: #777; }
+.kline-date-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px 6px;
+  color: #777;
+  font-size: 12px;
+  border-bottom: 1px solid #f0f2f5;
+}
+.kline-zoom-row {
+  position: absolute;
+  left: 62px;
+  top: 248px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  pointer-events: none;
+}
+.kline-zoom-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #f4f5f7;
+  color: #32363f;
+  font-size: 19px;
+  line-height: 1;
+  font-family: inherit;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.kline-zoom-btn:active {
+  background: #ffe8e4;
+  color: #f32012;
+}
+.adjust-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1600;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,.42);
+}
+.adjust-mask.active { display: flex; }
+.adjust-dialog {
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgba(15,23,42,.22);
+}
+.adjust-title {
+  padding: 16px;
+  border-bottom: 1px solid #edf0f4;
+  color: #20242a;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
+}
+.adjust-option {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-bottom: 1px solid #edf0f4;
+  background: #fff;
+  color: #30343b;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.adjust-option.active {
+  color: #ef2d1f;
+  background: #fff7f5;
+}
+.adjust-cancel {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  background: #fff;
+  color: #8d94a0;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.statement-card {
+  padding: 18px;
+}
+.stock-bottom-space { height: 30px; }
+
 
 </style>
 </head>
@@ -2925,7 +5385,7 @@ body.chat-open{overflow:hidden}
               <span>10:41</span>
               <div class="status-icons">
                 <span class="signal"></span>
-                <span class="wifi"></span>
+                <span class="wifi"><i></i></span>
                 <span class="battery"></span>
               </div>
             </div>
@@ -2937,7 +5397,7 @@ body.chat-open{overflow:hidden}
                 </div>
                 <div class="search" onclick="openChat()">🔍 <span class="accent">AI</span> 搜索</div>
                 <div class="top-action"><span class="icon"></span>排行榜</div>
-                <div class="top-action"><span class="icon"></span>奖励</div>
+                <div class="top-action" onclick="openMessageCenter()"><span class="icon"></span>消息</div>
                 <div class="top-action"><span class="icon"></span>分享</div>
               </div>
             </header>
@@ -2946,8 +5406,8 @@ body.chat-open{overflow:hidden}
 
             <section class="section home-content" id="homeContent">
               <div class="tool-grid">
-                <div class="tool"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
-                <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
+                <div class="tool" onclick="openAlgoDiagnosisDialog()"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
+                <div class="tool" onclick="openSmartPickPage()"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
@@ -3129,7 +5589,7 @@ body.chat-open{overflow:hidden}
                 </div>
               </article>
               <div class="watch-stock-list">
-                <article class="watch-stock-card">
+                <article class="watch-stock-card" onclick="openStockDetail('zhongke')">
                   <div class="watch-stock-head">
                     <div><span class="watch-stock-name">中科曙光</span><span class="watch-stock-code">603019 &gt;&gt;</span></div>
                     <span class="watch-fundamental">见基本面</span>
@@ -3141,7 +5601,7 @@ body.chat-open{overflow:hidden}
                   </div>
                   <div class="watch-stock-foot"><span>模拟操盘</span><span>删自选</span></div>
                 </article>
-                <article class="watch-stock-card">
+                <article class="watch-stock-card" onclick="openStockDetail('sany')">
                   <div class="watch-stock-head">
                     <div><span class="watch-stock-name">三一重工</span><span class="watch-stock-code">600031 &gt;&gt;</span></div>
                     <span class="watch-fundamental">见基本面</span>
@@ -3155,6 +5615,290 @@ body.chat-open{overflow:hidden}
                 </article>
               </div>
             </section>
+<section class="profile-page" id="profilePage">
+              <div class="profile-header">个人中心</div>
+              <div class="profile-user-card">
+                <div class="profile-avatar" aria-hidden="true"></div>
+                <div>
+                  <div class="profile-user-name">测试微信</div>
+                  <div class="profile-user-id">ID: 1722865</div>
+                  <div class="profile-stats">
+                    <div class="profile-stat">
+                      <div class="profile-stat-value">2.0万</div>
+                      <div class="profile-stat-label">我的金豆</div>
+                    </div>
+                    <div class="profile-stat">
+                      <div class="profile-stat-value">41天</div>
+                      <div class="profile-stat-label">加入躺客</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="profile-paid-card">
+                <div class="profile-paid-left">
+                  <span class="profile-paid-icon" aria-hidden="true">♕</span>
+                  <div>
+                    <div>年费到期：<strong>2027-4-14</strong></div>
+                  </div>
+                </div>
+              </div>
+              <div class="profile-list profile-reward-list">
+                <button class="profile-row profile-reward-row" type="button">
+                  <span class="profile-row-label">奖励</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="profile-order-title">
+                <span>我的订单</span>
+                <button class="profile-service-link" type="button">
+                  <span>已购服务</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="profile-order-card" aria-label="我的订单">
+                <div class="profile-order-item">
+                  <span class="profile-order-icon all"></span>
+                  <span>全部</span>
+                </div>
+                <div class="profile-order-item">
+                  <span class="profile-order-icon wallet"></span>
+                  <span>待付款</span>
+                </div>
+                <div class="profile-order-item">
+                  <span class="profile-order-icon shop"></span>
+                  <span>待发货</span>
+                </div>
+                <div class="profile-order-item">
+                  <span class="profile-order-icon truck"></span>
+                  <span>待收货</span>
+                </div>
+                <div class="profile-order-item">
+                  <span class="profile-order-icon shield"></span>
+                  <span>售后</span>
+                </div>
+              </div>
+              <div class="profile-section-title">账号与安全</div>
+              <div class="profile-list">
+                <div class="profile-row static">
+                  <span class="profile-row-label">手机号</span>
+                  <span class="profile-row-value">135****9991</span>
+                </div>
+                <div class="profile-row static">
+                  <span class="profile-row-label">微信</span>
+                  <span class="profile-row-value">测试微信</span>
+                </div>
+                <button class="profile-row" type="button">
+                  <span class="profile-row-label">切换账号</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <div class="profile-section-title">关于</div>
+              <div class="profile-list">
+                <div class="profile-row static">
+                  <span class="profile-row-label">备案号</span>
+                  <span class="profile-row-value">琼ICP备2023002264号-2A</span>
+                </div>
+                <div class="profile-row static">
+                  <span class="profile-row-label">当前版本</span>
+                  <span class="profile-row-value">v2.3.1</span>
+                </div>
+                <div class="profile-row static">
+                  <span class="profile-row-label">最新版本</span>
+                  <span class="profile-row-value">v2.3.1</span>
+                </div>
+                <button class="profile-row" type="button">
+                  <span class="profile-row-label">用户协议</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+                <button class="profile-row" type="button">
+                  <span class="profile-row-label">隐私政策</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+                <button class="profile-row" id="openCancelFlow" type="button">
+                  <span class="profile-row-label">注销账号</span>
+                  <span class="profile-row-right">
+                    <span class="profile-row-value">需验证</span>
+                    <span class="profile-chevron" aria-hidden="true"></span>
+                  </span>
+                </button>
+                <button class="profile-row" id="openRevokeCancel" type="button">
+                  <span class="profile-row-label">注销账户</span>
+                  <span class="profile-row-right">
+                    <span class="profile-row-value" id="revokeCancelStatus">撤销注销</span>
+                    <span class="profile-chevron" aria-hidden="true"></span>
+                  </span>
+                </button>
+                <button class="profile-row profile-logout-row" type="button">
+                  <span class="profile-row-label">退出登录</span>
+                  <span class="profile-chevron" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="profile-bottom-spacer" aria-hidden="true"></div>
+            </section>
+          </div>
+        </div>
+        <div class="cancel-drawer-mask" id="cancelDrawer" role="dialog" aria-modal="true" aria-labelledby="cancelTitle">
+          <section class="cancel-panel">
+            <header class="cancel-panel-header">
+              <button class="cancel-close" id="closeCancelFlow" type="button" aria-label="关闭">×</button>
+              <div class="cancel-panel-title" id="cancelTitle">注销账号</div>
+              <span style="width:34px" aria-hidden="true"></span>
+            </header>
+
+            <div class="cancel-body">
+              <div class="cancel-stepper" aria-hidden="true">
+                <span class="cancel-step active" data-cancel-step-bar="0"></span>
+                <span class="cancel-step" data-cancel-step-bar="1"></span>
+                <span class="cancel-step" data-cancel-step-bar="2"></span>
+                <span class="cancel-step" data-cancel-step-bar="3"></span>
+              </div>
+
+              <section class="cancel-screen active" data-cancel-screen="0">
+                <h2>注销前请先确认影响</h2>
+                <p class="cancel-subtext">注销后账号数据将进入清理流程，资产和权益无法恢复。</p>
+                <div class="cancel-asset-grid">
+                  <div class="cancel-asset-item">
+                    <div class="cancel-asset-value">2,860万</div>
+                    <div class="cancel-asset-label">当前金豆</div>
+                  </div>
+                  <div class="cancel-asset-item">
+                    <div class="cancel-asset-value">200万</div>
+                    <div class="cancel-asset-label">保险箱金豆</div>
+                  </div>
+                  <div class="cancel-asset-item">
+                    <div class="cancel-asset-value">18 天</div>
+                    <div class="cancel-asset-label">会员剩余</div>
+                  </div>
+                  <div class="cancel-asset-item">
+                    <div class="cancel-asset-value">12 只</div>
+                    <div class="cancel-asset-label">自选股</div>
+                  </div>
+                  <div class="cancel-asset-item">
+                    <div class="cancel-asset-value">1 笔</div>
+                    <div class="cancel-asset-label">相关订单</div>
+                  </div>
+                </div>
+                <div class="cancel-risk-card">
+                  <div class="cancel-card-title">注销后将不可恢复</div>
+                  <ul class="cancel-list">
+                    <li>奖励金豆、保险箱将被清空。</li>
+                    <li>自选股、浏览记录、关注内容和个性化配置将删除。</li>
+                    <li>会员权益将视为主动放弃。</li>
+                    <li>历史订单、发票、客服记录无法继续查询。</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section class="cancel-screen" data-cancel-screen="1">
+                <h2>当前账号仍有未处理权益</h2>
+                <p class="cancel-subtext">为避免误操作，请确认金豆、保险箱金豆、会员和订单权益后再继续。</p>
+                <div class="cancel-block-list">
+                  <div class="cancel-block-item">
+                    <span>金豆余额 2,860万</span>
+                    <span class="cancel-status-tag">注销后清空</span>
+                  </div>
+                  <div class="cancel-block-item">
+                    <span>保险箱金豆 200万</span>
+                    <span class="cancel-status-tag">注销后清空</span>
+                  </div>
+                  <div class="cancel-block-item">
+                    <span>会员剩余 18 天</span>
+                    <span class="cancel-status-tag">注销后清空</span>
+                  </div>
+                  <div class="cancel-block-item">
+                    <span>相关订单 1 笔</span>
+                    <span class="cancel-status-tag">注销后清空</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="cancel-screen" data-cancel-screen="2">
+                <h2>完成身份验证</h2>
+                <p class="cancel-subtext">为保障账号安全，请验证当前绑定手机号 135****9991。</p>
+                <div class="cancel-verify-box">
+                  <input class="cancel-code-input" id="smsCode" inputmode="numeric" maxlength="6" placeholder="请输入验证码">
+                  <button class="cancel-ghost-button" id="sendCode" type="button">获取验证码</button>
+                </div>
+              </section>
+
+              <section class="cancel-screen" data-cancel-screen="3">
+                <h2>最终确认</h2>
+                <p class="cancel-subtext">提交后账号进入 7 天注销冷静期，冷静期内登录可撤销注销。</p>
+                <label class="cancel-confirm-line">
+                  <input type="checkbox" data-cancel-confirm-check>
+                  <span>我已知晓注销后奖励金豆、保险箱、会员权益和账号数据将无法恢复。</span>
+                </label>
+                <label class="cancel-confirm-line">
+                  <input type="checkbox" data-cancel-confirm-check>
+                  <span>我确认放弃当前账号权益，并申请注销当前账号。</span>
+                </label>
+                <div class="cancel-risk-card">
+                  <div class="cancel-card-title">请谨慎操作</div>
+                  <ul class="cancel-list">
+                    <li>冷静期结束后，账号将正式注销。</li>
+                    <li>正式注销后，原账号数据无法找回。</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section class="cancel-screen" data-cancel-screen="4">
+                <div class="cancel-final-icon">✓</div>
+                <h2>注销申请已提交</h2>
+                <p class="cancel-subtext">账号已进入 7 天注销冷静期。冷静期内重新登录账号，可撤销本次注销申请。</p>
+                <div class="cancel-success-card">
+                  <div class="cancel-card-title">预计正式注销时间</div>
+                  <p class="cancel-subtext" style="margin:0">提交申请后的第 7 天 24:00 后自动完成。</p>
+                </div>
+              </section>
+            </div>
+
+            <footer class="cancel-action-bar" id="cancelActionBar">
+              <button class="cancel-button secondary" id="cancelBackButton" type="button">我再想想</button>
+              <button class="cancel-button primary" id="cancelNextButton" type="button">下一步</button>
+            </footer>
+          </section>
+        </div>
+
+        <div class="benefit-confirm-mask" id="benefitConfirm" role="dialog" aria-modal="true" aria-labelledby="benefitConfirmTitle">
+          <div class="benefit-dialog">
+            <div class="benefit-dialog-body">
+              <div class="benefit-dialog-title" id="benefitConfirmTitle">确认继续注销？</div>
+              <p class="benefit-dialog-text">
+                继续注销将视为您确认放弃奖励金豆、保险箱、会员权益，以及当前账号相关订单和售后服务查询权益。
+              </p>
+            </div>
+            <div class="benefit-dialog-actions">
+              <button class="benefit-cancel" id="cancelBenefitConfirm" type="button">我再想想</button>
+              <button class="benefit-danger" id="acceptBenefitConfirm" type="button">确认继续</button>
+            </div>
+          </div>
+        </div>
+        <div class="benefit-confirm-mask" id="revokeCancelConfirm" role="dialog" aria-modal="true" aria-labelledby="revokeCancelTitle">
+          <div class="benefit-dialog">
+            <div class="benefit-dialog-body">
+              <div class="benefit-dialog-title" id="revokeCancelTitle">确认撤销注销？</div>
+              <p class="benefit-dialog-text">
+                撤销后账号将恢复正常使用，金豆、保险箱金豆、会员权益、自选股和订单查询权益继续保留。
+              </p>
+            </div>
+            <div class="benefit-dialog-actions">
+              <button class="benefit-cancel" id="cancelRevokeCancel" type="button">暂不撤销</button>
+              <button class="benefit-danger" id="acceptRevokeCancel" type="button">确认撤销</button>
+            </div>
+          </div>
+        </div>
+        <div class="benefit-confirm-mask" id="revokeCancelSuccess" role="dialog" aria-modal="true" aria-labelledby="revokeCancelSuccessTitle">
+          <div class="benefit-dialog">
+            <div class="benefit-dialog-body">
+              <div class="benefit-dialog-title" id="revokeCancelSuccessTitle">注销申请已撤销</div>
+              <p class="benefit-dialog-text">
+                当前账号已恢复正常状态，可继续使用会员服务、金豆、保险箱金豆和自选消息功能。
+              </p>
+            </div>
+            <div class="benefit-dialog-actions center">
+              <button class="benefit-danger" id="closeRevokeCancelSuccess" type="button">我知道了</button>
+            </div>
           </div>
         </div>
         <nav class="bottom-nav">
@@ -3165,6 +5909,330 @@ body.chat-open{overflow:hidden}
           <div class="nav-item" data-main-tab="profile" onclick="showMainTab('profile',this)"><div class="nav-icon"></div>我</div>
         </nav>
         <div class="home-indicator"></div>
+
+<div class="algo-diagnosis-mask" id="algoDiagnosisDialog" role="dialog" aria-modal="true" aria-labelledby="algoDiagnosisTitle" onclick="closeAlgoDiagnosisDialog(event)">
+  <div class="algo-diagnosis-dialog" onclick="event.stopPropagation()">
+    <div class="algo-diagnosis-body">
+      <div class="algo-diagnosis-title" id="algoDiagnosisTitle">温馨提示</div>
+      <p class="algo-diagnosis-text">星源材质(300568)因预期业绩波动太大，暂不完全适合“算法诊股”。</p>
+      <div class="algo-diagnosis-link">可点击展望牛市峰值&gt;&gt;</div>
+      <div class="algo-pe-box" aria-label="预测市盈率">
+        <div class="algo-pe-title">预测市盈率</div>
+        <div class="algo-pe-row"><span>2026年</span><strong>41.47倍</strong></div>
+        <div class="algo-pe-row"><span>2027年</span><strong>33.14倍</strong></div>
+        <div class="algo-pe-row"><span>2028年</span><strong>28.21倍</strong></div>
+      </div>
+      <div class="algo-g-card" aria-label="G值说明">
+        <div class="algo-g-copy">
+          <p>G值为未来三年预期盈利增长率。根据机构一致性预期盈利增长率：</p>
+          <div class="algo-g-line">G1:2026年预期盈利增长率<strong>1756.04%</strong>;</div>
+          <div class="algo-g-line">G2:2027年预期盈利增长率<strong>64.59%</strong>;</div>
+          <div class="algo-g-line">G3:2028年预期盈利增长率<strong>23.04%</strong>;</div>
+          <div class="algo-g-line">计算得G值为<strong>234.98%</strong>。</div>
+          <div class="algo-g-line">波动校正值G’值为<strong>110.07%</strong>。</div>
+        </div>
+      </div>
+    </div>
+    <div class="algo-diagnosis-actions">
+      <button type="button" onclick="closeAlgoDiagnosisDialog()">知道了</button>
+    </div>
+  </div>
+</div>
+
+<div class="smart-pick-page" id="smartPickPage">
+  <div class="app-statusbar red">
+    <span>09:42</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
+  <div class="smart-pick-header">
+    <button class="smart-pick-back" type="button" aria-label="返回" onclick="closeSmartPickPage()"></button>
+    <div class="smart-pick-title">智能选股</div>
+    <div></div>
+  </div>
+  <div class="smart-pick-scroll">
+    <div class="smart-note">注:选股结果仅供参考,不作为投资建议。</div>
+    <div class="smart-ai-card">
+      <div class="smart-ai-head">
+        <div class="smart-ai-title"><span class="smart-ai-spark"></span><span>AI辅助</span></div>
+      </div>
+      <div class="smart-ai-desc">可询问指标含义，也可让AI辅助优化条件后再选股，结果仅供参考。</div>
+      <div class="smart-ai-input">
+        <div class="smart-ai-placeholder">帮我解释当前策略和指标设置</div>
+        <button class="smart-ai-send" type="button" aria-label="发送" onclick="askSmartPickAI('overview')"></button>
+      </div>
+      <div class="smart-ai-chips">
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('tuning')">AI调参</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('result')">选股结果评估</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('metrics')">指标含义</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('defaults')">默认值说明</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('industry')">行业影响</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('risk')">风险提示</button>
+      </div>
+    </div>
+    <div class="smart-method-tabs" role="tablist" aria-label="选股方法">
+      <button class="smart-method-tab active" type="button" data-smart-method="growth" onclick="switchSmartMethod('growth')">成长评估法</button>
+      <button class="smart-method-tab" type="button" data-smart-method="dividend" onclick="switchSmartMethod('dividend')">股息评估法</button>
+    </div>
+
+    <section class="smart-section">
+      <div class="smart-section-head">
+        <div class="smart-section-title">选择行业</div>
+      </div>
+      <div class="smart-industry-grid" aria-label="行业选择">
+        <button class="smart-industry active" type="button">全部</button>
+        <button class="smart-industry" type="button">消费</button>
+        <button class="smart-industry" type="button">健康</button>
+        <button class="smart-industry" type="button">科技</button>
+        <button class="smart-industry" type="button">制造</button>
+        <button class="smart-industry" type="button">公共</button>
+        <button class="smart-industry" type="button">其它</button>
+      </div>
+    </section>
+
+    <section class="smart-section">
+      <div class="smart-section-head">
+        <div class="smart-section-title">选股条件设置:</div>
+        <button class="smart-reset" type="button">恢复默认设置</button>
+      </div>
+
+      <div class="smart-panel active" data-smart-panel="growth">
+        <div class="smart-condition-list">
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期盈利增长率 ≥</div><div class="smart-condition-range">修改范围为5%至50%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期净资产收益率 ≥</div><div class="smart-condition-range">修改范围为5%至50%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期毛利率 ≥</div><div class="smart-condition-range">修改范围为10%至60%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">25</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">资产负债率 ≤</div><div class="smart-condition-range">修改范围为30%至80%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">55</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润现金含量 ≥</div><div class="smart-condition-range">修改范围为0.2至2</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.6</div><div class="smart-unit"></div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">三年平均分红率 ≥</div><div class="smart-condition-range">修改范围为5%至100%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">当前市值 ≥</div><div class="smart-condition-range">修改范围为10亿至500亿</div></div>
+            <div class="smart-condition-control"><div class="smart-value">60</div><div class="smart-unit">亿</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="smart-panel" data-smart-panel="dividend">
+        <div class="smart-condition-list">
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">股息率 ≥</div><div class="smart-condition-range">修改范围为0.5%至10%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">1.5</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">三年平均分红率 ≥</div><div class="smart-condition-range">修改范围为10%至80%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">20</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净资产收益率ROE(近三年) ≥</div><div class="smart-condition-range">修改范围为0%至10%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润增长率(近三年) ≥</div><div class="smart-condition-range">修改范围为0.5%至20%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.5</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润现金含量 ≥</div><div class="smart-condition-range">修改范围为0.2至2</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.6</div><div class="smart-unit"></div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">当前市值 ≥</div><div class="smart-condition-range">修改范围为20亿至1000亿</div></div>
+            <div class="smart-condition-control"><div class="smart-value">200</div><div class="smart-unit">亿</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="smart-bottom">
+    <button class="smart-start-btn" type="button">开始选股</button>
+  </div>
+</div>
+
+<div class="tk-message-page" id="messagePage">
+  <div class="app-statusbar red">
+    <span>12:00</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
+  <div class="tk-message-header">
+    <button class="tk-message-back" type="button" aria-label="返回" onclick="closeMessageCenter()"></button>
+    <div class="tk-message-title" id="messagePageTitle">消息</div>
+    <button class="tk-message-read" id="messageReadBtn" type="button" onclick="markMessagePageRead()">一键已读</button>
+  </div>
+  <div class="tk-message-scroll" id="messagePageBody"></div>
+</div>
+
+<div class="stock-detail-page" id="stockDetailPage">
+  <div class="app-statusbar red">
+    <span>09:28</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
+  <div class="stock-detail-hdr">
+    <button class="stock-detail-back" type="button" aria-label="返回" onclick="closeStockDetail()"></button>
+    <div class="stock-detail-title">
+      <span class="stock-detail-name" id="stockDetailName">中科曙光</span>
+      <span class="stock-detail-code" id="stockDetailCode">603019</span>
+    </div>
+    <span></span>
+  </div>
+  <div class="stock-detail-scroll">
+    <div class="stock-card stock-kline-card">
+      <div class="stock-quote-row">
+        <div>
+          <div class="stock-price" id="stockDetailPrice">98.38</div>
+          <div class="stock-change" id="stockDetailChange">+2.36  +2.46%</div>
+        </div>
+        <div class="stock-trade-info">
+          <span>高</span><span class="red" id="stockQuoteHigh">101.28</span>
+          <span>低</span><span class="red" id="stockQuoteLow">96.12</span>
+          <span>开</span><span class="red" id="stockQuoteOpen">97.60</span>
+        </div>
+        <div class="stock-trade-info compact">
+          <span>市值</span><span id="stockQuoteMarketCap">1439.41亿</span><span>换</span><span id="stockQuoteTurnover">3.65%</span>
+          <span>流通</span><span id="stockQuoteFloat">111.43亿</span><span>量比</span><span class="red" id="stockQuoteVolumeRatio">7.95</span>
+          <span>市盈<em class="ttm">TTM</em></span><span id="stockQuotePe">亏损</span><span>额</span><span id="stockQuoteAmount">41.52亿</span>
+        </div>
+      </div>
+      <div class="kline-period-tabs">
+        <button class="kline-period-tab active" type="button">日K</button>
+        <button class="kline-period-tab" type="button">周K</button>
+        <button class="kline-period-tab" type="button">月K</button>
+        <button class="kline-period-tab" type="button">季K</button>
+        <button class="kline-period-tab" type="button">年K</button>
+        <button class="kline-gear" type="button" aria-label="复权设置" onclick="openAdjustDialog()"><img src="assets/kline-setting.png" alt=""></button>
+      </div>
+      <div class="ma-legend">
+        <strong>均线</strong><strong>日线</strong>
+        <span class="ma5">MA5:52.72</span><span class="ma10">10:47.12</span><span class="ma20">20:45.96</span><span class="ma30">30:43.83</span>
+        <span class="kline-adjust-label" id="adjustModeLabel">前复权</span>
+      </div>
+      <div class="kline-canvas-wrap">
+        <canvas id="stockKlineCanvas"></canvas>
+        <div class="kline-zoom-row" aria-label="K线缩放">
+          <button class="kline-zoom-btn" type="button" aria-label="缩小K线" onclick="zoomStockKline(-1)">−</button>
+          <button class="kline-zoom-btn" type="button" aria-label="放大K线" onclick="zoomStockKline(1)">+</button>
+        </div>
+        <div class="indicator-floating">
+          <select class="indicator-select" id="indicatorSelect" aria-label="副图指标" onchange="switchStockIndicator(this.value,this)">
+            <option value="volume">成交量</option>
+            <option value="amount">成交额</option>
+            <option value="kdj">KDJ</option>
+            <option value="macd">MACD</option>
+          </select>
+          <div class="indicator-info-row" id="indicatorInfoRow"></div>
+        </div>
+      </div>
+      <div class="kline-date-row"><span>2026-03-11</span><span>04-23</span><span>05-21</span><span>06-15</span></div>
+    </div>
+
+    <div class="stock-info-tabs" aria-label="个股资料分类">
+      <button class="stock-info-tab active" type="button">基本面</button>
+      <button class="stock-info-tab" type="button">基本信息</button>
+      <button class="stock-info-tab" type="button">概念分析</button>
+      <button class="stock-info-tab" type="button">财务评分</button>
+      <button class="stock-info-tab" type="button">主力持仓</button>
+      <button class="stock-info-tab" type="button">主营结构</button>
+      <button class="stock-info-tab" type="button">最新研报</button>
+      <button class="stock-info-tab" type="button">AI风险扫描</button>
+    </div>
+
+    <section class="stock-info-panel active">
+      <div class="stock-source-note">注：数据来源于2026年一季报</div>
+      <div class="stock-company-meta">
+        <div>所属行业：<strong id="stockIndustry">计算机</strong>（同花顺二级）</div>
+        <div class="stock-company-business"><span>主营业务：</span><strong id="stockBusiness">研究、开发、生产制造高性能计算机、通用服务器及存储产品、软件开发、...</strong></div>
+      </div>
+
+    <div class="stock-card">
+      <div class="stock-section-title" style="margin:0 0 8px"><span>盈利预测</span></div>
+      <div class="forecast-table">
+        <div class="forecast-head">年份</div><div class="forecast-head">每股收益</div><div class="forecast-head">净利润</div><div class="forecast-head">市盈率</div>
+        <div>2026 <span class="forecast-tag">预测</span></div><div>1.98元</div><div>28.98亿</div><div>41.47</div>
+        <div>2027 <span class="forecast-tag">预测</span></div><div>2.48元</div><div>36.27亿</div><div>33.14</div>
+        <div>2028 <span class="forecast-tag">预测</span></div><div>2.91元</div><div>42.6亿</div><div>28.21</div>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="metric-row"><span>净利润增长率（近三年）</span><strong class="red">12.28%</strong></div>
+      <div class="metric-row"><span>净资产收益率（近三年）</span><strong class="red">10.12%</strong></div>
+      <div class="metric-row"><span>毛利率（近三年）</span><strong>28.67%</strong></div>
+      <div class="metric-row"><span>净利率（近三年）</span><strong>14.22%</strong></div>
+      <div class="metric-row"><span>历史最高</span><strong>125.5</strong></div>
+    </div>
+
+    <div class="stock-section-title"><span>财务指标</span><span>&gt;&gt;</span></div>
+    <div class="stock-card statement-card">
+      <div class="metric-row"><span>每股收益</span><strong>0.16元</strong></div>
+      <div class="metric-row"><span>市盈率PE</span><strong>54.2</strong></div>
+      <div class="metric-row"><span>市净率PB</span><strong>5.46</strong></div>
+      <div class="metric-row"><span>净资产收益率ROE</span><strong>1.02%</strong></div>
+      <div class="metric-row"><span>毛利率</span><strong>26.56%</strong></div>
+      <div class="metric-row"><span>营收增长率</span><strong class="red">23.71%</strong></div>
+      <div class="metric-row"><span>净利润增长率</span><strong class="red">22.19%</strong></div>
+      <div class="metric-row"><span>资产负债率</span><strong>41.14%</strong></div>
+    </div>
+
+    <div class="stock-section-title"><span>利润表</span><span>&gt;&gt;</span></div>
+    <div class="stock-card statement-card">
+      <div class="metric-row"><span>归母净利润</span><strong>2.28亿</strong></div>
+      <div class="metric-row"><span>营业总收入</span><strong>31.99亿</strong></div>
+      <div class="metric-row"><span>营业利润</span><strong>2.76亿</strong></div>
+    </div>
+
+    <div class="stock-section-title"><span>资产负债表</span><span>&gt;&gt;</span></div>
+    <div class="stock-card statement-card">
+      <div class="metric-row"><span>资产总计</span><strong>393.37亿</strong></div>
+      <div class="metric-row"><span>负债总计</span><strong>161.81亿</strong></div>
+      <div class="metric-row"><span>所有者权益合计</span><strong>231.56亿</strong></div>
+    </div>
+
+    <div class="stock-section-title"><span>现金流量表</span><span>&gt;&gt;</span></div>
+    <div class="stock-card statement-card">
+      <div class="metric-row"><span>经营性现金流</span><strong>-13.91亿</strong></div>
+      <div class="metric-row"><span>投资性现金流</span><strong>-11.06亿</strong></div>
+      <div class="metric-row"><span>筹资性现金流</span><strong>-8424.99万</strong></div>
+    </div>
+    </section>
+
+    <div class="stock-bottom-space"></div>
+  </div>
+  <div class="adjust-mask" id="adjustDialog" onclick="closeAdjustDialog(event)">
+    <div class="adjust-dialog" onclick="event.stopPropagation()">
+      <div class="adjust-title">复权设置</div>
+      <button class="adjust-option active" type="button" data-adjust-option="前复权" onclick="setAdjustMode('前复权')">前复权</button>
+      <button class="adjust-option" type="button" data-adjust-option="除权" onclick="setAdjustMode('除权')">除权</button>
+      <button class="adjust-option" type="button" data-adjust-option="后复权" onclick="setAdjustMode('后复权')">后复权</button>
+      <button class="adjust-cancel" type="button" onclick="closeAdjustDialog()">取消</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ AI CHAT PAGE ══════════ -->
 <div class="chat-page" id="chatPage">
@@ -3937,6 +7005,14 @@ body.chat-open{overflow:hidden}
 </div><!-- /chat-page -->
 
 <div class="scene-standalone-page" id="standaloneScenePage">
+  <div class="app-statusbar red">
+    <span>10:41</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
   <div class="scene-standalone-hdr">
     <button class="scene-standalone-back" type="button" aria-label="返回" onclick="handleStandaloneSceneBack()"></button>
     <div class="scene-standalone-title" id="standaloneSceneTitle">内容详情</div>
@@ -3958,6 +7034,14 @@ body.chat-open{overflow:hidden}
 
 <!-- ══════════ 事件详情页 ══════════ -->
 <div class="detail-page" id="detailPage">
+  <div class="app-statusbar red">
+    <span>10:41</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
   <div class="detail-hdr">
     <button class="detail-back" onclick="closeDetail()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -3998,6 +7082,14 @@ body.chat-open{overflow:hidden}
 
 <!-- ══════════ 板块个股列表页 ══════════ -->
 <div class="sector-detail-page" id="sectorDetailPage">
+  <div class="app-statusbar red">
+    <span>10:41</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
   <div class="sector-detail-hdr">
     <button class="sector-detail-back" onclick="closeSectorDetail()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -4026,6 +7118,14 @@ body.chat-open{overflow:hidden}
 <!-- ══════════ 重要日常事件详情页 ══════════ -->
 <div class="detail2-page" id="detailPage2">
 
+  <div class="app-statusbar red">
+    <span>10:41</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
   <div class="detail2-hdr">
     <button class="detail2-back" onclick="closeDetail2()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -4172,6 +7272,14 @@ body.chat-open{overflow:hidden}
 <!-- ══════════ 自选消息详情页 ══════════ -->
 <div class="detail3-page" id="detailPage3">
 
+  <div class="app-statusbar red">
+    <span>10:41</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
   <div class="detail3-hdr">
     <button class="detail3-back" onclick="closeDetail3()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -4803,8 +7911,761 @@ function returnToConversationHome(el){
   if(el) el.classList.add('active');
 }
 
+const MESSAGE_CATEGORIES = [
+  {
+    id:'pick',
+    title:'优选股通知',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2025/08/10 12:59',
+    items:[
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2025/08/24 12:59', unread:true},
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2024/08/24 12:59'},
+      {text:'优选股变动提醒：\n调入：\n股票名称(代码)，股票名称2(代码)，股票名称3(代码)\n调出：\n股票名称(代码)，原因：XXXXXXXXXXXXXXXX\n股票名称1(代码)，原因：XXXXXXXXXXXXXXXX', time:'2024/07/24 12:59'},
+      {text:'优选股变动提醒：\n调入：\n股票名称(代码)，股票名称2(代码)', time:'2024/04/24 12:59'}
+    ]
+  },
+  {
+    id:'dividend',
+    title:'优息股通知',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2025/07/24 12:59',
+    items:[
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2025/08/24 12:59', unread:true},
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2024/08/24 12:59'},
+      {text:'优息股变动提醒：\n调入：\n股票名称(代码)，股票名称2(代码)，股票名称3(代码)\n调出：\n股票名称(代码)，原因：XXXXXXXXXXXXXXXX\n股票名称1(代码)，原因：XXXXXXXXXXXXXXXX', time:'2024/07/24 12:59'},
+      {text:'优息股变动提醒：\n调出：\n股票名称(代码)，原因：XXXXXXXXXXXXXXXX\n股票名称2(代码)，原因：XXXXXXXXXXXXXXXX', time:'2024/05/24 12:59'}
+    ]
+  },
+  {
+    id:'simulate',
+    title:'模拟操盘通知',
+    badge:'10',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2025/06/24 12:59',
+    items:[
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2025/08/24 12:59', unread:true},
+      {text:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', time:'2024/08/24 12:59'},
+      {text:'您模拟操盘持仓的股票名称(代码)公布了XXXX年一季报/中报/三季报/年报。', time:'2024/07/24 12:59'},
+      {text:'您模拟操盘持仓的股票名称(代码)公布了XXXX年一季报/中报/三季报/年报的预报。', time:'2024/06/24 12:59'},
+      {text:'您模拟操盘持仓的股票名称(代码)公布了XXXX年一季报/中报/三季报/年报的快报。', time:'2024/02/24 12:59'},
+      {text:'恭喜您进入了模拟操盘当前总排行/半年排行/一年排行/三年排行/五年排行/十年排行的前10名！', time:'2024/02/24 12:59'},
+      {text:'您已从模拟操盘当前总排行/半年排行/一年排行/三年排行/五年排行/十年排行/十年排行的前10名掉出。', time:'2024/01/24 12:59'},
+      {text:'您模拟操盘持仓的股票名称(代码)当前被溢估/低估30%。', time:'2024/01/24 12:59'}
+    ]
+  },
+  {
+    id:'video',
+    title:'视频更新通知',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2025/03/24 12:59',
+    items:[
+      {text:'【视频类型名称，如：诊股示范】更新视频了，快来看！', time:'2024/07/24 12:59', unread:true}
+    ]
+  },
+  {
+    id:'sample',
+    title:'范例通知',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2025/01/24 12:59',
+    items:[
+      {text:'【价投范例】调入股票股票名称(代码)。', time:'2024/07/24 12:59', unread:true},
+      {text:'【价投范例】股票名称(代码)躺客研究更新了，快来看！', time:'2024/07/24 12:59'},
+      {text:'【价投范例】调出股票****(****)。', time:'2024/07/24 12:59', unread:true}
+    ]
+  },
+  {
+    id:'reward',
+    title:'奖励通知',
+    preview:'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    time:'2024/12/24 12:59',
+    items:[
+      {text:'您有金豆奖励到账，快来看！', time:'2024/07/24 12:59', unread:true, reward:true},
+      {text:'您邀请的躺客昵称(躺客ID)已绑定成功。', time:'2024/07/24 11:59', unread:true}
+    ]
+  },
+  {
+    id:'operation',
+    title:'通知',
+    preview:'站内运营通知最新内容的标题',
+    time:'2024/12/24 12:59',
+    items:[
+      {text:'运营通知标题', time:'2024/07/24 12:59', unread:true},
+      {text:'运营通知标题', time:'2024/07/24 12:59', unread:true, media:true},
+      {text:'站内运营通知标题\n站内运营通知副标', time:'2024/12/24 12:59'}
+    ]
+  }
+];
+
+let messageViewStack = [];
+let messageCurrentView = {type:'main'};
+
+function getMessageCategory(id){
+  return MESSAGE_CATEGORIES.find(function(item){ return item.id===id; });
+}
+
+function openAlgoDiagnosisDialog(){
+  const dialog=document.getElementById('algoDiagnosisDialog');
+  if(dialog) dialog.classList.add('active');
+}
+
+function closeAlgoDiagnosisDialog(event){
+  if(event && event.target && event.currentTarget && event.target!==event.currentTarget) return;
+  const dialog=document.getElementById('algoDiagnosisDialog');
+  if(dialog) dialog.classList.remove('active');
+}
+
+function openSmartPickPage(){
+  const page=document.getElementById('smartPickPage');
+  if(page) page.classList.add('open');
+}
+
+function closeSmartPickPage(){
+  const page=document.getElementById('smartPickPage');
+  if(page) page.classList.remove('open');
+}
+
+function switchSmartMethod(method){
+  document.querySelectorAll('[data-smart-method]').forEach(function(tab){
+    tab.classList.toggle('active', tab.getAttribute('data-smart-method')===method);
+  });
+  document.querySelectorAll('[data-smart-panel]').forEach(function(panel){
+    panel.classList.toggle('active', panel.getAttribute('data-smart-panel')===method);
+  });
+}
+
+function getSmartPickContext(){
+  const methodTab=document.querySelector('[data-smart-method].active');
+  const method=methodTab ? methodTab.textContent.trim() : '成长评估法';
+  const industry=document.querySelector('.smart-industry.active');
+  const panel=document.querySelector('.smart-panel.active');
+  const conditions=[];
+  if(panel){
+    panel.querySelectorAll('.smart-condition').forEach(function(row){
+      const name=row.querySelector('.smart-condition-name');
+      const range=row.querySelector('.smart-condition-range');
+      const value=row.querySelector('.smart-value');
+      const unit=row.querySelector('.smart-unit');
+      const nameText=name ? name.textContent.trim() : '';
+      const valueText=value ? value.textContent.trim() : '';
+      const unitText=unit ? unit.textContent.trim() : '';
+      const rangeText=range ? range.textContent.trim() : '';
+      if(nameText){
+        conditions.push('- ' + nameText + ' ' + valueText + unitText + (rangeText ? '（' + rangeText + '）' : ''));
+      }
+    });
+  }
+  return {
+    method: method,
+    industry: industry ? industry.textContent.trim() : '全部',
+    conditions: conditions
+  };
+}
+
+function buildSmartPickPrompt(action){
+  const ctx=getSmartPickContext();
+  const questionMap={
+    overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
+    tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
+    result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
+    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
+    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
+    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+  };
+  return '【后台上下文：不要在用户消息中展示】\n'
+    + '当前方法：' + ctx.method + '\n'
+    + '当前行业：' + ctx.industry + '\n'
+    + '当前条件：\n' + (ctx.conditions.length ? ctx.conditions.join('\n') : '- 暂无条件') + '\n\n'
+    + '【回答要求】\n'
+    + '这是给开发查看的交互原型，不是最终投顾结论。页面采用流式对话展示，用户侧只看到简短问题。请按“思考过程”和“回答”两部分输出。\n'
+    + '“思考过程”用于说明提示词方向：AI应读取哪些上下文、从哪些角度分析、需要注意哪些约束；不要展示真实推理链路。\n'
+    + '“回答”用于说明开发实现时应输出的关键点；不要复述完整后台参数清单，除非用户问题本身需要参数。\n\n'
+    + '【用户问题】\n' + (questionMap[action] || questionMap.overview);
+}
+
+function getSmartPickDisplayQuestion(action){
+  const questionMap={
+    overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
+    tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
+    result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
+    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
+    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
+    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+  };
+  return questionMap[action] || questionMap.overview;
+}
+
+function askSmartPickAI(action){
+  if(responding) return;
+  const key=action || 'overview';
+  const displayQuestion=getSmartPickDisplayQuestion(key);
+  const modelPrompt=buildSmartPickPrompt(key);
+  const smartScroll=document.querySelector('#smartPickPage .smart-pick-scroll');
+  closeSmartPickPage();
+  openChat(null, {
+    type:'smartPick',
+    mainTab:currentMainTab || 'home',
+    scrollTop:smartScroll ? smartScroll.scrollTop : 0
+  });
+  setTimeout(function(){
+    submitPresetQuestion(displayQuestion, 'home', modelPrompt);
+  }, 80);
+}
+
+function openMessageCenter(){
+  const page=document.getElementById('messagePage');
+  if(!page) return;
+  messageViewStack=[];
+  messageCurrentView={type:'main'};
+  renderMessageMain();
+  page.classList.add('open');
+}
+
+function closeMessageCenter(){
+  const page=document.getElementById('messagePage');
+  if(!page) return;
+  if(messageViewStack.length){
+    const previous=messageViewStack.pop();
+    if(previous.type==='main') renderMessageMain(false);
+    if(previous.type==='detail') renderMessageDetail(previous.id, false);
+    return;
+  }
+  page.classList.remove('open');
+}
+
+function setMessageHeader(title, showRead){
+  const titleEl=document.getElementById('messagePageTitle');
+  const readBtn=document.getElementById('messageReadBtn');
+  if(titleEl) titleEl.textContent=title;
+  if(readBtn) readBtn.style.visibility=showRead ? 'visible' : 'hidden';
+}
+
+function renderMessageMain(pushState){
+  const body=document.getElementById('messagePageBody');
+  if(!body) return;
+  if(pushState) messageViewStack.push(messageCurrentView);
+  messageCurrentView={type:'main'};
+  setMessageHeader('消息', true);
+  body.innerHTML=MESSAGE_CATEGORIES.map(function(item){
+    const badge=item.badge ? '<span class="tk-message-badge">' + item.badge + '</span>' : '';
+    return '<section class="tk-message-item">'
+      + '<div class="tk-message-row-title">' + item.title + badge + '</div>'
+      + '<div class="tk-message-preview">' + item.preview + '</div>'
+      + '<div class="tk-message-foot">'
+      + '<span class="tk-message-time">' + item.time + '</span>'
+      + '<button class="tk-message-link" type="button" onclick="renderMessageDetail(&quot;' + item.id + '&quot;, true)">查看详情&gt;&gt;</button>'
+      + '</div>'
+      + '</section>';
+  }).join('');
+}
+
+function renderMessageDetail(id, pushState){
+  const category=getMessageCategory(id);
+  const body=document.getElementById('messagePageBody');
+  if(!category || !body) return;
+  if(pushState) messageViewStack.push(messageCurrentView);
+  messageCurrentView={type:'detail',id:id};
+  setMessageHeader(category.title, true);
+  body.innerHTML=category.items.map(function(item, index){
+    const media=item.media ? '<span class="tk-message-media">▧</span>' : '';
+    const link=item.reward
+      ? '<button class="tk-message-link" type="button" onclick="renderRewardClaim(true)">查看详情&gt;&gt;</button>'
+      : '<button class="tk-message-link" type="button">查看详情&gt;&gt;</button>';
+    return '<section class="tk-message-item ' + (item.unread ? 'with-dot' : '') + '">'
+      + media
+      + '<div class="tk-message-detail-text">' + item.text + '</div>'
+      + '<div class="tk-message-foot">'
+      + '<span class="tk-message-time">' + item.time + '</span>'
+      + link
+      + '</div>'
+      + '</section>';
+  }).join('');
+}
+
+function renderRewardClaim(pushState){
+  const body=document.getElementById('messagePageBody');
+  if(!body) return;
+  if(pushState) messageViewStack.push(messageCurrentView);
+  messageCurrentView={type:'rewardClaim'};
+  setMessageHeader('金豆领取', false);
+  body.innerHTML='<div class="tk-reward-tabs">'
+    + '<button class="tk-reward-tab active" type="button">待领取</button>'
+    + '<button class="tk-reward-tab" type="button">领取记录</button>'
+    + '</div>'
+    + '<div class="tk-reward-card">'
+    + '<div><div class="tk-reward-amount">200万金豆</div><div class="tk-reward-time">2023/08/24 12:59:23</div></div>'
+    + '<button class="tk-reward-button" type="button">领取</button>'
+    + '</div>';
+}
+
+function markMessagePageRead(){
+  const body=document.getElementById('messagePageBody');
+  if(!body) return;
+  body.querySelectorAll('.tk-message-badge').forEach(function(item){ item.remove(); });
+  body.querySelectorAll('.with-dot').forEach(function(item){ item.classList.remove('with-dot'); });
+}
+
+const STOCK_DETAIL_DATA = {
+  zhongke: {
+    name:'中科曙光',
+    code:'603019',
+    price:'98.38',
+    change:'+2.36  +2.46%',
+    open:'97.60',
+    high:'101.28',
+    low:'96.12',
+    marketCap:'1439.41亿',
+    turnover:'3.65%',
+    floatCap:'111.43亿',
+    volumeRatio:'7.95',
+    pe:'亏损',
+    amount:'41.52亿',
+    industry:'计算机',
+    business:'研究、开发、生产制造高性能计算机、通用服务器及存储产品、软件开发、...'
+  },
+  sany: {
+    name:'三一重工',
+    code:'600031',
+    price:'19.40',
+    change:'+0.18  +0.94%',
+    open:'19.16',
+    high:'19.56',
+    low:'19.02',
+    marketCap:'1645.32亿',
+    turnover:'1.82%',
+    floatCap:'1642.18亿',
+    volumeRatio:'2.13',
+    pe:'18.42',
+    amount:'18.76亿',
+    industry:'工程机械',
+    business:'工程机械装备研发、制造、销售及服务，覆盖混凝土机械、挖掘机械、起重机械等。'
+  }
+};
+let stockKlineZoom = 0;
+let stockKlineIndicator = 'volume';
+let stockKlineSeries = [];
+let stockKlineCrosshair = null;
+let currentStockDetailData = null;
+
+function buildStockKlineSeries(){
+  if(stockKlineSeries.length) return stockKlineSeries;
+  const list=[];
+  let close=82;
+  for(let i=0;i<72;i++){
+    const wave=Math.sin(i/5)*2.8 + Math.cos(i/9)*1.6;
+    const drift=i*.22;
+    const open=close + Math.sin(i*1.7)*1.5;
+    close=82 + drift + wave + Math.sin(i*.8)*1.2;
+    const high=Math.max(open, close) + 1.2 + (i%5)*.18;
+    const low=Math.min(open, close) - 1.1 - (i%4)*.16;
+    const volume=18 + (i%9)*2.6 + Math.abs(close-open)*4;
+    const amount=volume * close / 10;
+    list.push({open,close,high,low,volume,amount,date:i});
+  }
+  stockKlineSeries=list;
+  return list;
+}
+
+function setText(id, value){
+  const el=document.getElementById(id);
+  if(el) el.textContent=value;
+}
+
+function setToneText(id, value, tone){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent=value;
+  el.classList.remove('quote-up','quote-down','quote-flat','quote-hot','down','flat');
+  if(tone) el.classList.add(tone);
+}
+
+function formatSigned(value){
+  const sign=value>=0 ? '+' : '';
+  return sign + value.toFixed(2);
+}
+
+function priceTone(value, base){
+  if(value > base) return 'quote-up';
+  if(value < base) return 'quote-down';
+  return 'quote-flat';
+}
+
+function volumeRatioTone(value){
+  const num=Number(value);
+  if(num > 1) return 'quote-up';
+  if(num < 1) return 'quote-down';
+  return 'quote-flat';
+}
+
+function updateStockQuoteByData(data, point, prevPoint){
+  if(!data) return;
+  if(!point){
+    setToneText('stockDetailPrice', data.price, 'quote-up');
+    setToneText('stockDetailChange', data.change, 'quote-up');
+    setToneText('stockQuoteHigh', data.high || '101.28', 'quote-up');
+    setToneText('stockQuoteLow', data.low || '96.12', 'quote-up');
+    setToneText('stockQuoteOpen', data.open || '97.60', 'quote-up');
+    setText('stockQuoteMarketCap', data.marketCap || '1439.41亿');
+    setToneText('stockQuoteTurnover', data.turnover || '3.65%', 'quote-flat');
+    setText('stockQuoteFloat', data.floatCap || '111.43亿');
+    setToneText('stockQuoteVolumeRatio', data.volumeRatio || '7.95', volumeRatioTone(data.volumeRatio || 1));
+    setText('stockQuotePe', data.pe || '亏损');
+    setText('stockQuoteAmount', data.amount || '41.52亿');
+    return;
+  }
+  const prevClose=prevPoint ? prevPoint.close : point.open;
+  const diff=point.close-prevClose;
+  const pct=prevClose ? diff/prevClose*100 : 0;
+  const marketCap=(point.close*14.63).toFixed(2) + '亿';
+  const floatCap=(point.close*11.33).toFixed(2) + '亿';
+  const pe=point.close>92 ? '亏损' : (point.close/1.72).toFixed(2);
+  const tone=diff>0 ? 'quote-up' : diff<0 ? 'quote-down' : 'quote-flat';
+  const volumeRatio=(1.1 + point.volume / 8).toFixed(2);
+  setToneText('stockDetailPrice', point.close.toFixed(2), tone);
+  setToneText('stockDetailChange', formatSigned(diff) + '  ' + formatSigned(pct) + '%', tone);
+  setToneText('stockQuoteHigh', point.high.toFixed(2), priceTone(point.high, prevClose));
+  setToneText('stockQuoteLow', point.low.toFixed(2), priceTone(point.low, prevClose));
+  setToneText('stockQuoteOpen', point.open.toFixed(2), priceTone(point.open, prevClose));
+  setText('stockQuoteMarketCap', marketCap);
+  setToneText('stockQuoteTurnover', (2.4 + (point.volume % 7) * .42).toFixed(2) + '%', 'quote-flat');
+  setText('stockQuoteFloat', floatCap);
+  setToneText('stockQuoteVolumeRatio', volumeRatio, volumeRatioTone(volumeRatio));
+  setText('stockQuotePe', pe);
+  setText('stockQuoteAmount', point.amount.toFixed(2) + '亿');
+}
+
+function movingAverage(list, day, index){
+  if(index < day - 1) return null;
+  let sum=0;
+  for(let i=index-day+1;i<=index;i++) sum += list[i].close;
+  return sum / day;
+}
+
+function openStockDetail(stockId){
+  const page=document.getElementById('stockDetailPage');
+  const data=STOCK_DETAIL_DATA[stockId] || STOCK_DETAIL_DATA.zhongke;
+  if(!page || !data) return;
+  currentStockDetailData=data;
+  stockKlineCrosshair=null;
+  document.getElementById('stockDetailName').textContent=data.name;
+  document.getElementById('stockDetailCode').textContent=data.code;
+  updateStockQuoteByData(data);
+  document.getElementById('stockIndustry').textContent=data.industry;
+  document.getElementById('stockBusiness').textContent=data.business;
+  page.classList.add('open');
+  setupStockKlineCrosshair();
+  setTimeout(redrawStockKline, 60);
+}
+
+function closeStockDetail(){
+  const page=document.getElementById('stockDetailPage');
+  stockKlineCrosshair=null;
+  currentStockDetailData=null;
+  if(page) page.classList.remove('open');
+}
+
+function setupStockKlineCrosshair(){
+  const canvas=document.getElementById('stockKlineCanvas');
+  if(!canvas || canvas.dataset.crosshairReady) return;
+  canvas.dataset.crosshairReady='1';
+  const update=function(event){
+    const rect=canvas.getBoundingClientRect();
+    stockKlineCrosshair={
+      x: Math.max(0, Math.min(rect.width, event.clientX-rect.left)),
+      y: Math.max(0, Math.min(rect.height, event.clientY-rect.top))
+    };
+    redrawStockKline();
+  };
+  canvas.addEventListener('pointerdown', update);
+  canvas.addEventListener('pointermove', update);
+  canvas.addEventListener('pointerleave', function(){
+    stockKlineCrosshair=null;
+    updateStockQuoteByData(currentStockDetailData);
+    redrawStockKline();
+  });
+  canvas.addEventListener('pointercancel', function(){
+    stockKlineCrosshair=null;
+    updateStockQuoteByData(currentStockDetailData);
+    redrawStockKline();
+  });
+}
+
+function openAdjustDialog(){
+  const dialog=document.getElementById('adjustDialog');
+  if(dialog) dialog.classList.add('active');
+}
+
+function closeAdjustDialog(event){
+  if(event && event.target && event.currentTarget && event.target!==event.currentTarget) return;
+  const dialog=document.getElementById('adjustDialog');
+  if(dialog) dialog.classList.remove('active');
+}
+
+function setAdjustMode(mode){
+  const label=document.getElementById('adjustModeLabel');
+  if(label) label.textContent=mode;
+  document.querySelectorAll('[data-adjust-option]').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.adjustOption===mode);
+  });
+  closeAdjustDialog();
+  redrawStockKline();
+}
+
+function zoomStockKline(delta){
+  stockKlineZoom=Math.max(-2, Math.min(4, stockKlineZoom + delta));
+  redrawStockKline();
+}
+
+function switchStockIndicator(type, el){
+  stockKlineIndicator=type;
+  const select=document.getElementById('indicatorSelect');
+  if(select && select.value!==type) select.value=type;
+  document.querySelectorAll('.indicator-tab').forEach(function(btn){
+    btn.classList.toggle('active', btn===el || btn.dataset.indicator===type);
+  });
+  updateIndicatorInfo();
+  redrawStockKline();
+}
+
+function updateIndicatorInfo(){
+  const row=document.getElementById('indicatorInfoRow');
+  if(!row) return;
+  const htmlMap={
+    volume:'<span class="indicator-muted">量:4.91万</span><span class="indicator-gray">MA5:35.69万</span><span class="indicator-purple">10:32.16万</span><span>换手:10.36%</span>',
+    amount:'<span class="indicator-muted">额:8.67亿</span><span class="indicator-gray">MA5:59.01亿</span><span class="indicator-purple">10:45.07亿</span><span>换手:10.36%</span>',
+    kdj:'<span class="indicator-muted">(9, 3, 3):</span><span class="indicator-orange">K:82.90</span><span class="indicator-sky">D:80.13</span><span class="indicator-purple">J:88.44</span>',
+    macd:'<span class="indicator-muted">(12, 26, 9):</span><span class="indicator-red">MACD:17.36</span><span class="indicator-blue">DIFF:24.58</span><span class="indicator-orange">DEA:15.90</span>'
+  };
+  row.innerHTML=htmlMap[stockKlineIndicator] || htmlMap.volume;
+}
+
+function redrawStockKline(){
+  const canvas=document.getElementById('stockKlineCanvas');
+  if(!canvas) return;
+  updateIndicatorInfo();
+  const wrap=canvas.parentElement;
+  const width=Math.max(320, wrap ? wrap.clientWidth : 360);
+  const height=420;
+  const dpr=window.devicePixelRatio || 1;
+  canvas.width=Math.floor(width*dpr);
+  canvas.height=Math.floor(height*dpr);
+  canvas.style.height=height+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  drawStockKline(ctx,width,height);
+}
+
+function drawStockKline(ctx,width,height){
+  const all=buildStockKlineSeries();
+  const visibleCount=Math.max(28, Math.min(68, 52 - stockKlineZoom*5));
+  const list=all.slice(-visibleCount);
+  const pad={left:10,right:12,top:12,bottom:22};
+  const mainH=272;
+  const subTop=pad.top+mainH+16;
+  const subH=height-subTop-pad.bottom;
+  ctx.clearRect(0,0,width,height);
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,width,height);
+  const maxPrice=Math.max.apply(null,list.map(d=>d.high));
+  const minPrice=Math.min.apply(null,list.map(d=>d.low));
+  const priceRange=maxPrice-minPrice || 1;
+  ctx.strokeStyle='#edf0f4';
+  ctx.lineWidth=1;
+  ctx.setLineDash([4,4]);
+  for(let i=0;i<5;i++){
+    const y=pad.top+i*(mainH/4);
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(width-pad.right,y); ctx.stroke();
+    const price=maxPrice-priceRange*(i/4);
+    ctx.fillStyle='#8d94a0';
+    ctx.font='10px sans-serif';
+    ctx.fillText(price.toFixed(2),pad.left+2,Math.max(pad.top+9,y-3));
+  }
+  ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(pad.left,subTop); ctx.lineTo(width-pad.right,subTop); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pad.left,subTop+subH); ctx.lineTo(width-pad.right,subTop+subH); ctx.stroke();
+
+  const xStep=(width-pad.left-pad.right)/list.length;
+  const candleW=Math.max(3, Math.min(9, xStep*.58));
+  const yPrice=v => pad.top + (maxPrice-v)/priceRange*mainH;
+
+  list.forEach(function(d,i){
+    const x=pad.left+i*xStep+xStep/2;
+    const up=d.close>=d.open;
+    ctx.strokeStyle=up ? '#ef2d1f' : '#1ca672';
+    ctx.fillStyle=up ? '#ef2d1f' : '#1ca672';
+    ctx.beginPath(); ctx.moveTo(x,yPrice(d.high)); ctx.lineTo(x,yPrice(d.low)); ctx.stroke();
+    const y=Math.min(yPrice(d.open),yPrice(d.close));
+    const h=Math.max(2,Math.abs(yPrice(d.open)-yPrice(d.close)));
+    if(up){
+      ctx.strokeRect(x-candleW/2,y,candleW,h);
+    }else{
+      ctx.fillRect(x-candleW/2,y,candleW,h);
+    }
+  });
+
+  const maColors={5:'#f0a500',10:'#2d8cff',20:'#9b59b6',30:'#1ca672'};
+  [5,10,20,30].forEach(function(day){
+    ctx.strokeStyle=maColors[day];
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    list.forEach(function(_,i){
+      const sourceIndex=all.length-list.length+i;
+      const ma=movingAverage(all,day,sourceIndex);
+      if(ma===null) return;
+      const x=pad.left+i*xStep+xStep/2;
+      const y=yPrice(ma);
+      if(i===0 || movingAverage(all,day,sourceIndex-1)===null) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  });
+
+  drawStockIndicator(ctx,list,pad.left,width-pad.right,subTop,subH,xStep);
+  drawStockCrosshair(ctx,width,height,list,pad,mainH,subTop,subH,xStep,maxPrice,minPrice);
+}
+
+function drawStockCrosshair(ctx,width,height,list,pad,mainH,subTop,subH,xStep,maxPrice,minPrice){
+  if(!stockKlineCrosshair || !list.length) return;
+  const left=pad.left;
+  const right=width-pad.right;
+  const top=pad.top;
+  const mainBottom=pad.top+mainH;
+  const subBottom=subTop+subH;
+  const rawX=Math.max(left, Math.min(right, stockKlineCrosshair.x));
+  const index=Math.max(0, Math.min(list.length-1, Math.round((rawX-left-xStep/2)/xStep)));
+  const sourceIndex=buildStockKlineSeries().length-list.length+index;
+  const all=buildStockKlineSeries();
+  updateStockQuoteByData(currentStockDetailData, all[sourceIndex], all[sourceIndex-1]);
+  const x=left+index*xStep+xStep/2;
+  const y=Math.max(top, Math.min(subBottom, stockKlineCrosshair.y));
+  const inMain=y<=mainBottom;
+  const inSub=y>=subTop && y<=subBottom;
+
+  ctx.save();
+  ctx.strokeStyle='rgba(50,54,63,.62)';
+  ctx.lineWidth=1;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath();
+  ctx.moveTo(x,top);
+  ctx.lineTo(x,subBottom);
+  ctx.stroke();
+  if(inMain || inSub){
+    ctx.beginPath();
+    ctx.moveTo(left,y);
+    ctx.lineTo(right,y);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  ctx.fillStyle='rgba(50,54,63,.9)';
+  ctx.font='10px sans-serif';
+  ctx.textBaseline='middle';
+  if(inMain){
+    const price=maxPrice-(y-top)/mainH*(maxPrice-minPrice);
+    const text=price.toFixed(2);
+    const tw=ctx.measureText(text).width+10;
+    ctx.fillRect(left+2,Math.max(top+8,Math.min(mainBottom-8,y))-8,tw,16);
+    ctx.fillStyle='#fff';
+    ctx.fillText(text,left+7,Math.max(top+8,Math.min(mainBottom-8,y)));
+  }
+
+  const dateText=['2026-03-11','04-23','05-21','06-15'][Math.min(3, Math.floor(index/list.length*4))];
+  const dw=ctx.measureText(dateText).width+10;
+  const dateX=Math.max(left,Math.min(right-dw,x-dw/2));
+  ctx.fillStyle='rgba(50,54,63,.9)';
+  ctx.fillRect(dateX,subBottom+4,dw,16);
+  ctx.fillStyle='#fff';
+  ctx.fillText(dateText,dateX+5,subBottom+12);
+  ctx.restore();
+}
+
+function drawStockIndicator(ctx,list,x0,x1,y0,h,xStep){
+  const reservedTop=26;
+  const drawY=y0+reservedTop;
+  const drawH=Math.max(40,h-reservedTop);
+  const values=list.map(function(d,i){
+    if(stockKlineIndicator==='amount') return d.amount;
+    if(stockKlineIndicator==='kdj') return 50 + Math.sin(i/4)*28 + Math.cos(i/7)*12;
+    if(stockKlineIndicator==='macd') return Math.sin(i/5)*4 + Math.cos(i/9)*2;
+    return d.volume;
+  });
+  const max=Math.max.apply(null,values.map(v=>Math.abs(v))) || 1;
+  ctx.font='10px sans-serif';
+
+  if(stockKlineIndicator==='kdj'){
+    ['#f0a500','#2d8cff','#9b59b6'].forEach(function(color,lineIdx){
+      ctx.strokeStyle=color; ctx.beginPath();
+      values.forEach(function(v,i){
+        const adjusted=v + (lineIdx-1)*8 + Math.sin(i/(5+lineIdx))*6;
+        const y=drawY + (100-adjusted)/100*drawH;
+        const x=x0+i*xStep+xStep/2;
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+    });
+    return;
+  }
+
+  if(stockKlineIndicator==='macd'){
+    const mid=drawY+drawH/2;
+    ctx.strokeStyle='#edf0f4'; ctx.beginPath(); ctx.moveTo(x0,mid); ctx.lineTo(x1,mid); ctx.stroke();
+    values.forEach(function(v,i){
+      const x=x0+i*xStep+xStep/2;
+      const barH=Math.abs(v)/max*(drawH/2-4);
+      ctx.fillStyle=v>=0?'#ef2d1f':'#1ca672';
+      ctx.fillRect(x-2, v>=0 ? mid-barH : mid, 4, barH);
+    });
+    [
+      {color:'#1f4ba8', fn:function(i){ return Math.sin(i/6)*max*.45 + 1.5; }},
+      {color:'#f0a500', fn:function(i){ return Math.sin(i/7)*max*.32; }}
+    ].forEach(function(line){
+      ctx.strokeStyle=line.color; ctx.lineWidth=1.2; ctx.beginPath();
+      values.forEach(function(v,i){
+        const x=x0+i*xStep+xStep/2;
+        const y=mid-line.fn(i)/max*(drawH/2-4);
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+    });
+    return;
+  }
+
+  values.forEach(function(v,i){
+    const d=list[i];
+    const x=x0+i*xStep+xStep/2;
+    const barH=v/max*(drawH-12);
+    ctx.fillStyle=d.close>=d.open?'rgba(239,45,31,.75)':'rgba(28,166,114,.75)';
+    ctx.fillRect(x-2,drawY+drawH-barH,4,barH);
+  });
+
+  [
+    {day:5,color:'#777'},
+    {day:10,color:'#a331d5'}
+  ].forEach(function(line){
+    ctx.strokeStyle=line.color;
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    values.forEach(function(v,i){
+      if(i < line.day-1) return;
+      let sum=0;
+      for(let j=i-line.day+1;j<=i;j++) sum += values[j];
+      const avg=sum/line.day;
+      const x=x0+i*xStep+xStep/2;
+      const y=drawY+drawH-avg/max*(drawH-12);
+      if(i===line.day-1) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  });
+}
+
+window.addEventListener('resize', function(){
+  const page=document.getElementById('stockDetailPage');
+  if(page && page.classList.contains('open')) redrawStockKline();
+});
+
 function showMainTab(tab, el){
-  currentMainTab = tab === 'watchlist' ? 'watchlist' : 'home';
+  currentMainTab = ['home','watchlist','profile'].includes(tab) ? tab : 'home';
   const page=document.querySelector('.page');
   if(page) page.setAttribute('data-main-tab', currentMainTab);
   document.querySelectorAll('.nav-item').forEach(function(item){
@@ -4812,6 +8673,196 @@ function showMainTab(tab, el){
     item.classList.toggle('active', isTarget);
   });
 }
+
+function initCancelAccountFlow(){
+  const drawer=document.getElementById('cancelDrawer');
+  const openButton=document.getElementById('openCancelFlow');
+  const closeButton=document.getElementById('closeCancelFlow');
+  const backButton=document.getElementById('cancelBackButton');
+  const nextButton=document.getElementById('cancelNextButton');
+  const actionBar=document.getElementById('cancelActionBar');
+  const screens=[].slice.call(document.querySelectorAll('[data-cancel-screen]'));
+  const stepBars=[].slice.call(document.querySelectorAll('[data-cancel-step-bar]'));
+  const confirmChecks=[].slice.call(document.querySelectorAll('[data-cancel-confirm-check]'));
+  const smsCode=document.getElementById('smsCode');
+  const sendCode=document.getElementById('sendCode');
+  const benefitConfirm=document.getElementById('benefitConfirm');
+  const cancelBenefitConfirm=document.getElementById('cancelBenefitConfirm');
+  const acceptBenefitConfirm=document.getElementById('acceptBenefitConfirm');
+  let currentStep=0;
+  let codeTimer=null;
+
+  if(!drawer || !openButton || openButton.dataset.boundCancelFlow==='1') return;
+  openButton.dataset.boundCancelFlow='1';
+
+  function renderStep(){
+    screens.forEach(function(screen){
+      screen.classList.toggle('active', Number(screen.dataset.cancelScreen)===currentStep);
+    });
+    stepBars.forEach(function(bar){
+      bar.classList.toggle('active', Number(bar.dataset.cancelStepBar)<=Math.min(currentStep,3));
+    });
+    actionBar.classList.toggle('single', currentStep===4);
+    backButton.textContent=currentStep===0 ? '我再想想' : '上一步';
+    nextButton.textContent=currentStep===3 ? '确认提交' : '下一步';
+    if(currentStep===4){
+      backButton.style.display='none';
+      nextButton.textContent='我知道了';
+      nextButton.disabled=false;
+      nextButton.className='cancel-button primary';
+      return;
+    }
+    backButton.style.display='';
+    nextButton.className=currentStep===3 ? 'cancel-button danger' : 'cancel-button primary';
+    nextButton.disabled=currentStep===3 && !confirmChecks.every(function(item){ return item.checked; });
+  }
+
+  function resetCodeButton(){
+    if(codeTimer) clearInterval(codeTimer);
+    codeTimer=null;
+    if(sendCode){
+      sendCode.disabled=false;
+      sendCode.textContent='获取验证码';
+    }
+  }
+
+  function closeFlow(){
+    drawer.classList.remove('active');
+    if(benefitConfirm) benefitConfirm.classList.remove('active');
+    currentStep=0;
+    if(smsCode) smsCode.value='';
+    confirmChecks.forEach(function(item){ item.checked=false; });
+    resetCodeButton();
+    renderStep();
+  }
+
+  openButton.addEventListener('click', function(){
+    drawer.classList.add('active');
+    renderStep();
+  });
+
+  closeButton.addEventListener('click', closeFlow);
+
+  drawer.addEventListener('click', function(event){
+    if(event.target===drawer) closeFlow();
+  });
+
+  backButton.addEventListener('click', function(){
+    if(currentStep===0){
+      closeFlow();
+      return;
+    }
+    currentStep-=1;
+    renderStep();
+  });
+
+  nextButton.addEventListener('click', function(){
+    if(currentStep===4){
+      closeFlow();
+      return;
+    }
+    if(currentStep===1){
+      benefitConfirm.classList.add('active');
+      return;
+    }
+    if(currentStep===2 && smsCode && smsCode.value.trim().length<4){
+      smsCode.focus();
+      smsCode.placeholder='请先输入短信验证码';
+      return;
+    }
+    currentStep+=1;
+    renderStep();
+  });
+
+  confirmChecks.forEach(function(item){
+    item.addEventListener('change', renderStep);
+  });
+
+  if(sendCode){
+    sendCode.addEventListener('click', function(){
+      let count=60;
+      sendCode.disabled=true;
+      sendCode.textContent=count + 's';
+      codeTimer=setInterval(function(){
+        count-=1;
+        sendCode.textContent=count + 's';
+        if(count<=0) resetCodeButton();
+      }, 1000);
+    });
+  }
+
+  cancelBenefitConfirm.addEventListener('click', function(){
+    benefitConfirm.classList.remove('active');
+  });
+
+  acceptBenefitConfirm.addEventListener('click', function(){
+    benefitConfirm.classList.remove('active');
+    currentStep=2;
+    renderStep();
+  });
+
+  benefitConfirm.addEventListener('click', function(event){
+    if(event.target===benefitConfirm) benefitConfirm.classList.remove('active');
+  });
+
+  renderStep();
+}
+
+document.addEventListener('DOMContentLoaded', initCancelAccountFlow);
+
+function initRevokeCancelFlow(){
+  const openButton=document.getElementById('openRevokeCancel');
+  const status=document.getElementById('revokeCancelStatus');
+  const confirmMask=document.getElementById('revokeCancelConfirm');
+  const successMask=document.getElementById('revokeCancelSuccess');
+  const cancelButton=document.getElementById('cancelRevokeCancel');
+  const acceptButton=document.getElementById('acceptRevokeCancel');
+  const closeSuccessButton=document.getElementById('closeRevokeCancelSuccess');
+
+  if(!openButton || !confirmMask || openButton.dataset.boundRevokeFlow==='1') return;
+  openButton.dataset.boundRevokeFlow='1';
+
+  function closeConfirm(){
+    confirmMask.classList.remove('active');
+  }
+
+  function closeSuccess(){
+    if(successMask) successMask.classList.remove('active');
+  }
+
+  openButton.addEventListener('click', function(){
+    if(status && status.textContent.trim()==='已撤销'){
+      if(successMask) successMask.classList.add('active');
+      return;
+    }
+    confirmMask.classList.add('active');
+  });
+
+  if(cancelButton) cancelButton.addEventListener('click', closeConfirm);
+
+  if(acceptButton){
+    acceptButton.addEventListener('click', function(){
+      closeConfirm();
+      if(status) status.textContent='已撤销';
+      if(successMask) successMask.classList.add('active');
+    });
+  }
+
+  if(closeSuccessButton) closeSuccessButton.addEventListener('click', closeSuccess);
+
+  confirmMask.addEventListener('click', function(event){
+    if(event.target===confirmMask) closeConfirm();
+  });
+
+  if(successMask){
+    successMask.addEventListener('click', function(event){
+      if(event.target===successMask) closeSuccess();
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initRevokeCancelFlow);
+
 
 function getCurrentChatReturnTarget(){
   const standalone=document.getElementById('standaloneScenePage');
@@ -4837,6 +8888,15 @@ function restoreChatReturnTarget(target){
       openStandaloneScene(safeTarget.sceneId);
       requestAnimationFrame(function(){
         const body=document.getElementById('standaloneSceneBody');
+        if(body) body.scrollTop=safeTarget.scrollTop || 0;
+      });
+    });
+  }
+  if(safeTarget.type==='smartPick'){
+    requestAnimationFrame(function(){
+      openSmartPickPage();
+      requestAnimationFrame(function(){
+        const body=document.querySelector('#smartPickPage .smart-pick-scroll');
         if(body) body.scrollTop=safeTarget.scrollTop || 0;
       });
     });
@@ -5615,15 +9675,16 @@ function sendMsg(){
   },700+Math.random()*800);
 }
 
-function submitPresetQuestion(text, originSceneOverride){
-  const prompt=(text || '').trim();
-  if(!prompt || responding) return;
+function submitPresetQuestion(text, originSceneOverride, modelPromptOverride){
+  const displayText=(text || '').trim();
+  const prompt=(modelPromptOverride || text || '').trim();
+  if(!displayText || !prompt || responding) return;
   const originScene=originSceneOverride || (currentScene==='home' ? 'home' : currentScene);
   if(!sourceScene) sourceScene=originScene;
   latestScene=originScene;
   collapseAllSceneBlocks();
   if(originScene!=='home') sceneAskedState[originScene]=true;
-  addUserMsg(prompt,null);
+  addUserMsg(displayText,null);
   responding=true;
   refreshConversationView();
   if(originScene==='home') openHomeConversationPanel();
@@ -5692,8 +9753,38 @@ async function callAPI(msg){
   responding=false;
 }
 
+const SMART_PICK_STREAM_NOTE='**流式输出展示**\n页面采用流式展示：一显示用户问题；【“推理过程非可视化”：下方展示是为了给出本次 AI 应采用的提示词方向和分析角度；】二输出“回答”，用于展示最终给用户看的关键结论。';
+
+function smartPickDemoBlock(thinking, answer){
+  return SMART_PICK_STREAM_NOTE + '\n\n**思考过程（推理过程非可视化）**\n' + thinking + '\n\n**回答**\n' + answer;
+}
+
+function demoSmartPickReply(input){
+  if(input.includes('优化这套筛选参数') || input.includes('AI调参建议')){
+    return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围、启用指标和阈值，判断每个参数是否过松或过严；结合成长/股息策略目标，分析调参会扩大还是缩小股票池，并说明风险变化。', '输出关键点：\n* 哪些指标建议上调或下调，并给出建议调整后的具体值或范围\n* 每个调整的原因\n* 调整后更容易筛出哪类股票\n* 可能遗漏哪些股票\n* 是否建议按新参数重新选股');
+  }
+  if(input.includes('筛选结果可能有哪些优点') || input.includes('筛选结果')){
+    return smartPickDemoBlock('提示词方向：读取当前策略和筛选条件，评估条件组合会偏向哪些公司类型；从命中质量、覆盖范围、行业偏差、财务质量和风险暴露几个角度判断结果可用性。', '输出关键点：\n* 当前结果可能具备的优点\n* 可能遗漏的股票类型\n* 哪些条件最影响筛选结果\n* 结果使用时需要二次核验的内容\n* 明确给出下一步建议：继续使用、放宽条件、收紧条件、切换行业或重新选股');
+  }
+  if(input.includes('各项指标含义')){
+    return smartPickDemoBlock('提示词方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；说明指标之间的关系。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
+  }
+  if(input.includes('默认参数') || input.includes('默认值')){
+    return smartPickDemoBlock('提示词方向：读取当前策略的默认阈值，解释默认值对应的筛选风格；判断默认值是偏稳健、偏成长、偏红利还是偏宽松，并说明适用用户和使用边界。', '输出关键点：\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 默认值会筛出什么风格的股票\n* 哪些场景建议调整默认值\n* 调整默认值前需要注意什么');
+  }
+  if(input.includes('不同行业') || input.includes('行业')){
+    return smartPickDemoBlock('提示词方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业，以及是否需要按行业单独调整阈值。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值');
+  }
+  if(input.includes('数据风险') || input.includes('模型风险') || input.includes('投资使用风险')){
+    return smartPickDemoBlock('提示词方向：从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险；重点说明筛选结果不是买入建议。', '输出关键点：\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
+  }
+  return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围和启用指标，先解释策略目标，再判断指标组合会筛出哪类股票；同时说明指标含义、参数松紧和使用限制。', '输出关键点：\n* 当前策略主要想筛什么类型的股票\n* 核心指标分别起什么作用\n* 当前条件可能偏稳健还是偏进攻\n* 哪些地方需要用户结合行情二次判断\n* 结尾提示结果仅供参考，不构成投资建议');
+}
+
 function demoReply(input){
   const t=input.toLowerCase();
+  if(input.includes('【后台上下文：不要在用户消息中展示】'))
+    return demoSmartPickReply(input);
   if(t.includes('能源板块')||t.includes('中东')||t.includes('地缘'))
     return '**中东局势对A股能源板块影响分析**\n\n**直接受益方向：**\n* **油气开采** — 中国海油、中国石油受益于油价上涨，但国内管制价格有缓冲\n* **煤炭** — 能源替代逻辑强化，短期关注\n* **核电** — 避险属性凸显，政策长期利好\n\n**间接承压方向：**\n* 航空、化工、轮胎等高耗油行业成本承压\n* 中游制造业原材料成本上升\n\n**操作建议：**轻仓布局能源上游，规避高能耗行业超配；注意地缘事件持续性存在不确定性，控制仓位。\n\n以上仅供参考，不构成投资建议。';
   if(t.includes('油价')||t.includes('利好'))

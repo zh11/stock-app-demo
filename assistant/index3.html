@@ -4381,6 +4381,399 @@ body.chat-open{overflow:hidden}
   font-weight: 700;
 }
 
+.smart-pick-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1480;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f6f8;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.smart-pick-page.open { transform: translateX(0); }
+.smart-pick-header {
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  grid-template-columns: 54px minmax(0,1fr) 54px;
+  align-items: center;
+  background: linear-gradient(180deg, #fb2117 0%, #f01810 100%);
+  color: #fff;
+}
+.smart-pick-back {
+  width: 54px;
+  height: 54px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.smart-pick-back::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 18px;
+  width: 15px;
+  height: 15px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: rotate(45deg);
+}
+.smart-pick-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: .2px;
+}
+.smart-pick-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f5f6f8;
+  padding-bottom: 96px;
+}
+.smart-pick-scroll::-webkit-scrollbar { width: 0; }
+.smart-note {
+  padding: 10px 18px;
+  color: #b58324;
+  background: #fff8ec;
+  border-bottom: 1px solid #f4e5cc;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+.smart-ai-card {
+  margin: 14px 18px 0;
+  padding: 10px 14px;
+  border: 1px solid #d7e5ff;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fbfdff, #f6faff);
+  box-shadow: 0 5px 14px rgba(20, 99, 220, .045);
+}
+.smart-ai-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.smart-ai-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #161b22;
+  font-size: 14px;
+  font-weight: 780;
+}
+.smart-ai-spark {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  flex: 0 0 auto;
+}
+.smart-ai-spark::before,
+.smart-ai-spark::after {
+  content: "";
+  position: absolute;
+  background: #1677ff;
+  transform: rotate(45deg);
+}
+.smart-ai-spark::before {
+  left: 3px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  clip-path: polygon(50% 0, 64% 36%, 100% 50%, 64% 64%, 50% 100%, 36% 64%, 0 50%, 36% 36%);
+}
+.smart-ai-spark::after {
+  right: 3px;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  background: #ff4d3d;
+  clip-path: polygon(50% 0, 64% 36%, 100% 50%, 64% 64%, 50% 100%, 36% 64%, 0 50%, 36% 36%);
+}
+.smart-ai-help {
+  border: 0;
+  background: transparent;
+  color: #1677ff;
+  font-size: 12px;
+  font-weight: 760;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-ai-desc {
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 1.55;
+  font-weight: 520;
+}
+.smart-ai-input {
+  margin-top: 12px;
+  height: 42px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 13px;
+  border: 1px solid #c9ddff;
+  border-radius: 8px;
+  background: #fff;
+}
+.smart-ai-placeholder {
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 560;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.smart-ai-send {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2f8cff, #0f6ff2);
+  color: #fff;
+  font-size: 0;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(22, 119, 255, .22);
+}
+.smart-ai-send::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  clip-path: polygon(6% 47%, 93% 8%, 61% 92%, 47% 59%);
+  transform: rotate(-8deg);
+}
+.smart-ai-send::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  width: 8px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: #1677ff;
+  transform: rotate(-31deg);
+  opacity: .95;
+}
+.smart-ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+.smart-ai-chip {
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid #cfe1ff;
+  border-radius: 5px;
+  background: #fff;
+  color: #1666d8;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-method-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 14px 18px 22px;
+  padding: 4px;
+  border-radius: 9px;
+  background: #eef0f3;
+}
+.smart-method-tab {
+  height: 40px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #3a3f47;
+  font-size: 15px;
+  font-weight: 650;
+  font-family: inherit;
+  cursor: pointer;
+}
+.smart-method-tab.active {
+  background: linear-gradient(180deg, #ff2a1d, #f51d12);
+  color: #fff;
+  font-weight: 780;
+  box-shadow: 0 5px 14px rgba(245, 34, 18, .22);
+}
+.smart-section {
+  padding: 0 18px 22px;
+  background: #fff;
+}
+.smart-section + .smart-section {
+  border-top: 9px solid #f0f2f5;
+  padding-top: 20px;
+}
+.smart-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.smart-section-title {
+  color: #1f242b;
+  font-size: 17px;
+  font-weight: 780;
+}
+.smart-reset {
+  border: 0;
+  background: transparent;
+  color: #1683d8;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.smart-reset::before {
+  content: "↻";
+  margin-right: 5px;
+  font-size: 16px;
+  vertical-align: -1px;
+}
+.smart-industry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px 16px;
+}
+.smart-industry {
+  height: 43px;
+  border: 1px solid #e6e8ec;
+  border-radius: 6px;
+  background: #fff;
+  color: #5f6570;
+  font-size: 14px;
+  font-weight: 650;
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(15,23,42,.035);
+}
+.smart-industry.active {
+  border-color: #ffd9dc;
+  background: linear-gradient(180deg, #fff0f2, #fde3e7);
+  color: #d92720;
+  font-weight: 760;
+  box-shadow: 0 5px 12px rgba(245,34,18,.08);
+}
+.smart-panel { display: none; }
+.smart-panel.active { display: block; }
+.smart-condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smart-condition {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 126px;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f1f3;
+}
+.smart-condition:last-child {
+  border-bottom: 0;
+}
+.smart-condition-name {
+  color: #242931;
+  font-size: 15px;
+  font-weight: 620;
+  line-height: 1.32;
+}
+.smart-condition-range {
+  margin-top: 5px;
+  color: #a2a8b2;
+  font-size: 12px;
+  font-weight: 520;
+}
+.smart-condition-control {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto 38px;
+  align-items: center;
+  gap: 7px;
+}
+.smart-value {
+  min-width: 0;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #f4f5f7;
+  color: #242931;
+  font-size: 18px;
+  font-weight: 680;
+  box-shadow: inset 0 0 0 1px rgba(15,23,42,.025);
+}
+.smart-unit {
+  color: #333941;
+  font-size: 14px;
+  font-weight: 650;
+  min-width: 14px;
+}
+.smart-switch {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: #16c777;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.smart-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.16);
+}
+.smart-edit-hint {
+  grid-column: 1 / 3;
+  margin-top: -4px;
+  color: #9aa0a9;
+  font-size: 12px;
+  font-weight: 520;
+  text-align: left;
+}
+.smart-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 18px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,.7), #fff 30%);
+  border-top: 1px solid #f0f1f3;
+}
+.smart-start-btn {
+  width: 100%;
+  height: 52px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ff271a, #f51f13);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 760;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(245, 34, 18, .20);
+}
+
 .stock-detail-page {
   position: absolute;
   inset: 0;
@@ -5014,7 +5407,7 @@ body.chat-open{overflow:hidden}
             <section class="section home-content" id="homeContent">
               <div class="tool-grid">
                 <div class="tool" onclick="openAlgoDiagnosisDialog()"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
-                <div class="tool"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
+                <div class="tool" onclick="openSmartPickPage()"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
@@ -5543,6 +5936,134 @@ body.chat-open{overflow:hidden}
     <div class="algo-diagnosis-actions">
       <button type="button" onclick="closeAlgoDiagnosisDialog()">知道了</button>
     </div>
+  </div>
+</div>
+
+<div class="smart-pick-page" id="smartPickPage">
+  <div class="app-statusbar red">
+    <span>09:42</span>
+    <div class="app-statusbar-icons">
+      <span class="app-signal"></span>
+      <span class="app-wifi"><i></i></span>
+      <span class="app-battery"></span>
+    </div>
+  </div>
+  <div class="smart-pick-header">
+    <button class="smart-pick-back" type="button" aria-label="返回" onclick="closeSmartPickPage()"></button>
+    <div class="smart-pick-title">智能选股</div>
+    <div></div>
+  </div>
+  <div class="smart-pick-scroll">
+    <div class="smart-note">注:选股结果仅供参考,不作为投资建议。</div>
+    <div class="smart-ai-card">
+      <div class="smart-ai-head">
+        <div class="smart-ai-title"><span class="smart-ai-spark"></span><span>AI辅助</span></div>
+      </div>
+      <div class="smart-ai-desc">可询问指标含义，也可让AI辅助优化条件后再选股，结果仅供参考。</div>
+      <div class="smart-ai-input">
+        <div class="smart-ai-placeholder">帮我解释当前策略和指标设置</div>
+        <button class="smart-ai-send" type="button" aria-label="发送" onclick="askSmartPickAI('overview')"></button>
+      </div>
+      <div class="smart-ai-chips">
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('tuning')">AI调参</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('result')">选股结果评估</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('metrics')">指标含义</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('defaults')">默认值说明</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('industry')">行业影响</button>
+        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('risk')">风险提示</button>
+      </div>
+    </div>
+    <div class="smart-method-tabs" role="tablist" aria-label="选股方法">
+      <button class="smart-method-tab active" type="button" data-smart-method="growth" onclick="switchSmartMethod('growth')">成长评估法</button>
+      <button class="smart-method-tab" type="button" data-smart-method="dividend" onclick="switchSmartMethod('dividend')">股息评估法</button>
+    </div>
+
+    <section class="smart-section">
+      <div class="smart-section-head">
+        <div class="smart-section-title">选择行业</div>
+      </div>
+      <div class="smart-industry-grid" aria-label="行业选择">
+        <button class="smart-industry active" type="button">全部</button>
+        <button class="smart-industry" type="button">消费</button>
+        <button class="smart-industry" type="button">健康</button>
+        <button class="smart-industry" type="button">科技</button>
+        <button class="smart-industry" type="button">制造</button>
+        <button class="smart-industry" type="button">公共</button>
+        <button class="smart-industry" type="button">其它</button>
+      </div>
+    </section>
+
+    <section class="smart-section">
+      <div class="smart-section-head">
+        <div class="smart-section-title">选股条件设置:</div>
+        <button class="smart-reset" type="button">恢复默认设置</button>
+      </div>
+
+      <div class="smart-panel active" data-smart-panel="growth">
+        <div class="smart-condition-list">
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期盈利增长率 ≥</div><div class="smart-condition-range">修改范围为5%至50%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期净资产收益率 ≥</div><div class="smart-condition-range">修改范围为5%至50%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">未来三年预期毛利率 ≥</div><div class="smart-condition-range">修改范围为10%至60%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">25</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">资产负债率 ≤</div><div class="smart-condition-range">修改范围为30%至80%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">55</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润现金含量 ≥</div><div class="smart-condition-range">修改范围为0.2至2</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.6</div><div class="smart-unit"></div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">三年平均分红率 ≥</div><div class="smart-condition-range">修改范围为5%至100%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">当前市值 ≥</div><div class="smart-condition-range">修改范围为10亿至500亿</div></div>
+            <div class="smart-condition-control"><div class="smart-value">60</div><div class="smart-unit">亿</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="smart-panel" data-smart-panel="dividend">
+        <div class="smart-condition-list">
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">股息率 ≥</div><div class="smart-condition-range">修改范围为0.5%至10%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">1.5</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">三年平均分红率 ≥</div><div class="smart-condition-range">修改范围为10%至80%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">20</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净资产收益率ROE(近三年) ≥</div><div class="smart-condition-range">修改范围为0%至10%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">10</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润增长率(近三年) ≥</div><div class="smart-condition-range">修改范围为0.5%至20%</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.5</div><div class="smart-unit">%</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">净利润现金含量 ≥</div><div class="smart-condition-range">修改范围为0.2至2</div></div>
+            <div class="smart-condition-control"><div class="smart-value">0.6</div><div class="smart-unit"></div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+          <div class="smart-condition">
+            <div><div class="smart-condition-name">当前市值 ≥</div><div class="smart-condition-range">修改范围为20亿至1000亿</div></div>
+            <div class="smart-condition-control"><div class="smart-value">200</div><div class="smart-unit">亿</div><div class="smart-switch"></div><div class="smart-edit-hint">(修改数值)</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="smart-bottom">
+    <button class="smart-start-btn" type="button">开始选股</button>
   </div>
 </div>
 
@@ -7493,6 +8014,105 @@ function closeAlgoDiagnosisDialog(event){
   if(dialog) dialog.classList.remove('active');
 }
 
+function openSmartPickPage(){
+  const page=document.getElementById('smartPickPage');
+  if(page) page.classList.add('open');
+}
+
+function closeSmartPickPage(){
+  const page=document.getElementById('smartPickPage');
+  if(page) page.classList.remove('open');
+}
+
+function switchSmartMethod(method){
+  document.querySelectorAll('[data-smart-method]').forEach(function(tab){
+    tab.classList.toggle('active', tab.getAttribute('data-smart-method')===method);
+  });
+  document.querySelectorAll('[data-smart-panel]').forEach(function(panel){
+    panel.classList.toggle('active', panel.getAttribute('data-smart-panel')===method);
+  });
+}
+
+function getSmartPickContext(){
+  const methodTab=document.querySelector('[data-smart-method].active');
+  const method=methodTab ? methodTab.textContent.trim() : '成长评估法';
+  const industry=document.querySelector('.smart-industry.active');
+  const panel=document.querySelector('.smart-panel.active');
+  const conditions=[];
+  if(panel){
+    panel.querySelectorAll('.smart-condition').forEach(function(row){
+      const name=row.querySelector('.smart-condition-name');
+      const range=row.querySelector('.smart-condition-range');
+      const value=row.querySelector('.smart-value');
+      const unit=row.querySelector('.smart-unit');
+      const nameText=name ? name.textContent.trim() : '';
+      const valueText=value ? value.textContent.trim() : '';
+      const unitText=unit ? unit.textContent.trim() : '';
+      const rangeText=range ? range.textContent.trim() : '';
+      if(nameText){
+        conditions.push('- ' + nameText + ' ' + valueText + unitText + (rangeText ? '（' + rangeText + '）' : ''));
+      }
+    });
+  }
+  return {
+    method: method,
+    industry: industry ? industry.textContent.trim() : '全部',
+    conditions: conditions
+  };
+}
+
+function buildSmartPickPrompt(action){
+  const ctx=getSmartPickContext();
+  const questionMap={
+    overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
+    tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
+    result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
+    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
+    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
+    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+  };
+  return '【后台上下文：不要在用户消息中展示】\n'
+    + '当前方法：' + ctx.method + '\n'
+    + '当前行业：' + ctx.industry + '\n'
+    + '当前条件：\n' + (ctx.conditions.length ? ctx.conditions.join('\n') : '- 暂无条件') + '\n\n'
+    + '【回答要求】\n'
+    + '这是给开发查看的交互原型，不是最终投顾结论。页面采用流式对话展示，用户侧只看到简短问题。请按“思考过程”和“回答”两部分输出。\n'
+    + '“思考过程”用于说明提示词方向：AI应读取哪些上下文、从哪些角度分析、需要注意哪些约束；不要展示真实推理链路。\n'
+    + '“回答”用于说明开发实现时应输出的关键点；不要复述完整后台参数清单，除非用户问题本身需要参数。\n\n'
+    + '【用户问题】\n' + (questionMap[action] || questionMap.overview);
+}
+
+function getSmartPickDisplayQuestion(action){
+  const questionMap={
+    overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
+    tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
+    result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
+    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
+    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
+    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+  };
+  return questionMap[action] || questionMap.overview;
+}
+
+function askSmartPickAI(action){
+  if(responding) return;
+  const key=action || 'overview';
+  const displayQuestion=getSmartPickDisplayQuestion(key);
+  const modelPrompt=buildSmartPickPrompt(key);
+  const smartScroll=document.querySelector('#smartPickPage .smart-pick-scroll');
+  closeSmartPickPage();
+  openChat(null, {
+    type:'smartPick',
+    mainTab:currentMainTab || 'home',
+    scrollTop:smartScroll ? smartScroll.scrollTop : 0
+  });
+  setTimeout(function(){
+    submitPresetQuestion(displayQuestion, 'home', modelPrompt);
+  }, 80);
+}
+
 function openMessageCenter(){
   const page=document.getElementById('messagePage');
   if(!page) return;
@@ -8272,6 +8892,15 @@ function restoreChatReturnTarget(target){
       });
     });
   }
+  if(safeTarget.type==='smartPick'){
+    requestAnimationFrame(function(){
+      openSmartPickPage();
+      requestAnimationFrame(function(){
+        const body=document.querySelector('#smartPickPage .smart-pick-scroll');
+        if(body) body.scrollTop=safeTarget.scrollTop || 0;
+      });
+    });
+  }
 }
 
 function openChat(tab, returnTarget){
@@ -9046,15 +9675,16 @@ function sendMsg(){
   },700+Math.random()*800);
 }
 
-function submitPresetQuestion(text, originSceneOverride){
-  const prompt=(text || '').trim();
-  if(!prompt || responding) return;
+function submitPresetQuestion(text, originSceneOverride, modelPromptOverride){
+  const displayText=(text || '').trim();
+  const prompt=(modelPromptOverride || text || '').trim();
+  if(!displayText || !prompt || responding) return;
   const originScene=originSceneOverride || (currentScene==='home' ? 'home' : currentScene);
   if(!sourceScene) sourceScene=originScene;
   latestScene=originScene;
   collapseAllSceneBlocks();
   if(originScene!=='home') sceneAskedState[originScene]=true;
-  addUserMsg(prompt,null);
+  addUserMsg(displayText,null);
   responding=true;
   refreshConversationView();
   if(originScene==='home') openHomeConversationPanel();
@@ -9123,8 +9753,38 @@ async function callAPI(msg){
   responding=false;
 }
 
+const SMART_PICK_STREAM_NOTE='**流式输出展示**\n页面采用流式展示：一显示用户问题；【“推理过程非可视化”：下方展示是为了给出本次 AI 应采用的提示词方向和分析角度；】二输出“回答”，用于展示最终给用户看的关键结论。';
+
+function smartPickDemoBlock(thinking, answer){
+  return SMART_PICK_STREAM_NOTE + '\n\n**思考过程（推理过程非可视化）**\n' + thinking + '\n\n**回答**\n' + answer;
+}
+
+function demoSmartPickReply(input){
+  if(input.includes('优化这套筛选参数') || input.includes('AI调参建议')){
+    return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围、启用指标和阈值，判断每个参数是否过松或过严；结合成长/股息策略目标，分析调参会扩大还是缩小股票池，并说明风险变化。', '输出关键点：\n* 哪些指标建议上调或下调，并给出建议调整后的具体值或范围\n* 每个调整的原因\n* 调整后更容易筛出哪类股票\n* 可能遗漏哪些股票\n* 是否建议按新参数重新选股');
+  }
+  if(input.includes('筛选结果可能有哪些优点') || input.includes('筛选结果')){
+    return smartPickDemoBlock('提示词方向：读取当前策略和筛选条件，评估条件组合会偏向哪些公司类型；从命中质量、覆盖范围、行业偏差、财务质量和风险暴露几个角度判断结果可用性。', '输出关键点：\n* 当前结果可能具备的优点\n* 可能遗漏的股票类型\n* 哪些条件最影响筛选结果\n* 结果使用时需要二次核验的内容\n* 明确给出下一步建议：继续使用、放宽条件、收紧条件、切换行业或重新选股');
+  }
+  if(input.includes('各项指标含义')){
+    return smartPickDemoBlock('提示词方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；说明指标之间的关系。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
+  }
+  if(input.includes('默认参数') || input.includes('默认值')){
+    return smartPickDemoBlock('提示词方向：读取当前策略的默认阈值，解释默认值对应的筛选风格；判断默认值是偏稳健、偏成长、偏红利还是偏宽松，并说明适用用户和使用边界。', '输出关键点：\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 默认值会筛出什么风格的股票\n* 哪些场景建议调整默认值\n* 调整默认值前需要注意什么');
+  }
+  if(input.includes('不同行业') || input.includes('行业')){
+    return smartPickDemoBlock('提示词方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业，以及是否需要按行业单独调整阈值。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值');
+  }
+  if(input.includes('数据风险') || input.includes('模型风险') || input.includes('投资使用风险')){
+    return smartPickDemoBlock('提示词方向：从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险；重点说明筛选结果不是买入建议。', '输出关键点：\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
+  }
+  return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围和启用指标，先解释策略目标，再判断指标组合会筛出哪类股票；同时说明指标含义、参数松紧和使用限制。', '输出关键点：\n* 当前策略主要想筛什么类型的股票\n* 核心指标分别起什么作用\n* 当前条件可能偏稳健还是偏进攻\n* 哪些地方需要用户结合行情二次判断\n* 结尾提示结果仅供参考，不构成投资建议');
+}
+
 function demoReply(input){
   const t=input.toLowerCase();
+  if(input.includes('【后台上下文：不要在用户消息中展示】'))
+    return demoSmartPickReply(input);
   if(t.includes('能源板块')||t.includes('中东')||t.includes('地缘'))
     return '**中东局势对A股能源板块影响分析**\n\n**直接受益方向：**\n* **油气开采** — 中国海油、中国石油受益于油价上涨，但国内管制价格有缓冲\n* **煤炭** — 能源替代逻辑强化，短期关注\n* **核电** — 避险属性凸显，政策长期利好\n\n**间接承压方向：**\n* 航空、化工、轮胎等高耗油行业成本承压\n* 中游制造业原材料成本上升\n\n**操作建议：**轻仓布局能源上游，规避高能耗行业超配；注意地缘事件持续性存在不确定性，控制仓位。\n\n以上仅供参考，不构成投资建议。';
   if(t.includes('油价')||t.includes('利好'))
