@@ -5968,9 +5968,7 @@ body.chat-open{overflow:hidden}
         <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('tuning')">AI调参</button>
         <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('result')">选股结果评估</button>
         <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('metrics')">指标含义</button>
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('defaults')">默认值说明</button>
         <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('industry')">行业影响</button>
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('risk')">风险提示</button>
       </div>
     </div>
     <div class="smart-method-tabs" role="tablist" aria-label="选股方法">
@@ -8067,10 +8065,8 @@ function buildSmartPickPrompt(action){
     overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
     tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
     result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
-    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
-    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
-    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
-    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+    metrics:'请解释当前智能选股条件里的各项指标含义、默认参数设置逻辑，以及它们为什么会影响选股结果。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响、哪些行业更容易被筛出或被排除，并提示可能存在的数据风险、模型风险和投资使用风险。'
   };
   return '【后台上下文：不要在用户消息中展示】\n'
     + '当前方法：' + ctx.method + '\n'
@@ -8088,10 +8084,8 @@ function getSmartPickDisplayQuestion(action){
     overview:'请解释当前智能选股策略和指标设置，并说明这套条件适合筛选哪类股票。',
     tuning:'帮我基于当前智能选股条件，优化这套筛选参数。请说明每个参数为什么调整，以及会更偏向哪类股票。',
     result:'请根据当前智能选股策略，评估筛选结果可能有哪些优点、遗漏和风险，并给出使用建议。',
-    metrics:'请解释当前智能选股条件里的各项指标含义，以及它们为什么会影响选股结果。',
-    defaults:'请说明当前智能选股策略默认参数的设置逻辑，以及这些默认值适合什么类型的投资者。',
-    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响，哪些行业更容易被筛出或被排除。',
-    risk:'请根据当前智能选股策略，提示可能存在的数据风险、模型风险和投资使用风险。'
+    metrics:'请解释当前智能选股条件里的各项指标含义、默认参数设置逻辑，以及它们为什么会影响选股结果。',
+    industry:'请说明不同行业在当前智能选股策略下可能受到哪些影响、哪些行业更容易被筛出或被排除，并提示可能存在的数据风险、模型风险和投资使用风险。'
   };
   return questionMap[action] || questionMap.overview;
 }
@@ -9766,17 +9760,11 @@ function demoSmartPickReply(input){
   if(input.includes('筛选结果可能有哪些优点') || input.includes('筛选结果')){
     return smartPickDemoBlock('提示词方向：读取当前策略和筛选条件，评估条件组合会偏向哪些公司类型；从命中质量、覆盖范围、行业偏差、财务质量和风险暴露几个角度判断结果可用性。', '输出关键点：\n* 当前结果可能具备的优点\n* 可能遗漏的股票类型\n* 哪些条件最影响筛选结果\n* 结果使用时需要二次核验的内容\n* 明确给出下一步建议：继续使用、放宽条件、收紧条件、切换行业或重新选股');
   }
-  if(input.includes('各项指标含义')){
-    return smartPickDemoBlock('提示词方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；说明指标之间的关系。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
+  if(input.includes('各项指标含义') || input.includes('默认参数') || input.includes('默认值')){
+    return smartPickDemoBlock('提示词方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；同时读取当前策略默认阈值，说明默认值对应的筛选风格、适用用户和使用边界。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
   }
-  if(input.includes('默认参数') || input.includes('默认值')){
-    return smartPickDemoBlock('提示词方向：读取当前策略的默认阈值，解释默认值对应的筛选风格；判断默认值是偏稳健、偏成长、偏红利还是偏宽松，并说明适用用户和使用边界。', '输出关键点：\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 默认值会筛出什么风格的股票\n* 哪些场景建议调整默认值\n* 调整默认值前需要注意什么');
-  }
-  if(input.includes('不同行业') || input.includes('行业')){
-    return smartPickDemoBlock('提示词方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业，以及是否需要按行业单独调整阈值。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值');
-  }
-  if(input.includes('数据风险') || input.includes('模型风险') || input.includes('投资使用风险')){
-    return smartPickDemoBlock('提示词方向：从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险；重点说明筛选结果不是买入建议。', '输出关键点：\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
+  if(input.includes('不同行业') || input.includes('行业') || input.includes('数据风险') || input.includes('模型风险') || input.includes('投资使用风险')){
+    return smartPickDemoBlock('提示词方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业；同时从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
   }
   return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围和启用指标，先解释策略目标，再判断指标组合会筛出哪类股票；同时说明指标含义、参数松紧和使用限制。', '输出关键点：\n* 当前策略主要想筛什么类型的股票\n* 核心指标分别起什么作用\n* 当前条件可能偏稳健还是偏进攻\n* 哪些地方需要用户结合行情二次判断\n* 结尾提示结果仅供参考，不构成投资建议');
 }
