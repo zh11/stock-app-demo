@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个股 K 线需求文档</title>
+  <style>
+    :root { color-scheme: light; --red:#f5222d; --text:#1f2937; --muted:#6b7280; --line:#e5e7eb; --soft:#f7f8fa; --note:#fff7ed; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif; color:var(--text); background:#eef0f4; line-height:1.72; }
+    .topbar { position:sticky; top:0; z-index:10; background:var(--red); color:#fff; box-shadow:0 2px 12px rgba(245,34,45,.16); }
+    .topbar-inner { max-width:920px; margin:0 auto; padding:14px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { font-size:18px; font-weight:700; }
+    .meta { font-size:12px; opacity:.88; white-space:nowrap; }
+    main { max-width:920px; margin:22px auto 48px; padding:0 16px; }
+    article { background:#fff; border:1px solid var(--line); border-radius:14px; padding:28px 30px 34px; box-shadow:0 14px 36px rgba(15,23,42,.08); }
+    h1 { margin:0 0 18px; font-size:26px; line-height:1.35; letter-spacing:0; }
+    h2 { margin:30px 0 12px; padding-top:14px; border-top:1px solid var(--line); font-size:20px; line-height:1.42; }
+    h3 { margin:22px 0 10px; font-size:17px; line-height:1.45; color:#111827; }
+    h4, h5, h6 { margin:18px 0 8px; font-size:15px; }
+    p { margin:8px 0; }
+    ul, ol { margin:8px 0 12px; padding-left:22px; }
+    li { margin:4px 0; }
+    code { padding:2px 6px; border-radius:5px; background:#f3f4f6; color:#c0262d; font-family:Consolas,"SFMono-Regular",monospace; font-size:.92em; }
+    pre { overflow:auto; padding:14px 16px; border-radius:10px; background:#111827; color:#f9fafb; line-height:1.6; }
+    pre code { padding:0; background:transparent; color:inherit; }
+    a { color:#1677ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    article > p:first-of-type { background:var(--note); border:1px solid #fed7aa; border-radius:10px; padding:10px 12px; color:#9a3412; }
+    @media (max-width: 640px) {
+      .topbar-inner { padding:12px 16px; }
+      .brand { font-size:17px; }
+      .meta { display:none; }
+      main { margin:12px auto 28px; padding:0 10px; }
+      article { border-radius:10px; padding:20px 16px 26px; }
+      h1 { font-size:22px; }
+      h2 { font-size:18px; }
+      h3 { font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div class="brand">个股 K 线需求文档</div><div class="meta">K 线需求展示文档</div></div></header>
+  <main><article>
+    <h1>个股 K 线需求文档</h1>
+    <h2>1. 文档目的</h2>
+    <p>本文档用于说明个股跳转页中的 K 线模块需求，供开发实现页面结构、交互逻辑、数据展示规则和后续接口对接使用。</p>
+    <p>当前原型文件参考：</p>
+    <ul>
+    <li>线上原型：<code><a href="https://zh11.github.io/stock-app-demo/assistant/index3.html" target="_blank" rel="noopener">https://zh11.github.io/stock-app-demo/assistant/index3.html</a></code></li>
+    </ul>
+    <h2>2. 个股详情页面</h2>
+    <h3>2.1 入口位置</h3>
+    <p>用户在“智能选股-选股结果”、“自选”、“甄选优股”、“优息股”、“科技主线”、“发现异动”、“范例实盘”、“模拟操盘”、“K线捕手”、“AI异动筛股”、“科技强度”模块点击单只股票卡片(股票名称代码»)，进入个股详情页。</p>
+    <h3>2.2 页面标题</h3>
+    <p>顶部红色标题栏展示：</p>
+    <ul>
+    <li>股票名称</li>
+    <li>股票代码</li>
+    <li>返回按钮</li>
+    </ul>
+    <p>股票名称和股票代码居中上下显示。</p>
+    <h3>2.3 返回逻辑</h3>
+    <p>点击左上角返回按钮，关闭个股详情页，回到上一级页面。</p>
+    <h2>3. 页面顶部行情摘要</h2>
+    <h3>3.1 展示字段</h3>
+    <p>日K顶部行情摘要区展示以下字段：</p>
+    <ul>
+    <li>当前价</li>
+    <li>涨跌额</li>
+    <li>涨跌幅</li>
+    <li>最高价，简称“高”</li>
+    <li>最低价，简称“低”</li>
+    <li>开盘价，简称“开”</li>
+    <li>市值</li>
+    <li>换手率，简称“换”</li>
+    <li>流通市值，简称“流通”</li>
+    <li>量比</li>
+    <li>市盈率 TTM</li>
+    <li>成交额，简称“额”</li>
+    </ul>
+    <p>其他周期顶部行情摘要区展示以下字段：</p>
+    <ul>
+    <li>当前价</li>
+    <li>涨跌额</li>
+    <li>涨跌幅</li>
+    <li>最高价，简称“高”</li>
+    <li>最低价，简称“低”</li>
+    <li>开盘价，简称“开”</li>
+    <li>换手率，简称“换”</li>
+    <li>成交量，简称“量”</li>
+    <li>成交额，简称“额”</li>
+    </ul>
+    <h3>3.2 字号和样式</h3>
+    <p>当前价字号较大，但不应过粗。</p>
+    <p>右侧灰色字段标签字号保持一致；<code>TTM</code> 要比“市盈”文字更小。</p>
+    <h3>3.3 颜色规则</h3>
+    <p>当前价、涨跌额、涨跌幅：</p>
+    <ul>
+    <li>相对前收盘价上涨：红色</li>
+    <li>相对前收盘价下跌：绿色</li>
+    <li>持平：普通深色</li>
+    </ul>
+    <p>高、低、开：</p>
+    <p>分别与前收盘价比较</p>
+    <ul>
+    <li>高于前收盘价：红色</li>
+    <li>低于前收盘价：绿色</li>
+    <li>等于前收盘价：普通深色</li>
+    </ul>
+    <p>量比：</p>
+    <ul>
+    <li><code>量比 &gt; 1</code>：红色，表示放量</li>
+    <li><code>量比 = 1</code>：普通深色，表示无明显放量</li>
+    <li><code>量比 &lt; 1</code>：绿色，表示缩量</li>
+    </ul>
+    <p>换手率：</p>
+    <ul>
+    <li>始终普通深色，不设置高低档位颜色</li>
+    </ul>
+    <p>市值、流通、市盈 TTM、成交额、成交量：</p>
+    <ul>
+    <li>普通深色</li>
+    </ul>
+    <h3>3.4 十字线联动</h3>
+    <p>当用户在 K 线图中移动十字线时，顶部行情摘要、主图、副图数据需要根据十字线指向日期同步变化，十字线离开 K 线区域后，顶部行情摘要、主图、副图数据恢复为当前最新行情。</p>
+    <h3>3.5 不同周期顶部行情摘要数据规则</h3>
+    <p>顶部行情摘要需要跟随当前 K 线周期和十字线选中 K 线同步变化。</p>
+    <p>默认状态：</p>
+    <ul>
+    <li>未显示十字线时，顶部行情摘要展示当前最新交易日的最新日K数据</li>
+    <li>切换到周K、月K、季K、年K后，若未显示十字线，顶部行情摘要仍展示当前最新交易日行情，不强制切换为周期汇总行情</li>
+    <li>显示十字线后，顶部行情摘要展示十字线所指向的当前周期 K 线数据</li>
+    <li>十字线消失后，顶部行情摘要恢复当前最新交易日行情</li>
+    </ul>
+    <p>不同周期下，十字线选中某根 K 线时，顶部字段取值规则：</p>
+    <ul>
+    <li>当前价：当前周期 K 线的收盘价</li>
+    <li>涨跌额：当前周期收盘价 - 当前周期前一根同周期 K 线的收盘价</li>
+    <li>涨跌幅：<code>涨跌额 / 当前周期前一根同周期 K 线收盘价 * 100%</code></li>
+    <li>高：当前周期 K 线最高价</li>
+    <li>低：当前周期 K 线最低价</li>
+    <li>开：当前周期 K 线开盘价</li>
+    <li>市值：取值实现见”K线技术实现方案“文档（周K/月K/季K/年K不展示）</li>
+    <li>换：取值实现见”K线技术实现方案“文档</li>
+    <li>流通：取值实现见”K线技术实现方案“文档 （周K/月K/季K/年K不展示）</li>
+    <li>量比：取值实现见”K线技术实现方案“文档（周K/月K/季K/年K不展示）</li>
+    <li>市盈率 TTM：取值实现见”K线技术实现方案“文档（周K/月K/季K/年K不展示）</li>
+    <li>额：取值实现见”K线技术实现方案“文档</li>
+    <li>量：取值实现见”K线技术实现方案“文档</li>
+    </ul>
+    <p>不同周期对应关系：</p>
+    <ul>
+    <li>日K：显示十字线后，顶部摘要展示该交易日的日K行情数据</li>
+    <li>周K：显示十字线后，顶部摘要展示该周聚合后的周K行情数据</li>
+    <li>月K：显示十字线后，顶部摘要展示该月聚合后的月K行情数据</li>
+    <li>季K：显示十字线后，顶部摘要展示该季度聚合后的季K行情数据</li>
+    <li>年K：显示十字线后，顶部摘要展示该年聚合后的年K行情数据</li>
+    </ul>
+    <p>特殊交易状态处理：</p>
+    <p>新股上市首日：</p>
+    <ul>
+    <li>A 股新股上市首日，涨跌额和涨跌幅不按开盘价计算，而是按发行价计算。</li>
+    <li>涨跌额：<code>收盘价 - 发行价</code> (取值实现见”K线技术实现方案“文档)</li>
+    <li>涨跌幅：<code>涨跌额 / 发行价 * 100%</code> (取值实现见”K线技术实现方案“文档)</li>
+    <li>K 线颜色仍按 <code>收盘价 vs 开盘价</code> 判断，发行价不参与 K 线红绿判断。</li>
+    </ul>
+    <p>上市首个周K/月K/季K/年K：</p>
+    <ul>
+    <li>若当前周K/月K/季K/年K为股票上市后的第一个对应周期，且不存在前一根同周期 K 线，则涨跌额、涨跌幅按发行价作为比较基准。</li>
+    <li>上市首个周K/月K/季K/年K周期开盘价仍取上市首日所在周期内第一根有效日K的开盘价。</li>
+    <li>上市首个周K/月K/季K/年K周期收盘价仍取该周期内最后一根有效日K的收盘价。</li>
+    <li>K 线颜色仍按 <code>周期收盘价 vs 周期开盘价</code> 判断，不按发行价判断。</li>
+    </ul>
+    <p>停牌：</p>
+    <ul>
+    <li>停牌日没有有效交易，不生成日K。</li>
+    <li>停牌日不参与周K/月K/季K/年K的 OHLC、成交量、成交额聚合。</li>
+    <li>横轴日期跳过停牌日，不强制补空白柱。</li>
+    <li>若整个周期都处于停牌或无交易状态，则该周期 K 线不展示，顶部行情摘要不进入该周期数据状态。</li>
+    </ul>
+    <p>复牌：</p>
+    <ul>
+    <li>复牌日作为新的有效交易日正常生成 K 线。</li>
+    <li>日K按复牌日开盘价、最高价、最低价、收盘价生成。</li>
+    <li>周K/月K/季K/年K中，复牌日参与所在周期聚合。</li>
+    <li>涨跌额、涨跌幅通常以上一有效交易日收盘价为比较基准。</li>
+    <li>若复牌伴随除权除息、重组、重新上市等特殊情形，以行情源返回的价口径为准。 (取值实现见”K线技术实现方案“文档)</li>
+    </ul>
+    <p>除权除息：</p>
+    <ul>
+    <li>除权除息日的开高低收、前收价、涨跌额、涨跌幅，以当前复权设置对应的行情源数据为准。</li>
+    <li>前复权：使用前复权口径下的 OHLC、均线和十字线价格。</li>
+    <li>后复权：使用后复权口径下的 OHLC、均线和十字线价格。</li>
+    <li>除权：使用原始不复权 OHLC。</li>
+    </ul>
+    <p>整周期无交易：</p>
+    <ul>
+    <li>若某个周/月/季/年周期内没有任何有效交易日，则该周期不生成 K 线。</li>
+    <li>顶部行情摘要不展示该周期聚合数据。</li>
+    <li>副图也不生成对应数据。</li>
+    </ul>
+    <p>数据来源与兜底原则：</p>
+    <ul>
+    <li>对于周期应展示但接口缺失的字段，统一显示 <code>--</code>。</li>
+    </ul>
+    <h2>4. K 线主图</h2>
+    <h3>4.1 周期类型</h3>
+    <p>K 线周期展示为：</p>
+    <ol>
+    <li>日K</li>
+    <li>周K</li>
+    <li>月K</li>
+    <li>季K</li>
+    <li>年K</li>
+    </ol>
+    <p>不展示分时周期。</p>
+    <h3>4.2 默认周期</h3>
+    <p>默认选中日K。</p>
+    <h3>4.3 主图均线</h3>
+    <p>主图展示以下均线：</p>
+    <ul>
+    <li>MA5</li>
+    <li>MA10</li>
+    <li>MA20</li>
+    <li>MA30</li>
+    </ul>
+    <p>均线数值注释颜色必须与图中均线颜色一致。</p>
+    <h3>4.4 K 线颜色显示规则</h3>
+    <p>K 线主图需要按当前周期 K 线的开盘价和收盘价关系显示红绿颜色。</p>
+    <h4>4.4.1 涨跌持平状态判定</h4>
+    <p>单根 K 线状态：</p>
+    <ul>
+    <li>上涨阳线：<code>周期收盘价 &gt; 周期开盘价</code></li>
+    <li>下跌阴线：<code>周期收盘价 &lt; 周期开盘价</code></li>
+    <li>持平 K 线：<code>周期收盘价 = 周期开盘价</code></li>
+    </ul>
+    <p>显示标准：</p>
+    <ul>
+    <li>上涨阳线：红色 K 线，实体可为空心或实心（设计根据情况决定），但同一产品内必须统一</li>
+    <li>下跌阴线：绿色 K 线，实体使用实心</li>
+    <li>持平 K 线指 <code>周期收盘价 = 周期开盘价</code>，表示该周期实体持平，但不等同于相对前收价涨跌持平</li>
+    <li>持平 K 线颜色需结合 <code>周期收盘价 vs 前收价</code> 判断：</li>
+    </ul>
+    <p>- <code>周期收盘价 &gt; 前收价</code>：显示红色</p>
+    <p>- <code>周期收盘价 &lt; 前收价</code>：显示绿色</p>
+    <p>- <code>周期收盘价 = 前收价</code>：显示普通深色或灰色</p>
+    <ul>
+    <li>持平且 <code>最高价≠最低价</code>：保留上下影线，颜色按上述规则判断</li>
+    <li>持平且 <code>开盘价 = 最高价 = 最低价 = 收盘价</code>：显示为一字线，颜色按上述规则判断</li>
+    <li>一字涨停：<code>开盘价 = 最高价 = 最低价 = 收盘价</code>，且 <code>收盘价 &gt; 前收价</code>，显示红色</li>
+    <li>一字跌停：<code>开盘价 = 最高价 = 最低价 = 收盘价</code>，且 <code>收盘价 &lt; 前收价</code>，显示绿色</li>
+    <li>最高价和最低价影线颜色与该 K 线实体颜色一致</li>
+    <li>新股上市首日的 K 线颜色仍按 <code>收盘价 vs 开盘价</code> 判断，不按发行价判断；发行价只用于首日涨跌额、涨跌幅等行情摘要字段的比较基准，特殊处理：</li>
+    </ul>
+    <p><code>收盘价 = 开盘价</code>，且 <code>收盘价 &gt; 发行价</code>：红色</p>
+    <p><code>收盘价 = 开盘价</code>，且 <code>收盘价 &lt; 发行价</code>：绿色</p>
+    <p><code>收盘价 = 开盘价</code>，且 <code>收盘价 = 发行价</code>：普通深色或灰色</p>
+    <h4>4.4.2 不同周期时间点说明</h4>
+    <p>周K：</p>
+    <ul>
+    <li>周期开盘价：该自然周内第一根有效日K的开盘价</li>
+    <li>周期收盘价：该自然周内最后一根有效日K的收盘价</li>
+    <li>最高价：该自然周内所有有效日K最高价的最大值</li>
+    <li>最低价：该自然周内所有有效日K最低价的最小值</li>
+    </ul>
+    <ul>
+    <li>时间点说明：周K通常在该周最后一个交易日收盘后固定；若当前周未结束，则使用截至最新收盘日的周内数据生成临时周K</li>
+    </ul>
+    <p>月K：</p>
+    <ul>
+    <li>周期开盘价：该自然月内第一根有效日K的开盘价</li>
+    <li>周期收盘价：该自然月内最后一根有效日K的收盘价</li>
+    <li>最高价：该自然月内所有有效日K最高价的最大值</li>
+    <li>最低价：该自然月内所有有效日K最低价的最小值</li>
+    <li>时间点说明：月K通常在该月最后一个交易日收盘后固定；若当前月未结束，则使用截至最新收盘日的月内数据生成临时月K</li>
+    </ul>
+    <p>季K：</p>
+    <ul>
+    <li>周期开盘价：该自然季度内第一根有效日K的开盘价</li>
+    <li>周期收盘价：该自然季度内最后一根有效日K的收盘价</li>
+    <li>最高价：该自然季度内所有有效日K最高价的最大值</li>
+    <li>最低价：该自然季度内所有有效日K最低价的最小值</li>
+    <li>时间点说明：季K通常在该季度最后一个交易日收盘后固定；若当前季度未结束，则使用截至最新收盘日的季度内数据生成临时季K</li>
+    </ul>
+    <p>年K：</p>
+    <ul>
+    <li>周期开盘价：该自然年内第一根有效日K的开盘价</li>
+    <li>周期收盘价：该自然年内最后一根有效日K的收盘价</li>
+    <li>最高价：该自然年内所有有效日K最高价的最大值</li>
+    <li>最低价：该自然年内所有有效日K最低价的最小值</li>
+    <li>时间点说明：年K通常在该年最后一个交易日收盘后固定；若当前年份未结束，则使用截至最新收盘日的年内数据生成临时年K</li>
+    </ul>
+    <h4>4.4.3 不同周期 OHLC 聚合规则</h4>
+    <ul>
+    <li>开盘价：当前周期内第一根有效日K的开盘价</li>
+    <li>最高价：当前周期内所有有效日K最高价的最大值</li>
+    <li>最低价：当前周期内所有有效日K最低价的最小值</li>
+    <li>收盘价：当前周期内最后一根有效日K的收盘价</li>
+    <li>成交量：当前周期内所有有效日K成交量之和</li>
+    <li>成交额：当前周期内所有有效日K成交额之和</li>
+    <li>若周期内遇到停牌日或无交易日，不参与 OHLC、成交量、成交额聚合</li>
+    <li>若整个周期无有效交易数据，则该周期 K 线不展示</li>
+    </ul>
+    <h3>4.5 价格刻度</h3>
+    <p>价格显示规则：</p>
+    <ul>
+    <li>主图按四等分横向虚线分隔</li>
+    <li>价格标注显示在对应横线附近</li>
+    <li>价格文字位于图内，不额外挤占左侧空间</li>
+    </ul>
+    <h3>4.6 放大缩小</h3>
+    <p>要有 K 线放大、缩小功能。</p>
+    <p>展示方式：</p>
+    <ul>
+    <li>缩小按钮 <code>-</code> ：缩小增加K线展示数据；</li>
+    <li>放大按钮 <code>+</code> ：放大减少K线展示数据；</li>
+    <li>按钮浮在主图底部</li>
+    </ul>
+    <h3>4.7 复权设置</h3>
+    <p>K 线周期右侧展示设置按钮，目前只提供复权设置功能。</p>
+    <p>点击设置按钮弹出复权设置弹窗，选项包括：</p>
+    <ul>
+    <li>前复权</li>
+    <li>除权</li>
+    <li>后复权</li>
+    </ul>
+    <p>默认选中前复权。</p>
+    <h2>5. 副图指标</h2>
+    <h3>5.1 指标类型</h3>
+    <p>副图支持以下指标：</p>
+    <ul>
+    <li>成交量</li>
+    <li>成交额</li>
+    <li>KDJ</li>
+    <li>MACD</li>
+    </ul>
+    <h3>5.2 指标选择方式</h3>
+    <p>副图指标通过下拉选择切换。</p>
+    <h3>5.3 成交量/成交额单位设置规则</h3>
+    <p>成交量、成交额以及相关均线参数需要按数值大小自动换算单位，避免展示过长数字。</p>
+    <h4>5.3.1 成交量、成交额展示单位规则：</h4>
+    <ul>
+    <li>小于 <code>10,000</code>：直接显示原始数值，可保留 0 到 2 位小数</li>
+    <li>大于等于 <code>10,000</code> 且小于 <code>100,000,000</code>：换算为“万”</li>
+    <li>大于等于 <code>100,000,000</code> 且小于 <code>1,000,000,000,000</code>：换算为“亿”</li>
+    <li>大于等于 <code>1,000,000,000,000</code>：换算为“万亿”</li>
+    </ul>
+    <h4>5.3.2 成交量、成交额展示精度规则：</h4>
+    <ul>
+    <li>默认保留 2 位小数</li>
+    <li>若小数末尾为 0，可去掉无意义的 0</li>
+    </ul>
+    <h4>5.3.3 均线参数单位</h4>
+    <ul>
+    <li>成交量 MA5/MA10、成交额 MA5/MA10 的单位应与当前指标成交量、成交额的展示单位规则和精度规则一致。</li>
+    <li>指标成交量、成交额当前值和均线值应分别按自身数值大小换算，不强制所有值使用同一单位。</li>
+    </ul>
+    <h4>5.3.4 展示一致性</h4>
+    <ul>
+    <li>同一行参数中，数字和单位之间不加空格</li>
+    <li>单位文字使用中文：<code>万</code>、<code>亿</code>、<code>万亿</code></li>
+    </ul>
+    <h3>5.4 成交量指标</h3>
+    <p>成交量副图展示：</p>
+    <ul>
+    <li>红绿成交量柱</li>
+    <li>MA5 均线</li>
+    <li>MA10 均线</li>
+    <li>参数展示</li>
+    </ul>
+    <p>参数示例：</p>
+    <ul>
+    <li><code>量:4.91万</code></li>
+    <li><code>MA5:35.69万</code></li>
+    <li><code>10:32.16万</code></li>
+    <li><code>换手:10.36%</code></li>
+    </ul>
+    <p>注意：均线参数颜色必须与图中MA5/MA10线颜色一致。</p>
+    <h3>5.5 成交额指标</h3>
+    <p>成交额副图展示：</p>
+    <ul>
+    <li>红绿成交额柱</li>
+    <li>MA5 均线</li>
+    <li>MA10 均线</li>
+    <li>参数展示</li>
+    </ul>
+    <p>参数示例：</p>
+    <ul>
+    <li><code>额:8.67亿</code></li>
+    <li><code>MA5:59.01亿</code></li>
+    <li><code>10:45.07亿</code></li>
+    <li><code>换手:10.36%</code></li>
+    </ul>
+    <p>注意：均线参数颜色必须与图中MA5/MA10线颜色一致。</p>
+    <h3>5.6 KDJ 指标</h3>
+    <p>KDJ 参数展示：</p>
+    <ul>
+    <li><code>(9, 3, 3)</code></li>
+    <li><code>K</code></li>
+    <li><code>D</code></li>
+    <li><code>J</code></li>
+    </ul>
+    <p>注意：K/D/J 文字颜色必须与图中 K/D/J 线颜色一致。</p>
+    <h3>5.7 MACD 指标</h3>
+    <p>MACD 参数展示：</p>
+    <ul>
+    <li><code>(12, 26, 9)</code></li>
+    <li><code>MACD</code></li>
+    <li><code>DIFF</code></li>
+    <li><code>DEA</code></li>
+    </ul>
+    <p>注意：MACD、DIFF、DEA 文字颜色必须与图中对应柱线和曲线颜色一致。</p>
+    <h2>6. 十字线</h2>
+    <h3>6.1 触发方式</h3>
+    <p>用户在 K 线图区域手指点击时显示十字线，默认显示5秒，5秒内再点击时隐藏。</p>
+    <p>用户在K 线图区域长按，十字线显示且不松手时可左右拖动十字线。</p>
+    <h3>6.2 标签展示</h3>
+    <p>主图区域显示对应价格标签。</p>
+    <p>主图底部显示十字线指向日期。</p>
+    <h2>7. K 线下方展示功能</h2>
+    <h3>7.1 分类展示</h3>
+    <p>K 线下方展示同级类别：</p>
+    <ul>
+    <li>基本面</li>
+    <li>基本信息</li>
+    <li>概念分析</li>
+    <li>财务评分</li>
+    <li>主力持仓</li>
+    <li>主营结构</li>
+    <li>最新研报</li>
+    <li>AI风险扫描</li>
+    </ul>
+    <h3>7.2 默认展示</h3>
+    <p>默认展示“基本面”内容。</p>
+    <h2>8. 数据口径</h2>
+    <h3>8.1 K 线更新频率</h3>
+    <p>K 线数据按每日收盘后更新。</p>
+    <h3>8.2 默认数据</h3>
+    <p>页面初始状态展示最新收盘后数据。</p>
+  </article></main>
+</body>
+</html>
