@@ -5296,7 +5296,8 @@ body.chat-open{overflow:hidden}
   padding: 0;
   pointer-events: none;
 }
-.kline-zoom-btn {
+.kline-zoom-btn,
+.kline-pan-btn {
   width: 32px;
   height: 32px;
   border: 0;
@@ -5310,9 +5311,24 @@ body.chat-open{overflow:hidden}
   cursor: pointer;
   pointer-events: auto;
 }
-.kline-zoom-btn:active {
+.kline-pan-btn {
+  color: #6d7480;
+  font-size: 17px;
+}
+.kline-zoom-btn:active,
+.kline-pan-btn:active {
   background: #ffe8e4;
   color: #f32012;
+}
+.kline-pan-btn:disabled {
+  opacity: .32;
+  cursor: default;
+  background: #f6f7f9;
+  color: #a9afb8;
+}
+.kline-pan-btn:disabled:active {
+  background: #f6f7f9;
+  color: #a9afb8;
 }
 .adjust-mask {
   position: absolute;
@@ -5956,9 +5972,6 @@ body.chat-open{overflow:hidden}
   <div class="smart-pick-scroll">
     <div class="smart-note">注:选股结果仅供参考,不作为投资建议。</div>
     <div class="smart-ai-card">
-      <div class="smart-ai-head">
-        <div class="smart-ai-title"><span class="smart-ai-spark"></span><span>AI辅助</span></div>
-      </div>
       <div class="smart-ai-desc">可询问指标含义，也可让AI辅助优化条件后再选股，结果仅供参考。</div>
       <div class="smart-ai-input">
         <div class="smart-ai-placeholder">帮我解释当前策略和指标设置</div>
@@ -6133,8 +6146,10 @@ body.chat-open{overflow:hidden}
       <div class="kline-canvas-wrap">
         <canvas id="stockKlineCanvas"></canvas>
         <div class="kline-zoom-row" aria-label="K线缩放">
+          <button class="kline-pan-btn" id="klinePanLeft" type="button" aria-label="加载更早K线" onclick="panStockKline(1)">‹</button>
           <button class="kline-zoom-btn" type="button" aria-label="缩小K线" onclick="zoomStockKline(-1)">−</button>
           <button class="kline-zoom-btn" type="button" aria-label="放大K线" onclick="zoomStockKline(1)">+</button>
+          <button class="kline-pan-btn" id="klinePanRight" type="button" aria-label="加载更新K线" onclick="panStockKline(-1)">›</button>
         </div>
         <div class="indicator-floating">
           <select class="indicator-select" id="indicatorSelect" aria-label="副图指标" onchange="switchStockIndicator(this.value,this)">
@@ -8074,7 +8089,7 @@ function buildSmartPickPrompt(action){
     + '当前条件：\n' + (ctx.conditions.length ? ctx.conditions.join('\n') : '- 暂无条件') + '\n\n'
     + '【回答要求】\n'
     + '这是给开发查看的交互原型，不是最终投顾结论。页面采用流式对话展示，用户侧只看到简短问题。请按“思考过程”和“回答”两部分输出。\n'
-    + '“思考过程”用于说明提示词方向：AI应读取哪些上下文、从哪些角度分析、需要注意哪些约束；不要展示真实推理链路。\n'
+    + '“思考过程”用于说明思考方向：AI应读取哪些上下文、从哪些角度分析、需要注意哪些约束；不要展示真实推理链路。\n'
     + '“回答”用于说明开发实现时应输出的关键点；不要复述完整后台参数清单，除非用户问题本身需要参数。\n\n'
     + '【用户问题】\n' + (questionMap[action] || questionMap.overview);
 }
@@ -8241,6 +8256,7 @@ let stockKlineIndicator = 'volume';
 let stockKlineSeries = [];
 let stockKlineCrosshair = null;
 let currentStockDetailData = null;
+let stockKlineOffset = 0;
 
 function buildStockKlineSeries(){
   if(stockKlineSeries.length) return stockKlineSeries;
@@ -8342,6 +8358,7 @@ function openStockDetail(stockId){
   if(!page || !data) return;
   currentStockDetailData=data;
   stockKlineCrosshair=null;
+  stockKlineOffset=0;
   document.getElementById('stockDetailName').textContent=data.name;
   document.getElementById('stockDetailCode').textContent=data.code;
   updateStockQuoteByData(data);
@@ -8406,8 +8423,41 @@ function setAdjustMode(mode){
   redrawStockKline();
 }
 
+function getStockKlineVisibleCount(){
+  return Math.max(28, Math.min(68, 52 - stockKlineZoom*5));
+}
+
+function getStockKlineMaxOffset(){
+  const all=buildStockKlineSeries();
+  const visibleCount=getStockKlineVisibleCount();
+  return Math.max(0, all.length - visibleCount);
+}
+
+function clampStockKlineOffset(){
+  stockKlineOffset=Math.max(0, Math.min(stockKlineOffset, getStockKlineMaxOffset()));
+}
+
+function updateStockKlinePanButtons(){
+  const left=document.getElementById('klinePanLeft');
+  const right=document.getElementById('klinePanRight');
+  const maxOffset=getStockKlineMaxOffset();
+  if(left) left.disabled=stockKlineOffset>=maxOffset;
+  if(right) right.disabled=stockKlineOffset<=0;
+}
+
 function zoomStockKline(delta){
   stockKlineZoom=Math.max(-2, Math.min(4, stockKlineZoom + delta));
+  clampStockKlineOffset();
+  redrawStockKline();
+}
+
+function panStockKline(direction){
+  const visibleCount=getStockKlineVisibleCount();
+  const step=Math.max(6, Math.round(visibleCount*.35));
+  stockKlineOffset += direction * step;
+  clampStockKlineOffset();
+  stockKlineCrosshair=null;
+  updateStockQuoteByData(currentStockDetailData);
   redrawStockKline();
 }
 
@@ -8452,8 +8502,12 @@ function redrawStockKline(){
 
 function drawStockKline(ctx,width,height){
   const all=buildStockKlineSeries();
-  const visibleCount=Math.max(28, Math.min(68, 52 - stockKlineZoom*5));
-  const list=all.slice(-visibleCount);
+  const visibleCount=getStockKlineVisibleCount();
+  clampStockKlineOffset();
+  updateStockKlinePanButtons();
+  const end=Math.max(visibleCount, all.length - stockKlineOffset);
+  const start=Math.max(0, end - visibleCount);
+  const list=all.slice(start, end);
   const pad={left:10,right:12,top:12,bottom:22};
   const mainH=272;
   const subTop=pad.top+mainH+16;
@@ -8504,7 +8558,7 @@ function drawStockKline(ctx,width,height){
     ctx.lineWidth=1.2;
     ctx.beginPath();
     list.forEach(function(_,i){
-      const sourceIndex=all.length-list.length+i;
+      const sourceIndex=start+i;
       const ma=movingAverage(all,day,sourceIndex);
       if(ma===null) return;
       const x=pad.left+i*xStep+xStep/2;
@@ -8516,10 +8570,10 @@ function drawStockKline(ctx,width,height){
   });
 
   drawStockIndicator(ctx,list,pad.left,width-pad.right,subTop,subH,xStep);
-  drawStockCrosshair(ctx,width,height,list,pad,mainH,subTop,subH,xStep,maxPrice,minPrice);
+  drawStockCrosshair(ctx,width,height,list,start,pad,mainH,subTop,subH,xStep,maxPrice,minPrice);
 }
 
-function drawStockCrosshair(ctx,width,height,list,pad,mainH,subTop,subH,xStep,maxPrice,minPrice){
+function drawStockCrosshair(ctx,width,height,list,start,pad,mainH,subTop,subH,xStep,maxPrice,minPrice){
   if(!stockKlineCrosshair || !list.length) return;
   const left=pad.left;
   const right=width-pad.right;
@@ -8528,7 +8582,7 @@ function drawStockCrosshair(ctx,width,height,list,pad,mainH,subTop,subH,xStep,ma
   const subBottom=subTop+subH;
   const rawX=Math.max(left, Math.min(right, stockKlineCrosshair.x));
   const index=Math.max(0, Math.min(list.length-1, Math.round((rawX-left-xStep/2)/xStep)));
-  const sourceIndex=buildStockKlineSeries().length-list.length+index;
+  const sourceIndex=start+index;
   const all=buildStockKlineSeries();
   updateStockQuoteByData(currentStockDetailData, all[sourceIndex], all[sourceIndex-1]);
   const x=left+index*xStep+xStep/2;
@@ -9747,7 +9801,7 @@ async function callAPI(msg){
   responding=false;
 }
 
-const SMART_PICK_STREAM_NOTE='**流式输出展示**\n页面采用流式展示：一显示用户问题；【“推理过程非可视化”：下方展示是为了给出本次 AI 应采用的提示词方向和分析角度；】二输出“回答”，用于展示最终给用户看的关键结论。';
+const SMART_PICK_STREAM_NOTE='**流式输出展示**\n页面采用流式展示：一显示用户问题；【“推理过程非可视化”：下方展示是为了给出本次 AI 应采用的思考方向和分析角度；】二输出“回答”，用于展示最终给用户看的关键结论。';
 
 function smartPickDemoBlock(thinking, answer){
   return SMART_PICK_STREAM_NOTE + '\n\n**思考过程（推理过程非可视化）**\n' + thinking + '\n\n**回答**\n' + answer;
@@ -9755,18 +9809,18 @@ function smartPickDemoBlock(thinking, answer){
 
 function demoSmartPickReply(input){
   if(input.includes('优化这套筛选参数') || input.includes('AI调参建议')){
-    return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围、启用指标和阈值，判断每个参数是否过松或过严；结合成长/股息策略目标，分析调参会扩大还是缩小股票池，并说明风险变化。', '输出关键点：\n* 哪些指标建议上调或下调，并给出建议调整后的具体值或范围\n* 每个调整的原因\n* 调整后更容易筛出哪类股票\n* 可能遗漏哪些股票\n* 是否建议按新参数重新选股');
+    return smartPickDemoBlock('思考方向：读取当前选股方法、行业范围、启用指标和阈值，判断每个参数是否过松或过严；结合成长/股息策略目标，分析调参会扩大还是缩小股票池，并说明风险变化。', '输出关键点：\n* 哪些指标建议上调或下调，并给出建议调整后的具体值或范围\n* 每个调整的原因\n* 调整后更容易筛出哪类股票\n* 可能遗漏哪些股票\n* 是否建议按新参数重新选股');
   }
   if(input.includes('筛选结果可能有哪些优点') || input.includes('筛选结果')){
-    return smartPickDemoBlock('提示词方向：读取当前策略和筛选条件，评估条件组合会偏向哪些公司类型；从命中质量、覆盖范围、行业偏差、财务质量和风险暴露几个角度判断结果可用性。', '输出关键点：\n* 当前结果可能具备的优点\n* 可能遗漏的股票类型\n* 哪些条件最影响筛选结果\n* 结果使用时需要二次核验的内容\n* 明确给出下一步建议：继续使用、放宽条件、收紧条件、切换行业或重新选股');
+    return smartPickDemoBlock('思考方向：读取当前策略和筛选条件，评估条件组合会偏向哪些公司类型；从命中质量、覆盖范围、行业偏差、财务质量和风险暴露几个角度判断结果可用性。', '输出关键点：\n* 当前结果可能具备的优点\n* 可能遗漏的股票类型\n* 哪些条件最影响筛选结果\n* 结果使用时需要二次核验的内容\n* 明确给出下一步建议：继续使用、放宽条件、收紧条件、切换行业或重新选股');
   }
   if(input.includes('各项指标含义') || input.includes('默认参数') || input.includes('默认值')){
-    return smartPickDemoBlock('提示词方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；同时读取当前策略默认阈值，说明默认值对应的筛选风格、适用用户和使用边界。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
+    return smartPickDemoBlock('思考方向：逐个识别当前启用指标，解释指标含义、计算口径和选股作用；同时读取当前策略默认阈值，说明默认值对应的筛选风格、适用用户和使用边界。', '输出关键点：\n* 每个指标是什么意思\n* 指标高低分别代表什么\n* 指标为什么会影响选股\n* 默认值的设置逻辑\n* 默认值适合哪类用户\n* 哪些指标需要结合行业一起看\n* 哪些指标不能单独作为买入依据');
   }
   if(input.includes('不同行业') || input.includes('行业') || input.includes('数据风险') || input.includes('模型风险') || input.includes('投资使用风险')){
-    return smartPickDemoBlock('提示词方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业；同时从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
+    return smartPickDemoBlock('思考方向：结合行业天然财务特征分析当前策略的行业适配度，判断筛选条件会偏向哪些行业、排除哪些行业；同时从数据更新、财报滞后、预测偏差、参数过拟合、市场行情变化和用户误用几个角度检查策略使用风险。', '输出关键点：\n* 哪些行业更容易通过当前条件\n* 哪些行业容易被排除\n* 哪些指标受行业特征影响较大\n* 是否建议按行业单独调整阈值\n* 数据更新时间和口径风险\n* 预测值不达预期风险\n* 参数过严或过松风险\n* 市场行情变化风险\n* 筛选结果不等于买入建议');
   }
-  return smartPickDemoBlock('提示词方向：读取当前选股方法、行业范围和启用指标，先解释策略目标，再判断指标组合会筛出哪类股票；同时说明指标含义、参数松紧和使用限制。', '输出关键点：\n* 当前策略主要想筛什么类型的股票\n* 核心指标分别起什么作用\n* 当前条件可能偏稳健还是偏进攻\n* 哪些地方需要用户结合行情二次判断\n* 结尾提示结果仅供参考，不构成投资建议');
+  return smartPickDemoBlock('思考方向：读取当前选股方法、行业范围和启用指标，先解释策略目标，再判断指标组合会筛出哪类股票；同时说明指标含义、参数松紧和使用限制。', '输出关键点：\n* 当前策略主要想筛什么类型的股票\n* 核心指标分别起什么作用\n* 当前条件可能偏稳健还是偏进攻\n* 哪些地方需要用户结合行情二次判断\n* 结尾提示结果仅供参考，不构成投资建议');
 }
 
 function demoReply(input){
@@ -10576,3 +10630,4 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 </body>
 </html>
+
