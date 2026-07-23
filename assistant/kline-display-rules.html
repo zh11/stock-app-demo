@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>A股个股展示规则文档</title>
+  <title>A?????????</title>
   <style>
     :root { color-scheme: light; --red:#f5222d; --text:#1f2937; --muted:#6b7280; --line:#e5e7eb; --soft:#f7f8fa; --note:#fff7ed; }
     * { box-sizing: border-box; }
@@ -26,20 +26,11 @@
     pre code { padding:0; background:transparent; color:inherit; }
     a { color:#1677ff; text-decoration:none; }
     a:hover { text-decoration:underline; }
-    @media (max-width: 640px) {
-      .topbar-inner { padding:12px 16px; }
-      .brand { font-size:17px; }
-      .meta { display:none; }
-      main { margin:12px auto 28px; padding:0 10px; }
-      article { border-radius:10px; padding:20px 16px 26px; }
-      h1 { font-size:22px; }
-      h2 { font-size:18px; }
-      h3 { font-size:16px; }
-    }
+    @media (max-width: 640px) { .topbar-inner { padding:12px 16px; } .brand { font-size:17px; } .meta { display:none; } main { margin:12px auto 28px; padding:0 10px; } article { border-radius:10px; padding:20px 16px 26px; } h1 { font-size:22px; } h2 { font-size:18px; } h3 { font-size:16px; } }
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="topbar-inner"><div class="brand">A股个股展示规则文档</div><div class="meta">A股个股展示规则</div></div></header>
+  <header class="topbar"><div class="topbar-inner"><div class="brand">A?????????</div><div class="meta">A???????</div></div></header>
   <main><article>
     <h1>A股个股展示规则文档</h1>
     <h2>1. 原型文档</h2>
@@ -62,7 +53,7 @@
     <p>点击左上角返回按钮，关闭个股详情页，回到上一级页面。</p>
     <h2>3. 页面顶部行情摘要</h2>
     <h3>3.1 展示字段</h3>
-    <p>日K顶部行情摘要区展示以下字段：</p>
+    <p>日K最新交易日顶部行情摘要区展示以下字段：</p>
     <ul>
     <li>当前价</li>
     <li>涨跌额</li>
@@ -75,6 +66,18 @@
     <li>流通市值，简称“流通”</li>
     <li>量比</li>
     <li>市盈率 TTM</li>
+    <li>成交额，简称“额”</li>
+    </ul>
+    <p>日K历史交易日顶部行情摘要区展示以下字段：</p>
+    <ul>
+    <li>当前价</li>
+    <li>涨跌额</li>
+    <li>涨跌幅</li>
+    <li>最高价，简称“高”</li>
+    <li>最低价，简称“低”</li>
+    <li>开盘价，简称“开”</li>
+    <li>换手率，简称“换”</li>
+    <li>成交量，简称“量”</li>
     <li>成交额，简称“额”</li>
     </ul>
     <p>其他周期顶部行情摘要区展示以下字段：</p>
@@ -239,11 +242,9 @@
     <li>下跌阴线：绿色 K 线，实体使用实心</li>
     <li>持平 K 线指 <code>周期收盘价 = 周期开盘价</code>，表示该周期实体持平，但不等同于相对前收价涨跌持平</li>
     <li>持平 K 线颜色需结合 <code>周期收盘价 vs 前收价</code> 判断：</li>
-    </ul>
-    <p>- <code>周期收盘价 &gt; 前收价</code>：显示红色</p>
-    <p>- <code>周期收盘价 &lt; 前收价</code>：显示绿色</p>
-    <p>- <code>周期收盘价 = 前收价</code>：显示普通深色或灰色</p>
-    <ul>
+    <li><code>周期收盘价 &gt; 前收价</code>：显示红色</li>
+    <li><code>周期收盘价 &lt; 前收价</code>：显示绿色</li>
+    <li><code>周期收盘价 = 前收价</code>：显示普通深色或灰色</li>
     <li>持平且 <code>最高价≠最低价</code>：保留上下影线，颜色按上述规则判断</li>
     <li>持平且 <code>开盘价 = 最高价 = 最低价 = 收盘价</code>：显示为一字线，颜色按上述规则判断</li>
     <li>一字涨停：<code>开盘价 = 最高价 = 最低价 = 收盘价</code>，且 <code>收盘价 &gt; 前收价</code>，显示红色</li>
@@ -258,8 +259,14 @@
     <p>周K：</p>
     <ul>
     <li>周期开盘价：该自然周内第一根有效日K的开盘价</li>
+    </ul>
+    <ul>
     <li>周期收盘价：该自然周内最后一根有效日K的收盘价</li>
+    </ul>
+    <ul>
     <li>最高价：该自然周内所有有效日K最高价的最大值</li>
+    </ul>
+    <ul>
     <li>最低价：该自然周内所有有效日K最低价的最小值</li>
     </ul>
     <ul>
