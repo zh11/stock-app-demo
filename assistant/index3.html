@@ -5047,6 +5047,33 @@ body.chat-open{overflow:hidden}
   font-size: 12px;
   align-items: baseline;
 }
+.stock-quote-row.is-historical {
+  grid-template-columns: 86px auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+  grid-template-rows: repeat(2, auto);
+  column-gap: 6px;
+  row-gap: 5px;
+}
+.stock-quote-row.is-historical > :first-child {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.stock-trade-info.is-historical,
+.stock-trade-info.compact.is-historical {
+  display: contents;
+}
+/* 历史 K 线：高/低、开/换、额/量三列，每列两项。 */
+.stock-trade-info.is-historical span:nth-child(1) { grid-column: 2; grid-row: 1; }
+.stock-trade-info.is-historical span:nth-child(2) { grid-column: 3; grid-row: 1; }
+.stock-trade-info.is-historical span:nth-child(3) { grid-column: 2; grid-row: 2; }
+.stock-trade-info.is-historical span:nth-child(4) { grid-column: 3; grid-row: 2; }
+.stock-trade-info.is-historical span:nth-child(5) { grid-column: 4; grid-row: 1; }
+.stock-trade-info.is-historical span:nth-child(6) { grid-column: 5; grid-row: 1; }
+.stock-trade-info.compact.is-historical span:nth-child(1) { grid-column: 4; grid-row: 2; }
+.stock-trade-info.compact.is-historical span:nth-child(2) { grid-column: 5; grid-row: 2; }
+.stock-trade-info.compact.is-historical span:nth-child(3) { grid-column: 6; grid-row: 2; }
+.stock-trade-info.compact.is-historical span:nth-child(4) { grid-column: 7; grid-row: 2; }
+.stock-trade-info.compact.is-historical span:nth-child(5) { grid-column: 6; grid-row: 1; }
+.stock-trade-info.compact.is-historical span:nth-child(6) { grid-column: 7; grid-row: 1; }
 .stock-trade-info span:nth-child(even) {
   color: #30343b;
   font-weight: 700;
@@ -6125,9 +6152,9 @@ body.chat-open{overflow:hidden}
           <span>开</span><span class="red" id="stockQuoteOpen">97.60</span>
         </div>
         <div class="stock-trade-info compact">
-          <span>市值</span><span id="stockQuoteMarketCap">1439.41亿</span><span>换</span><span id="stockQuoteTurnover">3.65%</span>
-          <span>流通</span><span id="stockQuoteFloat">111.43亿</span><span>量比</span><span class="red" id="stockQuoteVolumeRatio">7.95</span>
-          <span>市盈<em class="ttm">TTM</em></span><span id="stockQuotePe">亏损</span><span>额</span><span id="stockQuoteAmount">41.52亿</span>
+          <span id="stockQuoteMarketCapLabel">市值</span><span id="stockQuoteMarketCap">1439.41亿</span><span id="stockQuoteTurnoverLabel">换</span><span id="stockQuoteTurnover">3.65%</span>
+          <span id="stockQuoteFloatLabel">流通</span><span id="stockQuoteFloat">111.43亿</span><span id="stockQuoteVolumeRatioLabel">量比</span><span class="red" id="stockQuoteVolumeRatio">7.95</span>
+          <span id="stockQuotePeLabel">市盈<em class="ttm">TTM</em></span><span id="stockQuotePe">亏损</span><span id="stockQuoteAmountLabel">额</span><span id="stockQuoteAmount">41.52亿</span>
         </div>
       </div>
       <div class="kline-period-tabs">
@@ -8290,6 +8317,59 @@ function setToneText(id, value, tone){
   if(tone) el.classList.add(tone);
 }
 
+function setStockQuotePair(labelId, valueId, label, value, hidden, tone){
+  const labelEl=document.getElementById(labelId);
+  const valueEl=document.getElementById(valueId);
+  if(labelEl){
+    labelEl.innerHTML=label || '';
+    labelEl.style.display=hidden ? 'none' : '';
+  }
+  if(valueEl){
+    valueEl.style.display=hidden ? 'none' : '';
+    setToneText(valueId, value || '', tone || 'quote-flat');
+  }
+}
+
+function formatStockTradeUnit(value){
+  const num=Number(value) || 0;
+  const abs=Math.abs(num);
+  if(abs >= 1000000000000) return (num / 1000000000000).toFixed(2).replace(/\.?0+$/, '') + '万亿';
+  if(abs >= 100000000) return (num / 100000000).toFixed(2).replace(/\.?0+$/, '') + '亿';
+  if(abs >= 10000) return (num / 10000).toFixed(2).replace(/\.?0+$/, '') + '万';
+  return num.toFixed(2).replace(/\.?0+$/, '');
+}
+
+function setStockQuoteDefaultMetrics(data){
+  const quoteRow=document.querySelector('.stock-quote-row');
+  const priceMetrics=document.querySelector('.stock-trade-info:not(.compact)');
+  const metrics=document.querySelector('.stock-trade-info.compact');
+  if(quoteRow) quoteRow.classList.remove('is-historical');
+  if(priceMetrics) priceMetrics.classList.remove('is-historical');
+  if(metrics) metrics.classList.remove('is-historical');
+  setStockQuotePair('stockQuoteMarketCapLabel','stockQuoteMarketCap','市值',data.marketCap || '1439.41亿',false,'quote-flat');
+  setStockQuotePair('stockQuoteTurnoverLabel','stockQuoteTurnover','换',data.turnover || '3.65%',false,'quote-flat');
+  setStockQuotePair('stockQuoteFloatLabel','stockQuoteFloat','流通',data.floatCap || '111.43亿',false,'quote-flat');
+  setStockQuotePair('stockQuoteVolumeRatioLabel','stockQuoteVolumeRatio','量比',data.volumeRatio || '7.95',false,volumeRatioTone(data.volumeRatio || 1));
+  setStockQuotePair('stockQuotePeLabel','stockQuotePe','市盈<em class="ttm">TTM</em>',data.pe || '亏损',false,'quote-flat');
+  setStockQuotePair('stockQuoteAmountLabel','stockQuoteAmount','额',data.amount || '41.52亿',false,'quote-flat');
+}
+
+function setStockQuoteHistoricalMetrics(point){
+  const quoteRow=document.querySelector('.stock-quote-row');
+  const priceMetrics=document.querySelector('.stock-trade-info:not(.compact)');
+  const metrics=document.querySelector('.stock-trade-info.compact');
+  if(quoteRow) quoteRow.classList.add('is-historical');
+  if(priceMetrics) priceMetrics.classList.add('is-historical');
+  if(metrics) metrics.classList.add('is-historical');
+  const turnover=(2.4 + (point.volume % 7) * .42).toFixed(2) + '%';
+  setStockQuotePair('stockQuoteMarketCapLabel','stockQuoteMarketCap','换',turnover,false,'quote-flat');
+  setStockQuotePair('stockQuoteTurnoverLabel','stockQuoteTurnover','量',formatStockTradeUnit(point.volume * 10000),false,'quote-flat');
+  setStockQuotePair('stockQuoteFloatLabel','stockQuoteFloat','额',formatStockTradeUnit(point.amount * 100000000),false,'quote-flat');
+  setStockQuotePair('stockQuoteVolumeRatioLabel','stockQuoteVolumeRatio','', '', true);
+  setStockQuotePair('stockQuotePeLabel','stockQuotePe','', '', true);
+  setStockQuotePair('stockQuoteAmountLabel','stockQuoteAmount','', '', true);
+}
+
 function formatSigned(value){
   const sign=value>=0 ? '+' : '';
   return sign + value.toFixed(2);
@@ -8310,39 +8390,29 @@ function volumeRatioTone(value){
 
 function updateStockQuoteByData(data, point, prevPoint){
   if(!data) return;
+  const all=buildStockKlineSeries();
+  const isLatestTradingDay=point && point===all[all.length-1];
+  // 最后一个交易日始终展示实时行情摘要；只有此前的 K 线才切换到历史数据布局。
+  if(isLatestTradingDay) point=null;
   if(!point){
     setToneText('stockDetailPrice', data.price, 'quote-up');
     setToneText('stockDetailChange', data.change, 'quote-up');
     setToneText('stockQuoteHigh', data.high || '101.28', 'quote-up');
     setToneText('stockQuoteLow', data.low || '96.12', 'quote-up');
     setToneText('stockQuoteOpen', data.open || '97.60', 'quote-up');
-    setText('stockQuoteMarketCap', data.marketCap || '1439.41亿');
-    setToneText('stockQuoteTurnover', data.turnover || '3.65%', 'quote-flat');
-    setText('stockQuoteFloat', data.floatCap || '111.43亿');
-    setToneText('stockQuoteVolumeRatio', data.volumeRatio || '7.95', volumeRatioTone(data.volumeRatio || 1));
-    setText('stockQuotePe', data.pe || '亏损');
-    setText('stockQuoteAmount', data.amount || '41.52亿');
+    setStockQuoteDefaultMetrics(data);
     return;
   }
   const prevClose=prevPoint ? prevPoint.close : point.open;
   const diff=point.close-prevClose;
   const pct=prevClose ? diff/prevClose*100 : 0;
-  const marketCap=(point.close*14.63).toFixed(2) + '亿';
-  const floatCap=(point.close*11.33).toFixed(2) + '亿';
-  const pe=point.close>92 ? '亏损' : (point.close/1.72).toFixed(2);
   const tone=diff>0 ? 'quote-up' : diff<0 ? 'quote-down' : 'quote-flat';
-  const volumeRatio=(1.1 + point.volume / 8).toFixed(2);
   setToneText('stockDetailPrice', point.close.toFixed(2), tone);
   setToneText('stockDetailChange', formatSigned(diff) + '  ' + formatSigned(pct) + '%', tone);
   setToneText('stockQuoteHigh', point.high.toFixed(2), priceTone(point.high, prevClose));
   setToneText('stockQuoteLow', point.low.toFixed(2), priceTone(point.low, prevClose));
   setToneText('stockQuoteOpen', point.open.toFixed(2), priceTone(point.open, prevClose));
-  setText('stockQuoteMarketCap', marketCap);
-  setToneText('stockQuoteTurnover', (2.4 + (point.volume % 7) * .42).toFixed(2) + '%', 'quote-flat');
-  setText('stockQuoteFloat', floatCap);
-  setToneText('stockQuoteVolumeRatio', volumeRatio, volumeRatioTone(volumeRatio));
-  setText('stockQuotePe', pe);
-  setText('stockQuoteAmount', point.amount.toFixed(2) + '亿');
+  setStockQuoteHistoricalMetrics(point);
 }
 
 function movingAverage(list, day, index){
