@@ -6567,7 +6567,7 @@ body.chat-open{overflow:hidden}
   <div class="smart-result-header">
     <button class="smart-result-back" type="button" aria-label="返回" onclick="closeSmartPickResults()"></button>
     <div class="smart-result-title">选股结果</div>
-    <button class="smart-result-search" type="button" aria-label="搜索" onclick="openSmartPickResultSearch()">搜索</button>
+    <button class="smart-result-search" id="smartResultSearch" type="button" aria-label="搜索" onclick="openSmartPickResultSearch()">搜索</button>
   </div>
   <div class="smart-result-note">注:选股结果仅供参考,不作为投资建议。</div>
   <div class="smart-result-scroll">
@@ -6575,7 +6575,6 @@ body.chat-open{overflow:hidden}
       <div class="smart-result-count" id="smartResultCount"></div>
       <button class="smart-result-sort" id="smartResultSortPrimary" type="button" aria-label="按市值排序" onclick="toggleSmartPickResultSort('market')">市值</button>
       <button class="smart-result-sort" id="smartResultSortSecondary" type="button" aria-label="按股息率排序" onclick="toggleSmartPickResultSort('dividend')">股息率</button>
-      <button class="smart-result-sort" id="smartResultSortValue" type="button" aria-label="按低估程度排序" onclick="toggleSmartPickResultSort('value')">低估</button>
       <button class="smart-result-sort" id="smartResultSortActivity" type="button" aria-label="按活跃度排序" onclick="toggleSmartPickResultSort('activity')">活跃度</button>
     </div>
     <div class="smart-result-list" id="smartResultList"></div>
@@ -8581,7 +8580,7 @@ const SMART_PICK_RESULT_DATA={
 
 let smartPickResultMethod='growth';
 let smartPickResultSort='market';
-let smartPickResultDirections={market:'desc',dividend:'desc',value:'asc',activity:'desc'};
+let smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'};
 let smartPickResultAiMode=false;
 
 const SMART_PICK_ACTIVITY_SCORES={
@@ -8593,7 +8592,7 @@ function openSmartPickResults(options){
   smartPickResultMethod=getActiveSmartMethodKey();
   smartPickResultAiMode=Boolean(options && options.aiSelected);
   smartPickResultSort=smartPickResultMethod==='dividend' ? 'dividend' : 'market';
-  smartPickResultDirections={market:'desc',dividend:'desc',value:'asc',activity:'desc'};
+  smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'};
   const page=document.getElementById('smartResultPage');
   if(!page) return;
   renderSmartPickResults();
@@ -8677,28 +8676,25 @@ function renderSmartPickResults(){
   const data=SMART_PICK_RESULT_DATA[smartPickResultMethod] || SMART_PICK_RESULT_DATA.growth;
   const primary=document.getElementById('smartResultSortPrimary');
   const secondary=document.getElementById('smartResultSortSecondary');
-  const valueSort=document.getElementById('smartResultSortValue');
   const activitySort=document.getElementById('smartResultSortActivity');
+  const search=document.getElementById('smartResultSearch');
   const count=document.getElementById('smartResultCount');
   const list=document.getElementById('smartResultList');
-  if(!primary || !secondary || !valueSort || !activitySort || !count || !list) return;
+  if(!primary || !secondary || !activitySort || !search || !count || !list) return;
   primary.classList.toggle('active',smartPickResultSort==='market');
   primary.dataset.direction=smartPickResultDirections.market;
   const showAiSorts=smartPickResultAiMode;
   const showDividendSort=Boolean(data.secondarySort);
   secondary.style.display=showDividendSort ? '' : 'none';
-  valueSort.style.display=showAiSorts ? '' : 'none';
   activitySort.style.display=showAiSorts ? '' : 'none';
+  search.style.visibility=showAiSorts ? 'hidden' : '';
   if(showDividendSort){
     secondary.classList.toggle('active',smartPickResultSort==='dividend');
     secondary.dataset.direction=smartPickResultDirections.dividend;
   }
   primary.style.order=showAiSorts && showDividendSort ? '2' : '';
   secondary.style.order=showAiSorts && showDividendSort ? '1' : '';
-  valueSort.style.order=showAiSorts ? '3' : '';
-  activitySort.style.order=showAiSorts ? '4' : '';
-  valueSort.classList.toggle('active',smartPickResultSort==='value');
-  valueSort.dataset.direction=smartPickResultDirections.value;
+  activitySort.style.order=showAiSorts ? '3' : '';
   activitySort.classList.toggle('active',smartPickResultSort==='activity');
   activitySort.dataset.direction=smartPickResultDirections.activity;
   const sortKey=smartPickResultSort;
