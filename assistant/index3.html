@@ -4830,7 +4830,7 @@ body.chat-open{overflow:hidden}
 .smart-result-list { padding: 4px 18px 24px; }
 .smart-result-card { padding: 18px 0 16px; border-bottom: 1px solid #f0f1f3; }
 .smart-result-card:last-child { border-bottom: 0; }
-.smart-result-card-head { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 10px; }
+.smart-result-card-head { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 10px; }
 .smart-result-stock { min-width: 0; display: flex; align-items: baseline; gap: 7px; padding: 0; border: 0; background: transparent; font-family: inherit; cursor: pointer; }
 .smart-result-name { overflow: hidden; color: #252a31; font-size: 21px; font-weight: 780; text-overflow: ellipsis; white-space: nowrap; }
 .smart-result-code { flex: 0 0 auto; color: #a0a5ac; font-size: 14px; font-weight: 570; }
@@ -4840,12 +4840,13 @@ body.chat-open{overflow:hidden}
 .smart-result-metrics-scroll { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; touch-action: pan-x; cursor: grab; }
 .smart-result-metrics-scroll::-webkit-scrollbar { display: none; }
 .smart-result-metrics-scroll.dragging { cursor: grabbing; }
-.smart-result-metrics { display: grid; grid-template-columns: repeat(4,96px); width: max-content; min-width: 100%; }
+.smart-result-metrics { display: grid; grid-template-columns: 102px 96px 112px 96px; width: max-content; min-width: 100%; }
 .smart-result-metric { min-width: 0; padding: 0 10px; border-left: 1px solid #e3e5e8; }
 .smart-result-metric:first-child { padding-left: 2px; border-left: 0; }
 .smart-result-metric:last-child { padding-right: 0; }
 .smart-result-metric-label { color: #9298a1; font-size: 12px; font-weight: 610; white-space: nowrap; }
 .smart-result-metric-value { margin-top: 9px; overflow: hidden; color: #252a31; font-size: 19px; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
+.smart-result-list.is-activity-focused .smart-result-metrics-scroll { scroll-behavior: smooth; }
 .smart-result-card-foot { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 13px; margin-top: 14px; }
 .smart-result-industry { overflow: hidden; color: #949aa3; font-size: 13px; font-weight: 590; text-overflow: ellipsis; white-space: nowrap; }
 .smart-result-link, .smart-result-watch { padding: 0; border: 0; background: transparent; color: #1677e8; font-family: inherit; font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; white-space: nowrap; }
@@ -5493,6 +5494,46 @@ body.chat-open{overflow:hidden}
   padding: 18px;
 }
 .stock-bottom-space { height: 30px; }
+
+/* 开发注释层：仅在“选股结果”打开时显示，不参与产品正式界面。 */
+.dev-result-note {
+  position: fixed;
+  z-index: 3000;
+  top: 150px;
+  left: calc(50% + 220px);
+  width: min(360px, calc(50vw - 240px));
+  display: none;
+  color: #ff4b52;
+  font-size: 22px;
+  font-weight: 520;
+  line-height: 1.45;
+  letter-spacing: .2px;
+}
+.dev-result-note.visible { display: block; }
+.dev-result-note #smartResultDevNoteText { white-space: pre-line; }
+.dev-result-note::before {
+  content: "";
+  position: absolute;
+  top: -49px;
+  left: -155px;
+  width: 142px;
+  height: 4px;
+  border-radius: 999px;
+  background: #ff4b52;
+}
+.dev-result-note::after {
+  content: "";
+  position: absolute;
+  top: -56px;
+  left: -18px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 18px solid #ff4b52;
+}
+.dev-result-note-title { font-weight: 720; }
+@media (max-width: 860px) {
+  .dev-result-note { display: none !important; }
+}
 
 
 </style>
@@ -7446,6 +7487,11 @@ body.chat-open{overflow:hidden}
     </div>
   </div>
 
+  <aside class="dev-result-note" id="smartResultDevNote" aria-label="开发注释">
+    <div class="dev-result-note-title">界面规则注释：</div>
+    <div id="smartResultDevNoteText"></div>
+  </aside>
+
 <!-- Settings -->
 <div class="settings-overlay" id="settingsPanel">
   <div class="settings-card">
@@ -8293,17 +8339,30 @@ const SMART_PICK_RESULT_DATA={
     {id:'zhongke',name:'青岛啤酒',code:'600600',industry:'食品饮料',price:'73.0',pe:'21.0',marketCap:'1200亿',dividend:'2.50%'}]}
 };
 const SMART_PICK_ACTIVITY_SCORES={'300308':96,'601899':82,'688041':93,'300502':91,'300750':84,'000333':72,'002371':86,'300760':68,'002594':88,'601985':63,'000651':76,'600036':70,'600398':58,'601919':80,'601088':66,'600900':61,'600941':74,'600741':57,'600104':64,'600600':60};
+const SMART_PICK_AI_RULES={growth:{min:3,max:10,label:'成长评估法'},dividend:{min:3,max:5,label:'股息评估法'}};
 let smartPickResultMethod='growth',smartPickResultSort='market',smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'},smartPickResultAiMode=false;
 
 function getActiveSmartMethodKey(){ const tab=document.querySelector('[data-smart-method].active'); return tab ? tab.getAttribute('data-smart-method') : 'growth'; }
 function getSmartPickResultNumber(value){ const n=parseFloat(String(value).replace(/[^0-9.]/g,'')); return String(value).includes('万亿') ? n*10000 : n; }
+function showSmartResultDevNote(){
+  const note=document.getElementById('smartResultDevNote'),text=document.getElementById('smartResultDevNoteText'),rule=SMART_PICK_AI_RULES[smartPickResultMethod]||SMART_PICK_AI_RULES.growth;
+  if(text) text.textContent=rule.label+'：AI精选的选股结果显示数量 '+rule.min+'≤X≤'+rule.max+'；当 X＜'+rule.min+' 时，界面默认显示“暂无精选结果”；当 X＞'+rule.max+' 时，只显示综合排名分(活跃度)前'+rule.max+'名。\n\n交互规则：\n1. 当用户左右滑动列表时，股票名称所在行固定不变，数据行联动滑动展示，如原型的交互展示；\n2. 数据行的“活跃度”要适配展示一部分，提示用户向左滑动还能查看数据；\n3. 点击“活跃度”排行的时候，界面列表的活跃度数据需要全部完全展示出来。';
+  if(note) note.classList.add('visible');
+}
+function clearSmartResultDevNote(){ const note=document.getElementById('smartResultDevNote'); if(note) note.classList.remove('visible'); }
+function getSmartPickAiStocks(data){
+  const rule=SMART_PICK_AI_RULES[smartPickResultMethod]||SMART_PICK_AI_RULES.growth;
+  const candidates=(data.aiStocks||data.stocks||[]).slice();
+  if(candidates.length<rule.min) return [];
+  return candidates.sort(function(a,b){ return (SMART_PICK_ACTIVITY_SCORES[b.code]||0)-(SMART_PICK_ACTIVITY_SCORES[a.code]||0); }).slice(0,rule.max);
+}
 function openSmartPickResults(options){
   smartPickResultMethod=getActiveSmartMethodKey(); smartPickResultAiMode=Boolean(options && options.aiSelected);
   smartPickResultSort=smartPickResultMethod==='dividend'?'dividend':'market'; smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'};
-  const page=document.getElementById('smartResultPage'); if(!page) return; renderSmartPickResults(); page.classList.add('open');
+  const page=document.getElementById('smartResultPage'); if(!page) return; renderSmartPickResults(); page.classList.add('open'); showSmartResultDevNote();
 }
 function openSmartPickAiSelection(){ openSmartPickResults({aiSelected:true}); }
-function closeSmartPickResults(){ const page=document.getElementById('smartResultPage'); if(page) page.classList.remove('open'); }
+function closeSmartPickResults(){ const page=document.getElementById('smartResultPage'); if(page) page.classList.remove('open'); clearSmartResultDevNote(); }
 function toggleSmartPickResultSort(sort){ if(smartPickResultSort===sort) smartPickResultDirections[sort]=smartPickResultDirections[sort]==='desc'?'asc':'desc'; else smartPickResultSort=sort; renderSmartPickResults(); }
 function askSmartPickResultAI(){ closeSmartPickResults(); askSmartPickAI('result'); }
 function openSmartPickResultSearch(){ closeSmartPickResults(); openChat(); }
@@ -8328,10 +8387,13 @@ function renderSmartPickResults(){
   secondary.style.display=dividendMode?'':'none'; activity.style.display=smartPickResultAiMode?'':'none'; search.style.visibility=smartPickResultAiMode?'hidden':'';
   secondary.classList.toggle('active',smartPickResultSort==='dividend'); secondary.dataset.direction=smartPickResultDirections.dividend; activity.classList.toggle('active',smartPickResultSort==='activity'); activity.dataset.direction=smartPickResultDirections.activity;
   const direction=smartPickResultDirections[smartPickResultSort]==='asc'?1:-1;
-  const stocks=data.stocks.slice().sort(function(a,b){ if(smartPickResultSort==='dividend') return (parseFloat(a.dividend)-parseFloat(b.dividend))*direction; if(smartPickResultSort==='activity') return ((SMART_PICK_ACTIVITY_SCORES[a.code]||0)-(SMART_PICK_ACTIVITY_SCORES[b.code]||0))*direction; return (getSmartPickResultNumber(a.marketCap)-getSmartPickResultNumber(b.marketCap))*direction; });
-  count.innerHTML=smartPickResultAiMode?'AI精选<strong>'+stocks.length+'</strong>只':'共<strong>'+data.count+'</strong>只股票';
-  list.innerHTML=stocks.map(function(stock){ const activityScore=SMART_PICK_ACTIVITY_SCORES[stock.code]||70,highlight=dividendMode?'股息率：'+stock.dividend:'算法诊股',action=dividendMode?'<button class="smart-result-link diagnosis" type="button" onclick="openAlgoDiagnosisDialog()">算法诊股</button>':'<button class="smart-result-watch" type="button" onclick="toggleSmartResultWatch(this)">加自选</button>'; return '<article class="smart-result-card"><div class="smart-result-card-head"><button class="smart-result-stock" type="button" onclick="openStockDetail(\''+stock.id+'\')"><span class="smart-result-name">'+stock.name+'</span><span class="smart-result-code">'+stock.code+' &gt;&gt;</span></button><button class="smart-result-ai" type="button" onclick="askSmartPickResultAI()">AI&gt;&gt;</button><span class="smart-result-highlight">'+highlight+'</span></div><div class="smart-result-card-body"><div class="smart-result-metrics-scroll"><div class="smart-result-metrics"><div class="smart-result-metric"><div class="smart-result-metric-label">最新收盘价</div><div class="smart-result-metric-value">'+stock.price+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市盈TTM</div><div class="smart-result-metric-value">'+stock.pe+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市值</div><div class="smart-result-metric-value">'+stock.marketCap+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">活跃度</div><div class="smart-result-metric-value">'+activityScore+'</div></div></div></div><div class="smart-result-card-foot"><span class="smart-result-industry">'+stock.industry+'</span>'+action+'<button class="smart-result-link" type="button" onclick="openStockDetail(\''+stock.id+'\')">重要财务指标</button></div></div></article>'; }).join('');
+  let stocks=smartPickResultAiMode?getSmartPickAiStocks(data):data.stocks.slice();
+  stocks=stocks.sort(function(a,b){ if(smartPickResultSort==='dividend') return (parseFloat(a.dividend)-parseFloat(b.dividend))*direction; if(smartPickResultSort==='activity') return ((SMART_PICK_ACTIVITY_SCORES[a.code]||0)-(SMART_PICK_ACTIVITY_SCORES[b.code]||0))*direction; return (getSmartPickResultNumber(a.marketCap)-getSmartPickResultNumber(b.marketCap))*direction; });
+  count.innerHTML=smartPickResultAiMode?(stocks.length?'AI精选<strong>'+stocks.length+'</strong>只':'AI精选<strong>0</strong>只'):'共<strong>'+data.count+'</strong>只股票';
+  list.classList.toggle('is-activity-focused',smartPickResultSort==='activity');
+  list.innerHTML=stocks.length?stocks.map(function(stock){ const activityScore=SMART_PICK_ACTIVITY_SCORES[stock.code]||70,highlight=dividendMode?'股息率：'+stock.dividend:'算法诊股',action=dividendMode?'<button class="smart-result-link diagnosis" type="button" onclick="openAlgoDiagnosisDialog()">算法诊股</button>':'<button class="smart-result-watch" type="button" onclick="toggleSmartResultWatch(this)">加自选</button>'; return '<article class="smart-result-card"><div class="smart-result-card-head"><button class="smart-result-stock" type="button" onclick="openStockDetail(\''+stock.id+'\')"><span class="smart-result-name">'+stock.name+'</span><span class="smart-result-code">'+stock.code+' &gt;&gt;</span></button><button class="smart-result-ai" type="button" onclick="askSmartPickResultAI()">AI&gt;&gt;</button><span class="smart-result-highlight">'+highlight+'</span></div><div class="smart-result-card-body"><div class="smart-result-metrics-scroll"><div class="smart-result-metrics"><div class="smart-result-metric"><div class="smart-result-metric-label">最新收盘价</div><div class="smart-result-metric-value">'+stock.price+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市盈TTM</div><div class="smart-result-metric-value">'+stock.pe+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市值</div><div class="smart-result-metric-value">'+stock.marketCap+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">活跃度</div><div class="smart-result-metric-value">'+activityScore+'</div></div></div></div><div class="smart-result-card-foot"><span class="smart-result-industry">'+stock.industry+'</span>'+action+'<button class="smart-result-link" type="button" onclick="openStockDetail(\''+stock.id+'\')">重要财务指标</button></div></div></article>'; }).join(''):'<div class="smart-result-empty">暂无精选结果</div>';
   bindSmartResultMetricScroll();
+  if(smartPickResultSort==='activity') requestAnimationFrame(function(){ document.querySelectorAll('.smart-result-metrics-scroll').forEach(function(scroller){ scroller.scrollLeft=scroller.scrollWidth; }); });
 }
 function toggleSmartResultWatch(button){ const added=button.classList.toggle('added'); button.textContent=added?'已自选':'加自选'; }
 
