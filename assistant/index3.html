@@ -8359,7 +8359,8 @@ function getSmartPickAiStocks(data){
 function openSmartPickResults(options){
   smartPickResultMethod=getActiveSmartMethodKey(); smartPickResultAiMode=Boolean(options && options.aiSelected);
   smartPickResultSort=smartPickResultMethod==='dividend'?'dividend':'market'; smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'};
-  const page=document.getElementById('smartResultPage'); if(!page) return; renderSmartPickResults(); page.classList.add('open'); showSmartResultDevNote();
+  const page=document.getElementById('smartResultPage'); if(!page) return; renderSmartPickResults(); page.classList.add('open');
+  if(smartPickResultAiMode) showSmartResultDevNote(); else clearSmartResultDevNote();
 }
 function openSmartPickAiSelection(){ openSmartPickResults({aiSelected:true}); }
 function closeSmartPickResults(){ const page=document.getElementById('smartResultPage'); if(page) page.classList.remove('open'); clearSmartResultDevNote(); }
