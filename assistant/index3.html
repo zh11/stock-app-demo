@@ -4774,6 +4774,86 @@ body.chat-open{overflow:hidden}
   box-shadow: 0 8px 18px rgba(245, 34, 18, .20);
 }
 
+.smart-ai-optimize-trigger {
+  width: 100%; height: 38px; display: flex; align-items: center; justify-content: center; gap: 7px;
+  border: 1px solid #cfe1ff; border-radius: 7px; background: #f7fbff; color: #1666d8;
+  font-size: 14px; font-weight: 730; font-family: inherit; cursor: pointer;
+}
+.smart-ai-optimize-trigger::before { content: ""; width: 14px; height: 14px; background: #1677ff; clip-path: polygon(50% 0, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0 50%, 37% 37%); }
+.smart-optimize-status { display: none; align-items: center; justify-content: center; gap: 8px; min-height: 19px; color: #627084; font-size: 12px; font-weight: 600; }
+.smart-optimize-status.visible { display: flex; }
+.smart-optimize-undo { padding: 0; border: 0; background: transparent; color: #1677ff; font: inherit; font-weight: 760; cursor: pointer; }
+.smart-bottom { display: flex; flex-direction: column; gap: 7px; }
+.smart-optimize-overlay { position: absolute; inset: 0; z-index: 12; display: none; align-items: flex-end; background: rgba(15,23,42,.38); }
+.smart-optimize-overlay.open { display: flex; }
+.smart-optimize-sheet { width: 100%; padding: 18px 18px calc(18px + env(safe-area-inset-bottom)); border-radius: 14px 14px 0 0; background: #fff; box-shadow: 0 -10px 30px rgba(15,23,42,.15); }
+.smart-optimize-sheet-handle { width: 34px; height: 4px; margin: -8px auto 15px; border-radius: 999px; background: #dfe3e9; }
+.smart-optimize-sheet-title { color: #1f242b; font-size: 18px; font-weight: 780; }
+.smart-optimize-selector { display: grid; grid-template-columns: 42px minmax(0,1fr); align-items: center; gap: 10px; margin-top: 16px; }
+.smart-optimize-selector span { color: #555d68; font-size: 14px; font-weight: 680; }
+.smart-optimize-selector select { width: 100%; height: 42px; padding: 0 12px; border: 1px solid #e3e7ed; border-radius: 7px; background: #fff; color: #2f3741; font-family: inherit; font-size: 14px; font-weight: 650; cursor: pointer; }
+.smart-optimize-detail-toggle { display: block; margin: 12px 0 0 auto; padding: 0; border: 0; background: transparent; color: #a0a7b1; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+.smart-optimize-detail-toggle::after { content: "⌄"; margin-left: 5px; font-size: 13px; }
+.smart-optimize-details { display: none; margin-top: 8px; padding: 8px 11px; border-radius: 7px; background: #f7f8fa; }
+.smart-optimize-details.open { display: block; }
+.smart-optimize-details-note { padding-bottom: 6px; color: #9299a3; font-size: 11px; line-height: 1.4; }
+.smart-optimize-details-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; padding: 6px 0; border-bottom: 1px solid #eaedf1; }
+.smart-optimize-details-row:last-child { border-bottom: 0; }
+.smart-optimize-details-name { color: #333941; font-size: 11px; font-weight: 620; }
+.smart-optimize-details-value { color: #1677ff; font-size: 11px; font-weight: 720; white-space: nowrap; }
+.smart-optimize-details-reason { grid-column: 1; margin-top: -5px; color: #a1a7b0; font-size: 10px; line-height: 1.35; }
+.smart-optimize-actions { display: grid; grid-template-columns: 1fr 1.45fr; gap: 10px; margin-top: 18px; }
+.smart-optimize-actions button { height: 46px; border-radius: 7px; font-family: inherit; font-size: 16px; font-weight: 760; cursor: pointer; }
+.smart-optimize-cancel { border: 1px solid #e1e5eb; background: #fff; color: #606873; }
+.smart-optimize-apply { border: 0; background: linear-gradient(180deg, #267fff, #1269ea); color: #fff; box-shadow: 0 7px 16px rgba(22,119,255,.20); }
+
+.smart-result-page { position: absolute; inset: 0; z-index: 1490; display: flex; flex-direction: column; overflow: hidden; background: #fff; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); }
+.smart-result-page.open { transform: translateX(0); }
+.smart-result-header { min-height: 54px; flex: 0 0 54px; display: grid; grid-template-columns: 54px minmax(0,1fr) 54px; align-items: center; background: linear-gradient(180deg, #fb2117, #f01810); color: #fff; }
+.smart-result-back, .smart-result-search { width: 54px; height: 54px; border: 0; background: transparent; color: #fff; font-family: inherit; cursor: pointer; }
+.smart-result-back { position: relative; }
+.smart-result-back::before { content: ""; position: absolute; left: 23px; top: 18px; width: 15px; height: 15px; border-left: 3px solid #fff; border-bottom: 3px solid #fff; transform: rotate(45deg); }
+.smart-result-title { text-align: center; font-size: 19px; font-weight: 760; }
+.smart-result-search { position: relative; font-size: 11px; font-weight: 650; padding-top: 25px; }
+.smart-result-search::before { content: ""; position: absolute; left: 18px; top: 12px; width: 15px; height: 15px; border: 2px solid #fff; border-radius: 50%; }
+.smart-result-search::after { content: ""; position: absolute; left: 33px; top: 27px; width: 10px; height: 2px; border-radius: 2px; background: #fff; transform: rotate(45deg); }
+.smart-result-note { padding: 11px 18px; border-bottom: 1px solid #f4e5cc; background: #fff8ec; color: #d89a35; font-size: 14px; font-weight: 620; }
+.smart-result-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff; }
+.smart-result-scroll::-webkit-scrollbar { width: 0; }
+.smart-result-toolbar { display: flex; align-items: center; gap: 7px; margin: 0 18px; padding: 15px 0 13px; border-bottom: 1px solid #eceef1; }
+.smart-result-count { flex: 1 1 auto; min-width: 0; color: #7f858d; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.smart-result-count strong { color: #252a31; font-size: 18px; font-weight: 760; }
+.smart-result-sort { flex: 0 0 auto; height: 32px; min-width: 54px; padding: 0 6px; border: 1px solid #e2e6eb; border-radius: 6px; background: #fff; color: #505761; font-family: inherit; font-size: 12px; font-weight: 650; cursor: pointer; }
+.smart-result-sort::after { content: "↓"; margin-left: 5px; color: #9ba2ab; font-size: 14px; line-height: 1; }
+.smart-result-sort[data-direction="asc"]::after { content: "↑"; }
+.smart-result-sort.active { border-color: #f1b4af; color: #d92720; }
+.smart-result-list { padding: 4px 18px 24px; }
+.smart-result-card { padding: 18px 0 16px; border-bottom: 1px solid #f0f1f3; }
+.smart-result-card:last-child { border-bottom: 0; }
+.smart-result-card-head { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 10px; }
+.smart-result-stock { min-width: 0; display: flex; align-items: baseline; gap: 7px; padding: 0; border: 0; background: transparent; font-family: inherit; cursor: pointer; }
+.smart-result-name { overflow: hidden; color: #252a31; font-size: 21px; font-weight: 780; text-overflow: ellipsis; white-space: nowrap; }
+.smart-result-code { flex: 0 0 auto; color: #a0a5ac; font-size: 14px; font-weight: 570; }
+.smart-result-ai { padding: 0; border: 0; background: transparent; color: #317cff; font-family: inherit; font-size: 16px; font-style: italic; font-weight: 780; letter-spacing: .4px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.smart-result-highlight { color: #f52a20; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.smart-result-card-body { margin-top: 13px; padding: 15px 13px 13px; border-radius: 8px; background: #fafafa; }
+.smart-result-metrics-scroll { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; touch-action: pan-x; cursor: grab; }
+.smart-result-metrics-scroll::-webkit-scrollbar { display: none; }
+.smart-result-metrics-scroll.dragging { cursor: grabbing; }
+.smart-result-metrics { display: grid; grid-template-columns: repeat(4,96px); width: max-content; min-width: 100%; }
+.smart-result-metric { min-width: 0; padding: 0 10px; border-left: 1px solid #e3e5e8; }
+.smart-result-metric:first-child { padding-left: 2px; border-left: 0; }
+.smart-result-metric:last-child { padding-right: 0; }
+.smart-result-metric-label { color: #9298a1; font-size: 12px; font-weight: 610; white-space: nowrap; }
+.smart-result-metric-value { margin-top: 9px; overflow: hidden; color: #252a31; font-size: 19px; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
+.smart-result-card-foot { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 13px; margin-top: 14px; }
+.smart-result-industry { overflow: hidden; color: #949aa3; font-size: 13px; font-weight: 590; text-overflow: ellipsis; white-space: nowrap; }
+.smart-result-link, .smart-result-watch { padding: 0; border: 0; background: transparent; color: #1677e8; font-family: inherit; font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; white-space: nowrap; }
+.smart-result-link.diagnosis { color: #f52a20; }
+.smart-result-watch::before { content: "+"; display: inline-grid; width: 15px; height: 15px; margin-right: 4px; place-items: center; border-radius: 50%; background: #f52a20; color: #fff; font-size: 13px; font-weight: 800; text-decoration: none; }
+.smart-result-watch.added { color: #8b929c; text-decoration: none; }
+.smart-result-watch.added::before { content: "✓"; background: #16b875; }
+
 .stock-detail-page {
   position: absolute;
   inset: 0;
@@ -5450,7 +5530,7 @@ body.chat-open{overflow:hidden}
             <section class="section home-content" id="homeContent">
               <div class="tool-grid">
                 <div class="tool" onclick="openAlgoDiagnosisDialog()"><div class="tool-icon"></div><div class="tool-label">算法诊股</div></div>
-                <div class="tool" onclick="openSmartPickPage()"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
+                <div class="tool" data-open-smart-pick role="button" tabindex="0" onclick="openSmartPickPage()"><div class="tool-icon"></div><div class="tool-label">智能选股</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">优股均线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">科技主线</div></div>
                 <div class="tool"><div class="tool-icon"></div><div class="tool-label">发现异动</div></div>
@@ -5998,19 +6078,6 @@ body.chat-open{overflow:hidden}
   </div>
   <div class="smart-pick-scroll">
     <div class="smart-note">注:选股结果仅供参考,不作为投资建议。</div>
-    <div class="smart-ai-card">
-      <div class="smart-ai-desc">可询问指标含义，也可让AI辅助优化条件后再选股，结果仅供参考。</div>
-      <div class="smart-ai-input">
-        <div class="smart-ai-placeholder">帮我解释当前策略和指标设置</div>
-        <button class="smart-ai-send" type="button" aria-label="发送" onclick="askSmartPickAI('overview')"></button>
-      </div>
-      <div class="smart-ai-chips">
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('tuning')">AI调参</button>
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('result')">选股结果评估</button>
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('metrics')">指标含义</button>
-        <button class="smart-ai-chip" type="button" onclick="askSmartPickAI('industry')">行业影响</button>
-      </div>
-    </div>
     <div class="smart-method-tabs" role="tablist" aria-label="选股方法">
       <button class="smart-method-tab active" type="button" data-smart-method="growth" onclick="switchSmartMethod('growth')">成长评估法</button>
       <button class="smart-method-tab" type="button" data-smart-method="dividend" onclick="switchSmartMethod('dividend')">股息评估法</button>
@@ -6021,20 +6088,20 @@ body.chat-open{overflow:hidden}
         <div class="smart-section-title">选择行业</div>
       </div>
       <div class="smart-industry-grid" aria-label="行业选择">
-        <button class="smart-industry active" type="button">全部</button>
-        <button class="smart-industry" type="button">消费</button>
-        <button class="smart-industry" type="button">健康</button>
-        <button class="smart-industry" type="button">科技</button>
-        <button class="smart-industry" type="button">制造</button>
-        <button class="smart-industry" type="button">公共</button>
-        <button class="smart-industry" type="button">其它</button>
+        <button class="smart-industry active" type="button" onclick="selectSmartIndustry(this)">全部</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">消费</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">健康</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">科技</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">制造</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">公共</button>
+        <button class="smart-industry" type="button" onclick="selectSmartIndustry(this)">其它</button>
       </div>
     </section>
 
     <section class="smart-section">
       <div class="smart-section-head">
         <div class="smart-section-title">选股条件设置:</div>
-        <button class="smart-reset" type="button">恢复默认设置</button>
+        <button class="smart-reset" type="button" onclick="resetSmartPickDefaults()">恢复默认设置</button>
       </div>
 
       <div class="smart-panel active" data-smart-panel="growth">
@@ -6101,7 +6168,22 @@ body.chat-open{overflow:hidden}
     </section>
   </div>
   <div class="smart-bottom">
-    <button class="smart-start-btn" type="button">开始选股</button>
+    <button class="smart-ai-optimize-trigger" type="button" onclick="openSmartPickAiSelection()">AI精选</button>
+    <div class="smart-optimize-status" id="smartOptimizeStatus"><span id="smartOptimizeStatusText"></span><button class="smart-optimize-undo" type="button" onclick="undoSmartOptimize()">撤销本次优化</button></div>
+    <button class="smart-start-btn" type="button" onclick="openSmartPickResults()">开始选股</button>
+  </div>
+  <div class="smart-optimize-overlay" id="smartOptimizeOverlay" onclick="closeSmartOptimizeSheet(event)">
+    <div class="smart-optimize-sheet" role="dialog" aria-modal="true" aria-labelledby="smartOptimizeTitle">
+      <div class="smart-optimize-sheet-handle"></div>
+      <div class="smart-optimize-sheet-title" id="smartOptimizeTitle">AI优化参数</div>
+      <label class="smart-optimize-selector"><span>行业</span><select id="smartOptimizeIndustrySelect" aria-label="选择优化行业" onchange="selectSmartOptimizeIndustry(this.value)"><option value="全部">全部行业</option><option value="消费">消费</option><option value="健康">健康</option><option value="科技">科技</option><option value="制造">制造</option><option value="公共">公共</option><option value="其它">其它</option></select></label>
+      <button class="smart-optimize-detail-toggle" type="button" id="smartOptimizeDetailToggle" aria-expanded="false" onclick="toggleSmartOptimizeDetails()">调整说明</button>
+      <div class="smart-optimize-details" id="smartOptimizeDetails"></div>
+      <div class="smart-optimize-actions">
+        <button class="smart-optimize-cancel" type="button" onclick="closeSmartOptimizeSheet()">取消</button>
+        <button class="smart-optimize-apply" type="button" onclick="applySmartOptimize()">优化并应用</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -6120,6 +6202,28 @@ body.chat-open{overflow:hidden}
     <button class="tk-message-read" id="messageReadBtn" type="button" onclick="markMessagePageRead()">一键已读</button>
   </div>
   <div class="tk-message-scroll" id="messagePageBody"></div>
+</div>
+
+<div class="smart-result-page" id="smartResultPage">
+  <div class="app-statusbar red">
+    <span>14:12</span>
+    <div class="app-statusbar-icons"><span class="app-signal"></span><span class="app-wifi"><i></i></span><span class="app-battery"></span></div>
+  </div>
+  <div class="smart-result-header">
+    <button class="smart-result-back" type="button" aria-label="返回" onclick="closeSmartPickResults()"></button>
+    <div class="smart-result-title">选股结果</div>
+    <button class="smart-result-search" id="smartResultSearch" type="button" aria-label="搜索" onclick="openSmartPickResultSearch()">搜索</button>
+  </div>
+  <div class="smart-result-note">注:选股结果仅供参考,不作为投资建议。</div>
+  <div class="smart-result-scroll">
+    <div class="smart-result-toolbar">
+      <div class="smart-result-count" id="smartResultCount"></div>
+      <button class="smart-result-sort" id="smartResultSortPrimary" type="button" aria-label="按市值排序" onclick="toggleSmartPickResultSort('market')">市值</button>
+      <button class="smart-result-sort" id="smartResultSortSecondary" type="button" aria-label="按股息率排序" onclick="toggleSmartPickResultSort('dividend')">股息率</button>
+      <button class="smart-result-sort" id="smartResultSortActivity" type="button" aria-label="按活跃度排序" onclick="toggleSmartPickResultSort('activity')">活跃度</button>
+    </div>
+    <div class="smart-result-list" id="smartResultList"></div>
+  </div>
 </div>
 
 <div class="stock-detail-page" id="stockDetailPage">
@@ -8056,12 +8160,16 @@ function closeAlgoDiagnosisDialog(event){
 
 function openSmartPickPage(){
   const page=document.getElementById('smartPickPage');
-  if(page) page.classList.add('open');
+  if(!page) return;
+  page.classList.add('open');
+  page.setAttribute('aria-hidden','false');
 }
 
 function closeSmartPickPage(){
   const page=document.getElementById('smartPickPage');
-  if(page) page.classList.remove('open');
+  if(!page) return;
+  page.classList.remove('open');
+  page.setAttribute('aria-hidden','true');
 }
 
 function switchSmartMethod(method){
@@ -8148,6 +8256,102 @@ function askSmartPickAI(action){
     submitPresetQuestion(displayQuestion, 'home', modelPrompt);
   }, 80);
 }
+
+function bindSmartPickEntry(){
+  document.querySelectorAll('[data-open-smart-pick]').forEach(function(entry){
+    if(entry.dataset.smartPickBound) return;
+    entry.dataset.smartPickBound='1';
+    entry.addEventListener('keydown',function(event){
+      if(event.key==='Enter' || event.key===' '){ event.preventDefault(); openSmartPickPage(); }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',bindSmartPickEntry);
+
+const SMART_PICK_RESULT_DATA={
+  growth:{count:415,stocks:[
+    {id:'zhongke',name:'中际旭创',code:'300308',industry:'通信',price:'1004.0',pe:'74.9',marketCap:'1.12万亿'},
+    {id:'sany',name:'紫金矿业',code:'601899',industry:'有色金属',price:'29.35',pe:'12.65',marketCap:'7804.37亿'},
+    {id:'zhongke',name:'海光信息',code:'688041',industry:'电子',price:'320.12',pe:'272.94',marketCap:'7440.67亿'},
+    {id:'sany',name:'新易盛',code:'300502',industry:'通信设备',price:'510.0',pe:'66.21',marketCap:'7110.71亿'},
+    {id:'zhongke',name:'宁德时代',code:'300750',industry:'电池',price:'201.50',pe:'24.8',marketCap:'9200亿'},
+    {id:'sany',name:'美的集团',code:'000333',industry:'白色家电',price:'72.86',pe:'14.0',marketCap:'5135亿'},
+    {id:'zhongke',name:'北方华创',code:'002371',industry:'半导体',price:'408.0',pe:'48.0',marketCap:'2140亿'},
+    {id:'sany',name:'迈瑞医疗',code:'300760',industry:'医疗器械',price:'253.0',pe:'26.0',marketCap:'3070亿'},
+    {id:'zhongke',name:'比亚迪',code:'002594',industry:'汽车整车',price:'354.0',pe:'21.0',marketCap:'10300亿'},
+    {id:'sany',name:'中国核电',code:'601985',industry:'电力',price:'10.32',pe:'15.0',marketCap:'2044亿'}]},
+  dividend:{count:135,stocks:[
+    {id:'sany',name:'格力电器',code:'000651',industry:'家用电器',price:'40.58',pe:'7.79',marketCap:'2273.05亿',dividend:'7.37%'},
+    {id:'zhongke',name:'招商银行',code:'600036',industry:'银行',price:'38.91',pe:'6.51',marketCap:'9813.04亿',dividend:'7.31%'},
+    {id:'sany',name:'海澜之家',code:'600398',industry:'纺织服饰',price:'5.99',pe:'13.2',marketCap:'287.69亿',dividend:'6.84%'},
+    {id:'zhongke',name:'中远海控',code:'601919',industry:'航运港口',price:'14.93',pe:'9.1',marketCap:'2279.53亿',dividend:'6.76%'},
+    {id:'sany',name:'中国神华',code:'601088',industry:'煤炭开采',price:'39.50',pe:'10.2',marketCap:'7840亿',dividend:'6.40%'},
+    {id:'zhongke',name:'长江电力',code:'600900',industry:'水力发电',price:'31.80',pe:'22.0',marketCap:'7640亿',dividend:'3.20%'},
+    {id:'sany',name:'中国移动',code:'600941',industry:'通信服务',price:'110.0',pe:'17.0',marketCap:'2.38万亿',dividend:'4.00%'},
+    {id:'zhongke',name:'华域汽车',code:'600741',industry:'汽车零部件',price:'19.0',pe:'10.0',marketCap:'550亿',dividend:'4.50%'},
+    {id:'sany',name:'上汽集团',code:'600104',industry:'汽车整车',price:'18.8',pe:'11.0',marketCap:'2200亿',dividend:'4.10%'},
+    {id:'zhongke',name:'青岛啤酒',code:'600600',industry:'食品饮料',price:'73.0',pe:'21.0',marketCap:'1200亿',dividend:'2.50%'}]}
+};
+const SMART_PICK_ACTIVITY_SCORES={'300308':96,'601899':82,'688041':93,'300502':91,'300750':84,'000333':72,'002371':86,'300760':68,'002594':88,'601985':63,'000651':76,'600036':70,'600398':58,'601919':80,'601088':66,'600900':61,'600941':74,'600741':57,'600104':64,'600600':60};
+let smartPickResultMethod='growth',smartPickResultSort='market',smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'},smartPickResultAiMode=false;
+
+function getActiveSmartMethodKey(){ const tab=document.querySelector('[data-smart-method].active'); return tab ? tab.getAttribute('data-smart-method') : 'growth'; }
+function getSmartPickResultNumber(value){ const n=parseFloat(String(value).replace(/[^0-9.]/g,'')); return String(value).includes('万亿') ? n*10000 : n; }
+function openSmartPickResults(options){
+  smartPickResultMethod=getActiveSmartMethodKey(); smartPickResultAiMode=Boolean(options && options.aiSelected);
+  smartPickResultSort=smartPickResultMethod==='dividend'?'dividend':'market'; smartPickResultDirections={market:'desc',dividend:'desc',activity:'desc'};
+  const page=document.getElementById('smartResultPage'); if(!page) return; renderSmartPickResults(); page.classList.add('open');
+}
+function openSmartPickAiSelection(){ openSmartPickResults({aiSelected:true}); }
+function closeSmartPickResults(){ const page=document.getElementById('smartResultPage'); if(page) page.classList.remove('open'); }
+function toggleSmartPickResultSort(sort){ if(smartPickResultSort===sort) smartPickResultDirections[sort]=smartPickResultDirections[sort]==='desc'?'asc':'desc'; else smartPickResultSort=sort; renderSmartPickResults(); }
+function askSmartPickResultAI(){ closeSmartPickResults(); askSmartPickAI('result'); }
+function openSmartPickResultSearch(){ closeSmartPickResults(); openChat(); }
+let smartResultMetricScrollSyncing=false;
+function bindSmartResultMetricScroll(){
+  document.querySelectorAll('.smart-result-metrics-scroll').forEach(function(scroller){
+    if(scroller.dataset.metricScrollBound) return;
+    scroller.dataset.metricScrollBound='1';
+    let startX=0,startLeft=0,dragging=false;
+    scroller.addEventListener('pointerdown',function(event){ startX=event.clientX; startLeft=scroller.scrollLeft; dragging=true; scroller.classList.add('dragging'); if(scroller.setPointerCapture) scroller.setPointerCapture(event.pointerId); });
+    scroller.addEventListener('pointermove',function(event){ if(dragging) scroller.scrollLeft=startLeft-(event.clientX-startX); });
+    const stop=function(event){ if(!dragging) return; dragging=false; scroller.classList.remove('dragging'); if(scroller.releasePointerCapture&&scroller.hasPointerCapture&&scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId); };
+    scroller.addEventListener('pointerup',stop); scroller.addEventListener('pointercancel',stop);
+    scroller.addEventListener('scroll',function(){ if(smartResultMetricScrollSyncing) return; smartResultMetricScrollSyncing=true; document.querySelectorAll('.smart-result-metrics-scroll').forEach(function(other){if(other!==scroller)other.scrollLeft=scroller.scrollLeft;}); smartResultMetricScrollSyncing=false; });
+  });
+}
+function renderSmartPickResults(){
+  const data=SMART_PICK_RESULT_DATA[smartPickResultMethod]||SMART_PICK_RESULT_DATA.growth;
+  const primary=document.getElementById('smartResultSortPrimary'),secondary=document.getElementById('smartResultSortSecondary'),activity=document.getElementById('smartResultSortActivity'),search=document.getElementById('smartResultSearch'),count=document.getElementById('smartResultCount'),list=document.getElementById('smartResultList');
+  if(!primary||!secondary||!activity||!search||!count||!list) return;
+  const dividendMode=Boolean(data.stocks[0].dividend); primary.classList.toggle('active',smartPickResultSort==='market'); primary.dataset.direction=smartPickResultDirections.market;
+  secondary.style.display=dividendMode?'':'none'; activity.style.display=smartPickResultAiMode?'':'none'; search.style.visibility=smartPickResultAiMode?'hidden':'';
+  secondary.classList.toggle('active',smartPickResultSort==='dividend'); secondary.dataset.direction=smartPickResultDirections.dividend; activity.classList.toggle('active',smartPickResultSort==='activity'); activity.dataset.direction=smartPickResultDirections.activity;
+  const direction=smartPickResultDirections[smartPickResultSort]==='asc'?1:-1;
+  const stocks=data.stocks.slice().sort(function(a,b){ if(smartPickResultSort==='dividend') return (parseFloat(a.dividend)-parseFloat(b.dividend))*direction; if(smartPickResultSort==='activity') return ((SMART_PICK_ACTIVITY_SCORES[a.code]||0)-(SMART_PICK_ACTIVITY_SCORES[b.code]||0))*direction; return (getSmartPickResultNumber(a.marketCap)-getSmartPickResultNumber(b.marketCap))*direction; });
+  count.innerHTML=smartPickResultAiMode?'AI精选<strong>'+stocks.length+'</strong>只':'共<strong>'+data.count+'</strong>只股票';
+  list.innerHTML=stocks.map(function(stock){ const activityScore=SMART_PICK_ACTIVITY_SCORES[stock.code]||70,highlight=dividendMode?'股息率：'+stock.dividend:'算法诊股',action=dividendMode?'<button class="smart-result-link diagnosis" type="button" onclick="openAlgoDiagnosisDialog()">算法诊股</button>':'<button class="smart-result-watch" type="button" onclick="toggleSmartResultWatch(this)">加自选</button>'; return '<article class="smart-result-card"><div class="smart-result-card-head"><button class="smart-result-stock" type="button" onclick="openStockDetail(\''+stock.id+'\')"><span class="smart-result-name">'+stock.name+'</span><span class="smart-result-code">'+stock.code+' &gt;&gt;</span></button><button class="smart-result-ai" type="button" onclick="askSmartPickResultAI()">AI&gt;&gt;</button><span class="smart-result-highlight">'+highlight+'</span></div><div class="smart-result-card-body"><div class="smart-result-metrics-scroll"><div class="smart-result-metrics"><div class="smart-result-metric"><div class="smart-result-metric-label">最新收盘价</div><div class="smart-result-metric-value">'+stock.price+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市盈TTM</div><div class="smart-result-metric-value">'+stock.pe+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">市值</div><div class="smart-result-metric-value">'+stock.marketCap+'</div></div><div class="smart-result-metric"><div class="smart-result-metric-label">活跃度</div><div class="smart-result-metric-value">'+activityScore+'</div></div></div></div><div class="smart-result-card-foot"><span class="smart-result-industry">'+stock.industry+'</span>'+action+'<button class="smart-result-link" type="button" onclick="openStockDetail(\''+stock.id+'\')">重要财务指标</button></div></div></article>'; }).join('');
+  bindSmartResultMetricScroll();
+}
+function toggleSmartResultWatch(button){ const added=button.classList.toggle('added'); button.textContent=added?'已自选':'加自选'; }
+
+const SMART_PICK_DEFAULTS={growth:['10','10','25','55','0.6','10','60'],dividend:['1.5','20','10','0.5','0.6','200']};
+const SMART_PICK_OPTIMIZE_PRESETS={growth:{'全部':['12','12','28','55','0.8','15','80'],'消费':['10','12','28','60','0.7','20','100'],'健康':['15','12','35','55','0.8','10','80'],'科技':['18','10','30','65','0.7','8','60'],'制造':['12','12','25','60','0.8','15','80'],'公共':['8','10','20','65','1.0','25','150'],'其它':['12','12','28','55','0.8','15','80']},dividend:{'全部':['2.2','35','8','2','0.8','300'],'消费':['2.5','40','10','2','0.8','300'],'健康':['1.5','25','8','3','0.8','200'],'科技':['1.0','20','8','5','0.7','150'],'制造':['2.0','35','10','2','0.8','250'],'公共':['3.0','45','8','1','1.0','300'],'其它':['2.2','35','8','2','0.8','300']}};
+let smartOptimizeState={scope:'all',previous:null};
+function getActiveSmartIndustry(){ const item=document.querySelector('.smart-industry.active'); return item?item.textContent.trim():'全部'; }
+function selectSmartIndustry(button){ document.querySelectorAll('.smart-industry').forEach(function(item){item.classList.toggle('active',item===button);}); }
+function selectSmartOptimizeIndustry(industry){ const button=Array.from(document.querySelectorAll('.smart-industry')).find(function(item){return item.textContent.trim()===industry;}); if(button) selectSmartIndustry(button); smartOptimizeState.scope=industry==='全部'?'all':'industry'; refreshSmartOptimizeSheet(); }
+function getSmartOptimizeTarget(){ const method=getActiveSmartMethodKey(),industry=smartOptimizeState.scope==='industry'?getActiveSmartIndustry():'全部'; return SMART_PICK_OPTIMIZE_PRESETS[method][industry]||SMART_PICK_DEFAULTS[method]; }
+function refreshSmartOptimizeSheet(){
+  const industry=getActiveSmartIndustry(),panel=document.querySelector('.smart-panel.active'),method=getActiveSmartMethodKey(),target=getSmartOptimizeTarget(),select=document.getElementById('smartOptimizeIndustrySelect'),details=document.getElementById('smartOptimizeDetails'); smartOptimizeState.scope=industry==='全部'?'all':'industry'; if(select) select.value=industry;
+  if(details&&panel){ const rows=Array.from(panel.querySelectorAll('.smart-condition')).map(function(row,index){const value=row.querySelector('.smart-value'),unit=row.querySelector('.smart-unit'),name=row.querySelector('.smart-condition-name'),current=value?value.textContent.trim():'',next=target[index]||current; if(current===next)return ''; return '<div class="smart-optimize-details-row"><span class="smart-optimize-details-name">'+(name?name.textContent.trim().replace(/[≥≤]/g,''):'')+'</span><span class="smart-optimize-details-value">'+current+(unit?unit.textContent.trim():'')+' → '+next+(unit?unit.textContent.trim():'')+'</span></div>';}).filter(Boolean); details.innerHTML=rows.length?'<div class="smart-optimize-details-note">'+(industry==='全部'?'综合市场特征':'参考'+industry+'行业特征')+'，调整 '+rows.length+' 项</div>'+rows.join(''):'<div class="smart-optimize-details-note">当前参数已接近优化建议。</div>'; }
+}
+function openSmartOptimizeSheet(){ const overlay=document.getElementById('smartOptimizeOverlay'),details=document.getElementById('smartOptimizeDetails'),toggle=document.getElementById('smartOptimizeDetailToggle'); if(details)details.classList.remove('open'); if(toggle){toggle.textContent='调整说明';toggle.setAttribute('aria-expanded','false');} refreshSmartOptimizeSheet(); if(overlay)overlay.classList.add('open'); }
+function closeSmartOptimizeSheet(event){ if(event&&event.target!==event.currentTarget)return; const overlay=document.getElementById('smartOptimizeOverlay'); if(overlay)overlay.classList.remove('open'); }
+function toggleSmartOptimizeDetails(){ const details=document.getElementById('smartOptimizeDetails'),toggle=document.getElementById('smartOptimizeDetailToggle'); if(!details)return; const open=details.classList.toggle('open'); if(toggle){toggle.textContent=open?'收起说明':'调整说明';toggle.setAttribute('aria-expanded',String(open));} }
+function applySmartOptimize(){ const method=getActiveSmartMethodKey(),panel=document.querySelector('.smart-panel.active'); if(!panel)return; const target=getSmartOptimizeTarget(),values=Array.from(panel.querySelectorAll('.smart-value')); smartOptimizeState.previous={method:method,values:values.map(function(value){return value.textContent.trim();})}; values.forEach(function(value,index){value.textContent=target[index]||value.textContent;}); const status=document.getElementById('smartOptimizeStatus'),text=document.getElementById('smartOptimizeStatusText'); if(text)text.textContent='已按'+(smartOptimizeState.scope==='industry'?getActiveSmartIndustry()+'行业':'全部行业')+'优化参数'; if(status)status.classList.add('visible'); closeSmartOptimizeSheet(); }
+function undoSmartOptimize(){ if(!smartOptimizeState.previous)return; const previous=smartOptimizeState.previous,panel=document.querySelector('[data-smart-panel="'+previous.method+'"]'); if(panel)panel.querySelectorAll('.smart-value').forEach(function(value,index){value.textContent=previous.values[index]||value.textContent;}); smartOptimizeState.previous=null; const status=document.getElementById('smartOptimizeStatus'); if(status)status.classList.remove('visible'); }
+function resetSmartPickDefaults(){ const method=getActiveSmartMethodKey(),panel=document.querySelector('.smart-panel.active'),values=SMART_PICK_DEFAULTS[method]||[]; if(panel)panel.querySelectorAll('.smart-value').forEach(function(value,index){value.textContent=values[index]||value.textContent;}); smartOptimizeState.previous=null; const status=document.getElementById('smartOptimizeStatus'); if(status)status.classList.remove('visible'); }
 
 function openMessageCenter(){
   const page=document.getElementById('messagePage');
