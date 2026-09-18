@@ -617,6 +617,14 @@
     .macro-cb-ask-dock{position:absolute;left:0;right:0;bottom:82px;z-index:29;background:#fff;border-top:1px solid #f5e3dc;box-shadow:0 -6px 16px rgba(0,0,0,.05);padding:10px 12px 12px}
     .macro-cb-ask-dock[hidden]{display:none}
     .macro-cb-ask-dock .macro-ask-box{margin-top:0;padding-top:0;border-top:none}
+    .macro-mc-ask-dock{position:absolute;left:0;right:0;bottom:82px;z-index:29;background:#fff;border-top:1px solid #eef0f4;box-shadow:0 -6px 16px rgba(0,0,0,.05);padding:10px 12px 12px}
+    .macro-mc-ask-dock[hidden]{display:none}
+    .macro-mc-ask-dock .macro-ask-box{margin-top:0;padding-top:0;border-top:none}
+    .macro-mc-ask-dock .macro-mc-qchips{margin-bottom:8px}
+    .macro-bb-ask-dock{position:absolute;left:0;right:0;bottom:82px;z-index:29;background:#fff;border-top:1px solid #eef0f4;box-shadow:0 -6px 16px rgba(0,0,0,.05);padding:10px 12px 12px}
+    .macro-bb-ask-dock[hidden]{display:none}
+    .macro-bb-ask-dock .macro-ask-box{margin-top:0;padding-top:0;border-top:none}
+    .macro-bb-ask-dock .macro-mc-qchips{margin-bottom:8px}
     .macro-cb-path-title{font-size:15px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-cb-path-filter,.macro-cb-dot-filter{display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;font-size:12px;color:#8b93a1}
     .macro-cb-dot-filter{margin-top:-2px;margin-bottom:10px}
@@ -673,7 +681,7 @@
     .macro-cb-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2b6ac8;margin-right:4px;vertical-align:middle}
     .macro-cb-legend i.dia{border-radius:0;width:7px;height:7px;background:#e8413a;transform:rotate(45deg)}
 
-    .macro-mc{margin-top:16px}
+    .macro-mc{margin-top:16px;padding-bottom:78px}
     .macro-mc-title{font-size:16px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .macro-mc-card{background:#fff;border:1px solid #eef0f4;border-radius:10px;overflow:hidden;cursor:pointer}
@@ -737,7 +745,7 @@
     .macro-mc-ask .macro-ask-box{margin-top:0;padding-top:0;border-top:none}
     #macroCompareDetail .macro-mc-ask{position:absolute;left:12px;right:12px;bottom:81px;margin-top:0;z-index:29;box-shadow:0 -6px 18px rgba(16,24,40,.10)}
     #macroCompareDetail{padding-bottom:148px}
-    #macroBbDetail .macro-mc-ask{position:absolute;left:12px;right:12px;bottom:81px;margin-top:0;z-index:29;box-shadow:0 -6px 18px rgba(16,24,40,.10)}
+    #macroBbDetail .macro-mc-ask{position:absolute;left:0;right:0;bottom:81px;margin-top:0;z-index:29;box-shadow:0 -6px 18px rgba(16,24,40,.10);border-radius:0;border:none;border-top:1px solid #eef0f4;background:#fff;padding:10px 12px 12px}
     #macroBbDetail{padding-bottom:148px}
 
     .macro-native-head{display:flex;align-items:center;gap:8px;margin-top:22px;padding-top:16px;border-top:1px solid #f2f3f7}
@@ -767,7 +775,7 @@
     .macro-gdp-raw-plot{position:relative}
     .macro-gdp-raw-tip{position:absolute;display:none;background:rgba(26,34,51,.92);color:#fff;font-size:10px;line-height:1.6;padding:6px 8px;border-radius:6px;pointer-events:none;z-index:5;white-space:nowrap;transform:translate(-50%,-115%)}
 
-    .macro-bb{margin-top:16px}
+    .macro-bb{margin-top:16px;padding-bottom:76px}
     .macro-bb-title{font-size:16px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-bb-grid{display:flex;flex-direction:column;gap:10px}
     .macro-bb-card{background:#fff;border:1px solid #eef0f4;border-radius:12px;padding:12px 14px;cursor:pointer}
@@ -6214,15 +6222,15 @@ body.chat-open{overflow:hidden}
                     1. 定位与范围
                     · 全产品事件索引：聚焦中国、美国的高重要性经济数据与事件，覆盖本周（起始日按照当日起算，如：当日已是周三，则从周三算到周日）和未来一月（起始日按照当日起算，展示未来30个自然日的数据）。
                     · 时间范围可选择：提供"本周 / 未来一月 / 历史"分段切换，默认"本周"。
-                    · "历史"指自上线以来的全部历史数据（已公布事件），按时间倒序展示；卡片内容：在本周和未来一月的卡片内容上，"前值 → 预测值"后增加"公布值"，"待公布"状态取消。
+                    · "历史"指就近一年（最近 12 个月）内的已公布事件，按月份分组（组头 YYYY年M月），组内每张卡片展示完整日期（YYYY-MM-DD）+ 公布时间，按时间倒序展示；卡片内容：在本周和未来一月的卡片内容上，"前值 → 预测值"后增加"公布值"，"待公布"状态取消。
                     · 地区可选择："全部 / 中国 / 美国"，默认"全部"。
-                    · 重要性可选择："全部 / 3星 / 2星 / 1星"（重要性共三档，3星最高），默认"全部"。
+                    · 重要性可选择："全部 / 5星 / 4星 / 3星"（重要性共三档，5星最高），默认"全部"。
                     · 筛选：时间范围 × 地区 × 重要性三个维度可组合使用。
                     · 主界面最多展示 3 条事件，超出部分通过"查看剩余 N 条"进入全部事件页。
                     · 事件按日期分组展示，组头显示"今天 · MM-DD 周X / 明天 · MM-DD 周X / MM-DD 周X"。
 
                     2. 事件卡片排版（三行式）
-                    · 第一行：公布时间 + 地区徽标（"中国"/"美国"）+ 星级（重要性，1-3星）。
+                    · 第一行：公布时间 + 地区徽标（"中国"/"美国"）+ 星级（重要性，3-5星，实心星仅显示对应颗数，不追加空心星）。
                     · 第二行：事件名称。
                     · 第三行：前值 → 预测值 + 公布状态（待公布）+ "走势"按钮 + "AI解读"按钮。【本周事件卡、未来一月事件卡】
                      或：第三行：前值 → 预测值 → 公布值 + "走势"按钮 + "AI解读"按钮。【历史事件卡】
@@ -6235,7 +6243,7 @@ body.chat-open{overflow:hidden}
                       - 所选区间内数据不足 2 期时，提示扩大日期范围。
                       - 下方展示前值 / 预测值 / 公布值。
                     · 趋势页返回 → 回到来源界面，保持原时间范围、地区、重要性选中状态。
-                    · 点击"查看剩余 N 条" → 进入全部事件页：提供与主界面相同的三个筛选维度，按日期平铺展示当前筛选下的全部事件；返回保持筛选状态。
+                    · 点击"查看剩余 N 条" → 进入全部事件页：提供与主界面相同的三个筛选维度，按日期（历史为按月份）平铺展示当前筛选下的全部事件；返回保持筛选状态。
                     · 点击"AI解读" → 打开躺客AI对话页（新对话）→ 发送预设问题（含事件名、预测值、前值）。
                     · ~~【待确认】AI 回复上下文 = 该事件历史数据 + 相关宏观背景。~~
 
@@ -6245,16 +6253,16 @@ body.chat-open{overflow:hidden}
 
                     三、央行观察
                     1. 定位与范围
-                    · 聚焦中国、美国两大央行的政策利率，界面顶部展示中国 / 美国 两张央行卡片，点击切换当前央行，默认选中中国。
-                    · 央行观察为单层界面：顶部央行卡片 + 当前央行详情内容（美国：市场隐含利率路径、SEP 点阵图；中国：货币政策委员会例会）+ 底部 AI 提问区。
+                    · 聚焦中国、美国两大央行的政策利率，界面顶部展示中国 / 美国 两张央行卡片，点击切换当前央行，默认选中美国。
+                    · 央行观察为单层界面：顶部央行卡片 + 当前央行详情内容（美国：市场隐含利率路径、SEP 点阵图；中国：货币政策委员会例会）+ AI 提问区（固定悬浮于底部导航栏上方）。
 
                     2. 央行卡片内容
-                    · 每张卡片包含：国家名（中国/美国）、现行利率、最近一次利率变动（单位为bp，下调为负，上调为正）、最近一次利率变动日期、下次会议日期。
+                    · 每张卡片包含：国家名（中国/美国）、现行利率、最近一次利率变动（单位为bp，下调为负，上调为正）、最近一次利率变动日期（当年显示 MM-DD，历史年份显示 YYYY-MM-DD）、下次会议日期。
                     · 利率变动徽标（bp）的颜色语义：下调降息（对市场利好）为红色、上调加息（对市场利空）为绿色、不变为灰色。
 
                     3. 交互规则
                     · 点击卡片 → 切换当前央行，详情内容与 AI 提问区预填随之切换：
-                      - 界面底部固定展示 AI 提问区（AI 标识 + 输入框 + "提问"按钮）：预填问题随当前央行切换；点击"提问" → 打开躺客AI对话页（新对话）→ 发送输入框当前内容。
+                      - 界面底部导航栏上方固定展示 AI 提问区，提问框上方展示快捷问题按钮——美国：“解读美当前利率变动”“解读市场隐含利率路径”“解读SEP点阵图”；中国：“解读中国当前利率情况”。预填问题随当前央行切换；点击“提问” → 打开躺客AI对话页（新对话）→ 发送输入框当前内容。
                       - 美国：概率表上方提供"公告日期"下拉，可查看包括当日在内的历史 30 天公告期数据，默认当日，路径概率随所选公告日期切换。
                       - 美联储 SEP 点阵图：提供"官员预测时间"选择，可查看当下至前 10 年范围内的 SEP 版本，默认最新一期。
                       - 中国展示"货币政策委员会例会"模块：展示最新一次会议标题、历史各期（近 10 年）会议时间及较上期变化率；点击最新一期"详情 ›"查看最新一期会议内容，较上期新增/修改内容以红色标注、删除内容以红色删除线表示；历史各期仅展示时间与变化率、"详情"入口，默认展示 10 期、其余点击"展开全部"查看、可"收起"。
@@ -6265,7 +6273,7 @@ body.chat-open{overflow:hidden}
                     · 采用了 iFinD 的数据。
                     · ~~【待确认】本模块"AI解读"逻辑需要金融部确认。~~
 
-                    四、中美宏观
+                    四、中美经济
                      1. 定位与范围
                      · 聚焦中美两国宏观基本面，中国和美国使用完全一致的六大框架（增长与需求、生产与景气、就业与收入、通胀与价格、货币与金融条件、财政与外需），具体指标按各自统计制度选择。
                      · 主界面：六大框架各一张卡片；每张卡片分别展示中国、美国各自代表指标的最新值与方向标签，国家以简称“中/美”标注；每张卡片右上角提供“详情 ›”入口，点击卡片或“详情 ›”进入该框架详情页。
@@ -6279,17 +6287,17 @@ body.chat-open{overflow:hidden}
                      · 点击卡片 / “详情 ›” → 进入该框架详情页（二层界面）：
                       - 顶部标题栏按模块方面命名。
                       - 对照指标区块（置于详情页最上方，结果前置）：展示本框架全部对照指标组的最新值与两字方向标签（含权重标注，需要注意：对照指标主展示是5列：指标名、中美最新值、对应的标签，当相同指标需要特殊备注时需要在对应的最新值底下加括号注明），中国、美国各附一句总结（40 字以内）。
-                      - 中美对照区块顶部为对照指标切换条、模块状态行：中国、美国各一行，展示当前所选指标组的指标名、最新值、方向标签，随后附注统计期与下次公布时间（演示态统一“以正式公告为准”）；两国统计期各自显示，美国滞后指标自动标注“（滞后一期）”、中美对照图：中国（红色）、美国（蓝色）两条历史走势图分开展示、各自独立坐标轴，点击数据点显示日期与数值；走势覆盖近 10 年，时间频率随所选指标组更新，图下“说明”行展示口径见《中美宏观处理逻辑》。
+                      - 中美对照区块顶部为对照指标切换条、模块状态行：中国、美国各一行，展示当前所选指标组的指标名、最新值、方向标签，随后附注统计期与下次公布时间（演示态统一“以正式公告为准”）；两国统计期各自显示，美国滞后指标自动标注“（滞后一期）”、中美对照图：中国（红色）、美国（蓝色）两条历史走势图分开展示、各自独立坐标轴，点击数据点显示日期与数值；走势覆盖近 10 年，时间频率随所选指标组更新，图下“说明”行展示口径见《中美经济处理逻辑》。
                       - 本国特征区块：中国宏观、美国宏观两张面板（宏观模块一句话总结：20 字以内、最新期核心数据、“查看历史趋势 ›”入口）；面板“查看历史趋势 ›” → 进入历史趋势页（三层界面）：顶部中国/美国切换，每个核心数据指标一张近 10 年历史走势图；返回 → 回到该框架详情页。
                       - 返回 → 回到宏观主界面。
-                     · AI 解读（区别于其他模块，包含三类问题）：“解读中国宏观”“解读美国宏观”“解释两国差异”三个快捷问题按钮，主界面与详情页均有；输入框预填当前模块方面的共同问题，用户可直接修改；点击“提问”按钮 → 打开躺客AI对话页（新对话）→ 发送输入框当前内容。
+                     · AI 解读（区别于其他模块，包含三类问题）：“解读中国经济”“解读美国经济”“解释两国差异”三个快捷问题按钮，主界面与详情页均有；输入框预填当前模块方面的共同问题，用户可直接修改；点击“提问”按钮 → 打开躺客AI对话页（新对话）→ 发送输入框当前内容。
                      4. 数据来源
-                     · 数据来源见《中美宏观处理逻辑》文件。
+                     · 数据来源见《中美经济处理逻辑》文件。
 
                      五、牛熊观察
                      1. 定位与范围
                      · 三项长期温度指标：杠杆温度、市值相对经济规模、股债性价，以分位与对应状态为核心；只提供长期市场温度，不替代短期择时，不设综合牛熊结论与买卖触发。
-                     · 主界面三张独立卡片，固定顺序：指标名称、指标说明、每张卡片以分位与状态为首要信息，附更新时间与指标值；点击卡片/详情进入该指标详情界面（二层界面）。
+                     · 主界面三张独立卡片，固定顺序：指标名称、指标说明、每张卡片以分位与状态为首要信息，附更新时间（不展示指标值）；点击卡片/详情进入该指标详情界面（二层界面）。
                      · 指标值＝公式计算结果；分位＝指标值在自身历史样本中的相对位置；分位线＝20%/80% 分位对应指标值的水平线。
                      2. 状态与配色
                      · 状态按分位区间：P≤20 低区间、20<P<80 中间、P≥80 高区间；三项各自文案：杠杆温度＝偏冷/适中/偏热；市值相对经济规模＝偏低/中性/偏高；股债性价＝相对较低/中性/相对较高。
@@ -6304,7 +6312,7 @@ body.chat-open{overflow:hidden}
                      · 图表横轴固定为更新时间回推 10 个自然年，纵轴为指标值单位（%、百分点）；叠加 20%、80% 分位两条水平虚线（按截至更新时间的全样本升序取第 ceil(0.2×N)、ceil(0.8×N) 个指标值，不插值），图例置于图表上方，指标值、分位线条目须突出展示对应值（加粗、与线同色）；图内虚线上仅标注“20%/80% 分位线”名称、不带数值。
                      · 悬停查看历史点：浮层突出当日分位并附状态，日期与指标值为辅。
                      · 返回 → 回到宏观主界面。
-                     · AI 解读：主界面与详情页快捷提问不同——主界面“解读三项指标”“解释当前分位”“为什么状态不同”；详情页“解读当前指标”“解释当前分位”“为什么状态不同”（回答针对当前所看指标）；输入框预填“解读牛熊观察三项指标”，可修改；点击“提问” → 打开躺客AI对话页（新对话）→ 发送输入框当前内容；回答每项引用更新时间与分位，不将分位解释为涨跌概率、不平均为综合牛熊分数。
+                     · AI 解读：主界面与详情页快捷提问不同——主界面“解读三项指标”“解释当前分位”“为什么状态不同”；详情页“解读当前指标”“解释当前分位”“为什么状态不同”（回答针对当前所看指标）；输入框预填“解读牛熊观察三项指标”，可修改；点击“提问” → 打开躺客AI对话页（新对话）→ 发送输入框当前内容；回答每项引用更新时间与分位，不将分位解释为涨跌概率、不平均为综合牛熊分数；主界面 AI 提问固定悬浮于底部导航栏上方。
                      4. 数据口径：见《牛熊观察处理逻辑.md》文件。
               </script>
               <div class="macro-report-list" id="macroReportList">
@@ -6312,7 +6320,7 @@ body.chat-open{overflow:hidden}
                 <button class="macro-module-tab active" type="button" data-macro-mod="0" onclick="switchMacroModule(0)">宏观视点</button>
                 <button class="macro-module-tab" type="button" data-macro-mod="1" onclick="switchMacroModule(1)">经济日历</button>
                 <button class="macro-module-tab" type="button" data-macro-mod="2" onclick="switchMacroModule(2)">央行观察</button>
-                <button class="macro-module-tab" type="button" data-macro-mod="3" onclick="switchMacroModule(3)">中美宏观</button>
+                <button class="macro-module-tab" type="button" data-macro-mod="3" onclick="switchMacroModule(3)">中美经济</button>
                 <button class="macro-module-tab" type="button" data-macro-mod="4" onclick="switchMacroModule(4)">牛熊观察</button>
               </div>
               <div class="macro-mod-track" id="macroModTrack">
@@ -6355,9 +6363,9 @@ body.chat-open{overflow:hidden}
                   <button class="macro-cal-region-tab" type="button" data-cal-region="us" onclick="switchMacroCalRegion('us')">美国</button>
                   <span class="macro-cal-filter-sep"></span>
                   <button class="macro-cal-region-tab active" type="button" data-cal-stars="all" onclick="switchMacroCalStars('all')">全部</button>
+                  <button class="macro-cal-region-tab" type="button" data-cal-stars="5" onclick="switchMacroCalStars('5')">5星</button>
+                  <button class="macro-cal-region-tab" type="button" data-cal-stars="4" onclick="switchMacroCalStars('4')">4星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="3" onclick="switchMacroCalStars('3')">3星</button>
-                  <button class="macro-cal-region-tab" type="button" data-cal-stars="2" onclick="switchMacroCalStars('2')">2星</button>
-                  <button class="macro-cal-region-tab" type="button" data-cal-stars="1" onclick="switchMacroCalStars('1')">1星</button>
                 </div>
                 <div class="macro-cal-list" id="macroCalList"></div>
               </div>
@@ -6373,35 +6381,11 @@ body.chat-open{overflow:hidden}
               <div class="macro-mod-slide">
               <div class="macro-mc" id="macroCompare">
                 <div class="macro-mc-grid" id="macroMcGrid"></div>
-                <div class="macro-mc-ask" onclick="event.stopPropagation()">
-                  <div class="macro-mc-qchips">
-                    <button type="button" onclick="setMcAsk('解读中国宏观')">解读中国宏观</button>
-                    <button type="button" onclick="setMcAsk('解读美国宏观')">解读美国宏观</button>
-                    <button type="button" onclick="setMcAsk('解释中美宏观两国差异')">解释两国差异</button>
-                  </div>
-                  <div class="macro-ask-box">
-                    <span class="macro-ask-ai">AI</span>
-                    <input class="macro-ask-input" id="macroMcAsk" type="text" value="解读中国宏观" onfocus="this.select()" onkeydown="if(event.key==='Enter')askMacroCompare()">
-                    <button class="macro-ask-btn" type="button" onclick="askMacroCompare()">提问</button>
-                  </div>
-                </div>
               </div>
               </div>
               <div class="macro-mod-slide">
               <div class="macro-bb" id="macroBbObserve">
                 <div class="macro-bb-grid" id="macroBbGrid"></div>
-                <div class="macro-mc-ask" onclick="event.stopPropagation()">
-                  <div class="macro-mc-qchips">
-                    <button type="button" onclick="setBbAsk('解读牛熊观察三项指标')">解读三项指标</button>
-                    <button type="button" onclick="setBbAsk('解释当前分位')">解释当前分位</button>
-                    <button type="button" onclick="setBbAsk('为什么状态不同')">为什么状态不同</button>
-                  </div>
-                  <div class="macro-ask-box">
-                    <span class="macro-ask-ai">AI</span>
-                    <input class="macro-ask-input" id="macroBbAsk" type="text" value="" onfocus="this.select()" onkeydown="if(event.key==='Enter')askMacroBb()">
-                    <button class="macro-ask-btn" type="button" onclick="askMacroBb()">提问</button>
-                  </div>
-                </div>
               </div>
               </div>
               </div>
@@ -6442,9 +6426,9 @@ body.chat-open{overflow:hidden}
                   <button class="macro-cal-region-tab" type="button" data-cal-region="us" onclick="switchMacroCalRegion('us')">美国</button>
                   <span class="macro-cal-filter-sep"></span>
                   <button class="macro-cal-region-tab active" type="button" data-cal-stars="all" onclick="switchMacroCalStars('all')">全部</button>
+                  <button class="macro-cal-region-tab" type="button" data-cal-stars="5" onclick="switchMacroCalStars('5')">5星</button>
+                  <button class="macro-cal-region-tab" type="button" data-cal-stars="4" onclick="switchMacroCalStars('4')">4星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="3" onclick="switchMacroCalStars('3')">3星</button>
-                  <button class="macro-cal-region-tab" type="button" data-cal-stars="2" onclick="switchMacroCalStars('2')">2星</button>
-                  <button class="macro-cal-region-tab" type="button" data-cal-stars="1" onclick="switchMacroCalStars('1')">1星</button>
                 </div>
                 <div class="macro-cal-list" id="macroCalAllList"></div>
               </div>
@@ -6463,9 +6447,9 @@ body.chat-open{overflow:hidden}
                 </div>
                 <div class="macro-mc-ask" onclick="event.stopPropagation()">
                   <div class="macro-mc-qchips">
-                    <button type="button" onclick="setMcAskDetail('解读中国宏观')">解读中国宏观</button>
-                    <button type="button" onclick="setMcAskDetail('解读美国宏观')">解读美国宏观</button>
-                    <button type="button" onclick="setMcAskDetail('解释中美宏观两国差异')">解释两国差异</button>
+                    <button type="button" onclick="setMcAskDetail('解读中国经济')">解读中国经济</button>
+                    <button type="button" onclick="setMcAskDetail('解读美国经济')">解读美国经济</button>
+                    <button type="button" onclick="setMcAskDetail('解释中美经济两国差异')">解释两国差异</button>
                   </div>
                   <div class="macro-ask-box">
                     <span class="macro-ask-ai">AI</span>
@@ -6770,10 +6754,35 @@ body.chat-open{overflow:hidden}
         </div>
         <div class="macro-float-bar" id="macroFloatBar"><i></i></div>
         <div class="macro-cb-ask-dock" id="macroCbAskDock" hidden>
+          <div class="macro-mc-qchips" id="macroCbAskChips"></div>
           <div class="macro-ask-box" onclick="event.stopPropagation()">
             <span class="macro-ask-ai">AI</span>
             <input class="macro-ask-input" id="macroCbAskDetail" type="text" value="" onfocus="this.select()" onkeydown="if(event.key==='Enter')askMacroCb()">
             <button class="macro-ask-btn" type="button" onclick="askMacroCb()">提问</button>
+          </div>
+        </div>
+        <div class="macro-mc-ask-dock" id="macroMcAskDock" hidden>
+          <div class="macro-mc-qchips">
+            <button type="button" onclick="setMcAsk('解读中国经济')">解读中国经济</button>
+            <button type="button" onclick="setMcAsk('解读美国经济')">解读美国经济</button>
+            <button type="button" onclick="setMcAsk('解释中美经济两国差异')">解释两国差异</button>
+          </div>
+          <div class="macro-ask-box" onclick="event.stopPropagation()">
+            <span class="macro-ask-ai">AI</span>
+            <input class="macro-ask-input" id="macroMcAsk" type="text" value="解读中国经济" onfocus="this.select()" onkeydown="if(event.key==='Enter')askMacroCompare()">
+            <button class="macro-ask-btn" type="button" onclick="askMacroCompare()">提问</button>
+          </div>
+        </div>
+        <div class="macro-bb-ask-dock" id="macroBbAskDock" hidden>
+          <div class="macro-mc-qchips">
+            <button type="button" onclick="setBbAsk('解读牛熊观察三项指标')">解读三项指标</button>
+            <button type="button" onclick="setBbAsk('解释当前分位')">解释当前分位</button>
+            <button type="button" onclick="setBbAsk('为什么状态不同')">为什么状态不同</button>
+          </div>
+          <div class="macro-ask-box" onclick="event.stopPropagation()">
+            <span class="macro-ask-ai">AI</span>
+            <input class="macro-ask-input" id="macroBbAsk" type="text" value="" onfocus="this.select()" onkeydown="if(event.key==='Enter')askMacroBb()">
+            <button class="macro-ask-btn" type="button" onclick="askMacroBb()">提问</button>
           </div>
         </div>
         <nav class="bottom-nav">
@@ -9841,7 +9850,7 @@ const MACRO_REPORTS={
     summary:'官方制造业PMI回升至49.8%、价格信号改善，沪指收复年线逼近3990；现房销售新政落地，地产股涨停潮后高开低走；海外美伊互袭油价破90、美债利率新高，关注财新PMI与ISM数据。',
     ask:'这些宏观变化对我关注的持仓有哪些敏感因素？',
     sections:[
-      {h:'核心结论', list:[
+      {h:'核心要点', list:[
         '8月官方制造业PMI 49.8%（+0.6pct）回升，出厂价格指数重返扩张区间；8-31沪指涨0.86%收复年线逼近3990，成交2.14万亿，八月红盘收官，量能修复、当弱不弱。',
         '8-28三部门发布《完善商品住房销售制度》（现房销售取代预售+配套信贷改革），8-31政策首日地产股涨停潮但招保万金高开低走——长期重塑 vs 短期兑现分歧。',
         '美伊相互袭击、油价破90，美股三指齐跌；10y美债突破4.75%；沃什鹰派后9月加息预期升温，海外再通胀+地缘双压延续。',
@@ -9862,7 +9871,7 @@ const MACRO_REPORTS={
     summary:'沃什杰克逊霍尔首秀偏鹰，9月加息概率升至六成；中国地产销售与融资制度改革密集落地；英伟达财报超预期、AI景气延续，黄金与算力链获共识，下周关注9月FOMC与中美会晤窗口。',
     ask:'上周哪些宏观变化最值得跟踪到下周？',
     sections:[
-      {h:'一、核心结论', list:[
+      {h:'一、核心要点', list:[
         '沃什杰克逊霍尔首秀偏鹰：重申2%PCE目标、金融环境限制不足、放弃前瞻指引；9月加息概率定价升至60%，曲线趋平。',
         '中国地产销售与融资制度改革密集落地：预售封顶、新供地优先现房、房贷期限上限延至40年、房企债券"借新还旧"破冰并支持定增可转债并购，去金融化路径清晰。',
         '英伟达财报超预期、AI供给约束延续至FY28末，AI景气与美债高利率并存；A股缩量，等待9月FOMC与中美会晤窗口。'
@@ -9906,7 +9915,7 @@ const MACRO_REPORTS={
     summary:'8月官方PMI回升、地产制度性改革落地，回购增持创历史级活跃；海外美联储转鹰、油价与美债利率上行构成压力。A股缩量整理、科技成长与政策主题占优，9月关注FOMC、CPI与非农及中美会晤窗口。',
     ask:'8月哪些宏观变量最可能影响下个月风格切换？',
     sections:[
-      {h:'一、核心结论', list:[
+      {h:'一、核心要点', list:[
         '8月官方制造业PMI 49.8%（+0.6pct）回升、出厂价格指数重返扩张区间，景气边际修复但仍处荣枯线下，需求持续性待金融与出口数据确认。',
         '地产销售与融资制度改革密集落地：现房销售取代预售、房贷期限上限延至40年、房企"借新还旧"破冰，去金融化路径清晰；短期压制供给与ROE，长期推动行业"制造业化"。',
         '沃什杰克逊霍尔首秀偏鹰、放弃前瞻指引，9月加息概率升至六成；美债利率突破4.75%、30年期周中触及5.34%，海外再通胀+地缘+鹰派三重压力延续。',
@@ -9947,7 +9956,7 @@ let currentMacroPeriod='daily';
 const MACRO_CALENDAR={
   weekEnd:'09-06',
   events:[
-    {id:1,d:'09-02',dl:'今天 · 09-02 周三',time:'09:45',region:'cn',regionName:'中国',name:'财新制造业PMI',stars:3,prev:'49.5',fore:'49.8',pub:'待公布',
+    {id:1,d:'09-02',dl:'今天 · 09-02 周三',time:'09:45',region:'cn',regionName:'中国',name:'财新制造业PMI',stars:5,prev:'49.5',fore:'49.8',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'49.3'},{d:'2024-10-01',v:'50.3'},{d:'2024-11-01',v:'51.5'},{d:'2024-12-01',v:'50.5'},
         {d:'2025-01-01',v:'50.1'},{d:'2025-02-01',v:'50.8'},{d:'2025-03-01',v:'51.2'},{d:'2025-04-01',v:'50.4'},
@@ -9956,7 +9965,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'50.4'},{d:'2026-02-01',v:'50.7'},{d:'2026-03-01',v:'51.4'},{d:'2026-04-01',v:'51.4'},
         {d:'2026-05-01',v:'50.4'},{d:'2026-06-01',v:'49.4'},{d:'2026-07-01',v:'49.5'},{d:'2026-08-01',v:'49.5'}
       ]},
-    {id:2,d:'09-03',dl:'明天 · 09-03 周四',time:'21:45',region:'us',regionName:'美国',name:'标普全球制造业PMI终值',stars:2,prev:'52.0',fore:'52.0',pub:'待公布',
+    {id:2,d:'09-03',dl:'明天 · 09-03 周四',time:'21:45',region:'us',regionName:'美国',name:'标普全球制造业PMI终值',stars:4,prev:'52.0',fore:'52.0',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'48.6'},{d:'2024-10-01',v:'49.1'},{d:'2024-11-01',v:'50.2'},{d:'2024-12-01',v:'50.8'},
         {d:'2025-01-01',v:'51.3'},{d:'2025-02-01',v:'51.6'},{d:'2025-03-01',v:'51.9'},{d:'2025-04-01',v:'51.4'},
@@ -9965,7 +9974,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'52.1'},{d:'2026-02-01',v:'52.3'},{d:'2026-03-01',v:'51.6'},{d:'2026-04-01',v:'51.9'},
         {d:'2026-05-01',v:'52.1'},{d:'2026-06-01',v:'51.7'},{d:'2026-07-01',v:'52.2'},{d:'2026-08-01',v:'52.0'}
       ]},
-    {id:3,d:'09-03',dl:'明天 · 09-03 周四',time:'22:00',region:'us',regionName:'美国',name:'ISM制造业PMI',stars:3,prev:'51.2',fore:'51.5',pub:'待公布',
+    {id:3,d:'09-03',dl:'明天 · 09-03 周四',time:'22:00',region:'us',regionName:'美国',name:'ISM制造业PMI',stars:5,prev:'51.2',fore:'51.5',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'47.2'},{d:'2024-10-01',v:'47.8'},{d:'2024-11-01',v:'48.6'},{d:'2024-12-01',v:'49.3'},
         {d:'2025-01-01',v:'49.5'},{d:'2025-02-01',v:'49.1'},{d:'2025-03-01',v:'48.9'},{d:'2025-04-01',v:'49.3'},
@@ -9974,7 +9983,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'50.5'},{d:'2026-02-01',v:'50.1'},{d:'2026-03-01',v:'49.8'},{d:'2026-04-01',v:'49.6'},
         {d:'2026-05-01',v:'50.2'},{d:'2026-06-01',v:'50.8'},{d:'2026-07-01',v:'50.9'},{d:'2026-08-01',v:'51.2'}
       ]},
-    {id:4,d:'09-03',dl:'明天 · 09-03 周四',time:'22:00',region:'us',regionName:'美国',name:'营建支出月率',stars:1,prev:'0.1%',fore:'0.2%',pub:'待公布',
+    {id:4,d:'09-03',dl:'明天 · 09-03 周四',time:'22:00',region:'us',regionName:'美国',name:'营建支出月率',stars:3,prev:'0.1%',fore:'0.2%',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'-0.3%'},{d:'2024-10-01',v:'0.5%'},{d:'2024-11-01',v:'0.2%'},{d:'2024-12-01',v:'0.8%'},
         {d:'2025-01-01',v:'-0.4%'},{d:'2025-02-01',v:'0.6%'},{d:'2025-03-01',v:'0.1%'},{d:'2025-04-01',v:'-0.2%'},
@@ -9983,7 +9992,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'-0.2%'},{d:'2026-02-01',v:'0.3%'},{d:'2026-03-01',v:'0.2%'},{d:'2026-04-01',v:'0.4%'},
         {d:'2026-05-01',v:'-0.2%'},{d:'2026-06-01',v:'0.3%'},{d:'2026-07-01',v:'-0.1%'},{d:'2026-08-01',v:'0.1%'}
       ]},
-    {id:5,d:'09-04',dl:'09-04 周五',time:'20:30',region:'us',regionName:'美国',name:'非农就业人口(万)',stars:3,prev:'17.8',fore:'16.5',pub:'待公布',
+    {id:5,d:'09-04',dl:'09-04 周五',time:'20:30',region:'us',regionName:'美国',name:'非农就业人口(万)',stars:5,prev:'17.8',fore:'16.5',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'25.4'},{d:'2024-10-01',v:'1.2'},{d:'2024-11-01',v:'22.7'},{d:'2024-12-01',v:'25.6'},
         {d:'2025-01-01',v:'14.3'},{d:'2025-02-01',v:'15.1'},{d:'2025-03-01',v:'22.8'},{d:'2025-04-01',v:'17.7'},
@@ -9992,7 +10001,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'10.8'},{d:'2026-02-01',v:'15.4'},{d:'2026-03-01',v:'16.2'},{d:'2026-04-01',v:'12.5'},
         {d:'2026-05-01',v:'9.8'},{d:'2026-06-01',v:'15.2'},{d:'2026-07-01',v:'11.4'},{d:'2026-08-01',v:'17.8'}
       ]},
-    {id:6,d:'09-10',dl:'09-10 周四',time:'09:30',region:'cn',regionName:'中国',name:'CPI同比',stars:3,prev:'0.6%',fore:'0.5%',pub:'待公布',
+    {id:6,d:'09-10',dl:'09-10 周四',time:'09:30',region:'cn',regionName:'中国',name:'CPI同比',stars:5,prev:'0.6%',fore:'0.5%',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'0.4%'},{d:'2024-10-01',v:'0.3%'},{d:'2024-11-01',v:'0.2%'},{d:'2024-12-01',v:'0.1%'},
         {d:'2025-01-01',v:'0.5%'},{d:'2025-02-01',v:'-0.7%'},{d:'2025-03-01',v:'-0.1%'},{d:'2025-04-01',v:'-0.2%'},
@@ -10001,7 +10010,7 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'0.4%'},{d:'2026-02-01',v:'0.2%'},{d:'2026-03-01',v:'0.1%'},{d:'2026-04-01',v:'0.3%'},
         {d:'2026-05-01',v:'0.5%'},{d:'2026-06-01',v:'0.4%'},{d:'2026-07-01',v:'0.7%'},{d:'2026-08-01',v:'0.6%'}
       ]},
-    {id:7,d:'09-10',dl:'09-10 周四',time:'09:30',region:'cn',regionName:'中国',name:'PPI同比',stars:2,prev:'-1.4%',fore:'-1.2%',pub:'待公布',
+    {id:7,d:'09-10',dl:'09-10 周四',time:'09:30',region:'cn',regionName:'中国',name:'PPI同比',stars:4,prev:'-1.4%',fore:'-1.2%',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'-2.0%'},{d:'2024-10-01',v:'-2.2%'},{d:'2024-11-01',v:'-2.1%'},{d:'2024-12-01',v:'-1.8%'},
         {d:'2025-01-01',v:'-1.9%'},{d:'2025-02-01',v:'-2.0%'},{d:'2025-03-01',v:'-1.9%'},{d:'2025-04-01',v:'-1.7%'},
@@ -10010,14 +10019,14 @@ const MACRO_CALENDAR={
         {d:'2026-01-01',v:'-1.5%'},{d:'2026-02-01',v:'-1.4%'},{d:'2026-03-01',v:'-1.6%'},{d:'2026-04-01',v:'-1.7%'},
         {d:'2026-05-01',v:'-1.5%'},{d:'2026-06-01',v:'-1.6%'},{d:'2026-07-01',v:'-1.3%'},{d:'2026-08-01',v:'-1.4%'}
       ]},
-    {id:8,d:'09-17',dl:'09-17 周四',time:'02:00',region:'us',regionName:'美国',name:'美联储利率决议',stars:3,prev:'4.25%',fore:'4.25%',pub:'待公布',
+    {id:8,d:'09-17',dl:'09-17 周四',time:'02:00',region:'us',regionName:'美国',name:'美联储利率决议',stars:5,prev:'4.25%',fore:'4.25%',pub:'待公布',
       hist:[
         {d:'2024-09-18',v:'5.00%'},{d:'2024-11-07',v:'4.75%'},{d:'2024-12-18',v:'4.50%'},{d:'2025-01-29',v:'4.50%'},
         {d:'2025-03-19',v:'4.50%'},{d:'2025-05-07',v:'4.25%'},{d:'2025-06-18',v:'4.25%'},{d:'2025-07-30',v:'4.25%'},
         {d:'2025-09-17',v:'4.25%'},{d:'2025-10-29',v:'4.25%'},{d:'2025-12-10',v:'4.25%'},{d:'2026-01-28',v:'4.25%'},
         {d:'2026-03-18',v:'4.25%'},{d:'2026-05-06',v:'4.25%'},{d:'2026-06-17',v:'4.25%'},{d:'2026-07-29',v:'4.25%'}
       ]},
-    {id:9,d:'09-30',dl:'09-30 周三',time:'09:30',region:'cn',regionName:'中国',name:'官方制造业PMI',stars:3,prev:'49.8',fore:'49.7',pub:'待公布',
+    {id:9,d:'09-30',dl:'09-30 周三',time:'09:30',region:'cn',regionName:'中国',name:'官方制造业PMI',stars:5,prev:'49.8',fore:'49.7',pub:'待公布',
       hist:[
         {d:'2024-09-01',v:'49.8'},{d:'2024-10-01',v:'50.1'},{d:'2024-11-01',v:'50.3'},{d:'2024-12-01',v:'50.1'},
         {d:'2025-01-01',v:'49.1'},{d:'2025-02-01',v:'50.2'},{d:'2025-03-01',v:'50.5'},{d:'2025-04-01',v:'49.9'},
@@ -10033,8 +10042,8 @@ let currentCalRegion='all';
 let currentCalStars='all';
 let calTrendFromAll=false;
 
-/* 历史范围：自上线（演示 2026-03-02）以来的全部已公布事件，由各指标 hist 序列生成，倒序展示 */
-const CAL_HIST_SINCE='2026-03-02';
+/* 历史范围：就近一年（演示 2025-09-01 起），由各指标 hist 序列生成；按月分组、倒序展示 */
+const CAL_HIST_SINCE='2025-09-01';
 const CAL_HIST_WD=['周日','周一','周二','周三','周四','周五','周六'];
 let calHistCache=null;
 function calHistFore(v,i){
@@ -10053,12 +10062,12 @@ function getCalHistEvents(){
     e.hist.forEach(function(h,i){
       if(h.d<CAL_HIST_SINCE||i===0) return;
       const dt=new Date(+h.d.slice(0,4),+h.d.slice(5,7)-1,+h.d.slice(8,10));
-      out.push({id:e.id,d:h.d.slice(5),dl:h.d.slice(5)+' '+CAL_HIST_WD[dt.getDay()],
+      out.push({id:e.id,fullD:h.d,mo:h.d.slice(0,7),d:h.d.slice(5),
         time:e.time,region:e.region,regionName:e.regionName,name:e.name,stars:e.stars,
         prev:e.hist[i-1].v,fore:calHistFore(h.v,i),act:h.v,pub:'已公布'});
     });
   });
-  out.sort(function(a,b){ return a.d<b.d?1:(a.d>b.d?-1:0); });
+  out.sort(function(a,b){ return a.fullD<b.fullD?1:(a.fullD>b.fullD?-1:0); });
   calHistCache=out;
   return out;
 }
@@ -10080,7 +10089,7 @@ function getCalEvents(){
 
 function calEventCard(e, fromAll){
   let stars='';
-  for(let i=0;i<3;i++){ stars+=i<e.stars?'★':'☆'; }
+  stars='★'.repeat(e.stars);
   const fromArg=fromAll?',true':'';
   const isHist=e.act!==undefined;                       // 历史卡片：无公布状态；"走势"与整卡仅样式、不可点击
   const openAttr=isHist?'':' onclick="openCalTrend('+e.id+fromArg+')"';
@@ -10089,7 +10098,7 @@ function calEventCard(e, fromAll){
     : '<button class="macro-cal-btn weak" type="button" onclick="event.stopPropagation();openCalTrend('+e.id+fromArg+')">走势</button>';
   const status=isHist?'':'<span class="macro-cal-status">'+e.pub+'</span>';
   return '<div class="macro-cal-item'+(isHist?' hist':'')+'"'+openAttr+'>'
-    +'<div class="macro-cal-item-top"><span class="macro-cal-time">'+e.time+'</span>'
+    +'<div class="macro-cal-item-top"><span class="macro-cal-time">'+(isHist?e.fullD+' ':'')+e.time+'</span>'
     +'<span class="macro-cal-badge">'+e.regionName+'</span>'
     +'<span class="macro-cal-stars">'+stars+'</span></div>'
     +'<div class="macro-cal-name">'+e.name+'</div>'
@@ -10102,11 +10111,13 @@ function calEventCard(e, fromAll){
 
 function calCardsHTML(events, fromAll){
   let html='';
-  let lastDay='';
+  let lastKey='';
   events.forEach(function(e){
-    if(e.d!==lastDay){
-      html+='<div class="macro-cal-day"><b>'+e.dl+'</b></div>';
-      lastDay=e.d;
+    const key=e.mo||e.d;                                   // 历史按月分组；本周/未来一月仍按天
+    const label=e.mo?(e.mo.slice(0,4)+'年'+parseInt(e.mo.slice(5,7),10)+'月'):e.dl;
+    if(key!==lastKey){
+      html+='<div class="macro-cal-day"><b>'+label+'</b></div>';
+      lastKey=key;
     }
     html+=calEventCard(e, fromAll);
   });
@@ -10564,7 +10575,7 @@ renderMacroCalendar();
 
 const MACRO_CB={
   cn:{
-    name:'中国', rate:'3.00%', bp:'0bp', chgDate:'05-20', nextDate:'待定',
+    name:'中国', rate:'3.00%', bp:'0bp', chgDate:'2026-05-20', nextDate:'待定',
     dot:null,
     policy:{
       title:'中国人民银行货币政策委员会2026年第二季度（总第113次）例会于7月4日召开',
@@ -10639,7 +10650,7 @@ const MACRO_CB={
     ask:'请解读中国央行：1年期LPR维持3.00%不变，市场预计后续仍有降息空间，对A股和债券市场有什么影响？'
   },
   us:{
-    name:'美国', rate:'3.75%', bp:'-25bp', chgDate:'07-30', nextDate:'09-17',
+    name:'美国', rate:'3.75%', bp:'-25bp', chgDate:'2026-07-30', nextDate:'09-17',
     pathTitle:'美国：市场隐含利率路径',
     cols:['3.25-3.50','3.50-3.75','3.75-4.00','4.00-4.25','4.25-4.50','4.50-4.75','4.75-5.00','5.00-5.25','5.25-5.50'],
     meetings:['2026-09-17','2026-10-28','2026-12-09','2027-01-27','2027-03-17','2027-04-28','2027-06-09','2027-07-28','2027-09-15','2027-10-27'],
@@ -10658,9 +10669,14 @@ const MACRO_CB={
     ask:'请解读美联储：当前利率3.75%，9月17日议息会议在即，市场隐含利率路径显示后续降息预期，对A股和人民币汇率有什么影响？'
   }
 };
-let currentCb='cn';
+let currentCb='us';
 let currentCbPathDate=MACRO_CB.us.pathDates[0];
 let currentCbDotDate=MACRO_CB.us.dot.dates[0];
+const MACRO_CB_YEAR='2026';   // 演示当前年：最近一次利率变动为当年→MM-DD，历史年份→YYYY-MM-DD
+function cbDateText(d){
+  if(!d||d.length<10) return d||'';
+  return d.slice(0,4)===MACRO_CB_YEAR ? d.slice(5) : d;
+}
 
 function demoCbPathDates(){
   const out=[];
@@ -10737,7 +10753,7 @@ function cbCardHTML(r){
     +'<div class="macro-cb-top"><span class="macro-cb-country">'+c.name+'</span></div>'
     +'<div class="macro-cb-rate">'+c.rate+'</div>'
     +'<span class="macro-cb-bp'+(c.bp.indexOf('-')===0?' down':(c.bp==='0bp'?'':' up'))+'">'+c.bp+'</span>'
-    +'<div class="macro-cb-meta"><span>变动 '+c.chgDate+'</span><span>下次 '+c.nextDate+'</span></div>'
+    +'<div class="macro-cb-meta"><span>变动 '+cbDateText(c.chgDate)+'</span><span>下次 '+c.nextDate+'</span></div>'
     +'</div>';
 }
 
@@ -10752,6 +10768,7 @@ function switchMacroCb(r){
   if(pd && !pd.hidden) closeCbPolicyDetail();
   currentCb=r;
   renderCbCards();
+  renderCbAskChips();
   const input=document.getElementById('macroCbAskDetail');
   if(input) input.value=MACRO_CB[r].ask;   // AI 提问区预填随央行切换
   renderCbPath();
@@ -10980,6 +10997,20 @@ function closeCbPolicyDetail(){
   updateCbAskDock();
 }
 
+function setCbAsk(q){
+  const i=document.getElementById('macroCbAskDetail');
+  if(i) i.value=q;
+}
+function renderCbAskChips(){
+  const box=document.getElementById('macroCbAskChips');
+  if(!box) return;
+  const list=currentCb==='us'
+    ? ['解读美当前利率变动','解读市场隐含利率路径','解读SEP点阵图']
+    : ['解读中国当前利率情况'];
+  box.innerHTML=list.map(function(q){
+    return '<button type="button" onclick="setCbAsk(\''+q+'\')">'+q+'</button>';
+  }).join('');
+}
 function askMacroCb(){
   const input=document.getElementById('macroCbAskDetail');
   const question=(input && input.value.trim()) || MACRO_CB[currentCb].ask;
@@ -10997,6 +11028,7 @@ renderCbPolicy();
 (function(){
   const dInput=document.getElementById('macroCbAskDetail');
   if(dInput) dInput.value=MACRO_CB[currentCb].ask;
+  renderCbAskChips();
 })();
 
 const MACRO_COMPARE=[
@@ -11738,7 +11770,7 @@ function openMacroGdpRaw(country){
   renderMacroGdpRaw();
   if(detail) detail.hidden=true;
   if(raw) raw.hidden=false;
-  if(headTitle) headTitle.textContent='中美宏观 · 历史趋势';
+  if(headTitle) headTitle.textContent='中美经济 · 历史趋势';
   window.scrollTo(0,0);
 }
 
@@ -11748,7 +11780,7 @@ function closeMacroGdpRaw(){
   const headTitle=document.getElementById('macroDetailTopTitle');
   if(raw) raw.hidden=true;
   if(detail) detail.hidden=false;
-  if(headTitle) headTitle.textContent='中美宏观';
+  if(headTitle) headTitle.textContent='中美经济';
   window.scrollTo(0,0);
 }
 
@@ -11758,24 +11790,24 @@ renderMacroCompare();
 const MACRO_BB=[
  {id:'leverage',name:'杠杆温度',sub:'高分位表示融资资金相对流通市值更拥挤',rawUnit:'%',dec:2,color:'#b56e6b',
   desc:'融资余额 / 流通市值',
-  formula:'100 × 沪深两市融资余额 ÷ 同花顺全A流通市值',
+  formula:'沪深两市融资余额 ÷ 同花顺全A流通市值 × 100%',
   statuses:['偏冷','适中','偏热'],
   mean:'杠杆资金相对市场容量，分位越高代表杠杆越热。',
-  num:2.5985,base:2.6,amp:1.0,seed:1,drift:0.3309,updated:'2026-09-08',
+  num:3.3298,base:2.6,amp:1.0,seed:1,drift:0.3309,updated:'2026-09-08',
   src:'iFinD S004273887 融资余额 · 同花顺全A加权 700001.TI 流通市值（非自由流通）'},
  {id:'mcap',name:'市值相对经济规模',sub:'高分位表示证券总市值相对名义GDP更大',rawUnit:'%',dec:2,color:'#5f7fb0',
   desc:'全A总市值 / 年度名义GDP',
-  formula:'100 × 同花顺全A总市值 ÷ 最近已公布完整年度名义GDP',
+  formula:'同花顺全A总市值 ÷ 最近已公布完整年度名义GDP × 100%',
   statuses:['偏低','中性','偏高'],
   mean:'证券市值相对实体经济规模，GDP 为年度慢变量，分位越高代表相对估值越高。',
   num:93.7338,base:93.7,amp:24,seed:1200,drift:-0.6298,updated:'2026-09-08',
   src:'同花顺全A加权 700001.TI 总市值 · iFinD M001620247 年度名义GDP（国家统计局）'},
  {id:'spread',name:'股债性价',sub:'高分位表示盈利收益率相对国债收益率的利差更大',rawUnit:'百分点',dec:2,color:'#5f9395',
   desc:'盈利收益率与国债收益率之差',
-  formula:'100 ÷ 全A市盈率TTM − 10年国债收益率(%)',
+  formula:'100% ÷ 全A市盈率TTM − 10年国债收益率(%)',
   statuses:['相对较低','中性','相对较高'],
   mean:'权益盈利收益率相对无风险利率的补偿，分位越高代表相对估值越低。',
-  num:2.8585,base:2.86,amp:1.6,seed:2402,drift:-0.3595,updated:'2026-09-08',
+  num:1.6296,base:2.86,amp:1.6,seed:2402,drift:-0.3595,updated:'2026-09-08',
   src:'同花顺全A加权 700001.TI PE_TTM · iFinD L001619604 中债10年国债收益率'}
 ];
 let currentBb='leverage';
@@ -11850,7 +11882,6 @@ function bbCardHTML(m){
   return '<div class="macro-bb-card" onclick="openMacroBbDetail(\''+m.id+'\')">'
     +'<div class="macro-bb-top"><div class="macro-bb-namewrap"><span class="macro-bb-name">'+m.name+'</span>'+(m.sub?'<span class="macro-bb-sub">'+m.sub+'</span>':'')+'</div><span class="macro-bb-status '+st.cls+'">'+st.t+'</span></div>'
     +'<div class="macro-bb-pctbig">'+bbPctText(m)+'<span class="macro-bb-pctunit">%</span><span class="macro-bb-pctlab">分位</span></div>'
-    +'<div class="macro-bb-raw">指标值 '+bbVal(m)+'</div>'
     +'<div class="macro-bb-foot"><span class="macro-bb-date">更新时间：'+m.updated+'</span><span class="macro-bb-detail">详情 ›</span></div>'
     +'</div>';
 }
@@ -12061,7 +12092,7 @@ function bbWhyDiff(){
 }
 renderMacroBb();
 
-/* ── 宏观主界面模块行切换轮播（宏观视点 / 经济日历 / 央行观察 / 中美宏观 / 牛熊观察）──
+/* ── 宏观主界面模块行切换轮播（宏观视点 / 经济日历 / 央行观察 / 中美经济 / 牛熊观察）──
    五个模块并列、各占一个整体行，同屏仅展示当前模块；
    点击模块名称或左右滑动切换，轮播高度随当前模块内容自适应。 */
 let macroModIdx=0;
@@ -12074,11 +12105,26 @@ function macroModUpdateTabs(idx){
   updateCbAskDock();
 }
 
-function updateCbAskDock(){   // 央行观察专属悬浮底栏：宏观页 + 该模块激活 + 列表未被顶视图隐藏 时显示
+function updateCbAskDock(){   // 央行观察/中美经济/牛熊观察 悬浮底栏：宏观页 + 对应模块激活 + 列表未被顶视图隐藏 时显示
   const dock=document.getElementById('macroCbAskDock');
-  if(!dock) return;
+  const mcDock=document.getElementById('macroMcAskDock');
+  const bbDock=document.getElementById('macroBbAskDock');
   const list=document.getElementById('macroReportList');
-  dock.hidden=!(currentMainTab==='macro' && macroModIdx===2 && list && !list.hidden);
+  const visible=currentMainTab==='macro' && list && !list.hidden;
+  if(dock) dock.hidden=!(visible && macroModIdx===2);
+  if(mcDock) mcDock.hidden=!(visible && macroModIdx===3);
+  if(bbDock) bbDock.hidden=!(visible && macroModIdx===4);
+  syncMacroAskDockBottom();
+}
+function syncMacroAskDockBottom(){   // 让央行/中美/牛熊提问底栏紧贴底部导航栏上沿（无间隔，自动适配 safe-area 与机型）
+  const nav=document.querySelector('.bottom-nav');
+  if(!nav || !nav.offsetParent) return;
+  const box=nav.offsetParent;                       // .safe（底栏与导航栏共同的定位祖先）
+  const bottom=box.clientHeight - nav.offsetTop;     // 底栏底边 == 导航栏顶边
+  ['macroCbAskDock','macroMcAskDock','macroBbAskDock'].forEach(function(id){
+    const d=document.getElementById(id);
+    if(d) d.style.bottom=bottom+'px';
+  });
 }
 
 function macroModResizeHeight(idx){
@@ -13391,14 +13437,14 @@ function demoReply(input){
     return '**电池龙头及热门板块**\n\n**电池龙头**：宁德时代(300750)、亿纬锂能(300014)、国轩高科(002074)\n\n**近期热门**：\n* **人工智能** — AI大模型国产替代，算力+应用活跃\n* **新能源车** — 出口超预期，比亚迪海外战略突破\n* **半导体** — 国产化政策持续加码\n\n以上仅供参考。';
   if(t.includes('央行')||t.includes('美联储')||t.includes('lpr'))
     return '**央行观察 · AI解读（演示预设）**\n\n**结论判断**：美联储9月降息预期升温，市场已定价年内进一步宽松；中国央行保持定力，稳增长诉求下四季度仍有降息空间。\n\n**核心逻辑**：\n* 美国：通胀回落叠加就业降温，9月17日议息降息25bp至3.25%-3.50%的概率过半\n* 中国：1年期LPR维持3.00%，后续调整取决于经济修复与汇率约束\n* 中美利差变化将影响汇率与外资流向\n\n**关注要点**：\n* 下次议息/公布日是否兑现市场预期\n* 点阵图与市场隐含路径的偏离程度\n\n正式版将结合实时利率与路径概率生成完整解读。\n\n以上仅供参考，不构成投资建议。';
-  if(t.includes('解读中国宏观')){
-    return '**解读中国宏观 · AI解读（演示预设）**\n\n**口径说明**：以下基于中国统计制度下的核心指标（实际GDP当季同比、制造业PMI、CPI、M2、货物出口等），不与其他国家同指标直接比较绝对值。\n\n**当前状态**：实际GDP当季同比5.3%但环比走弱、零售偏强，需求信号分化；制造业PMI 50.3重回扩张线上方；全国城镇调查失业率5.3%平稳；CPI 0.7%温和；M2 9.0%平稳；货物出口当月同比7.4%加快。\n\n**方向判断**：生产与外需偏强，内生增长动能待巩固，整体呈"弱复苏、待扩散"格局。\n\n**下一观察点**：\n* GDP当季同比与季调环比能否同步企稳\n* PMI新订单与PPI价格的传导\n* 社融与政府债券融资节奏\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('解读中国经济')){
+    return '**解读中国经济 · AI解读（演示预设）**\n\n**口径说明**：以下基于中国统计制度下的核心指标（实际GDP当季同比、制造业PMI、CPI、M2、货物出口等），不与其他国家同指标直接比较绝对值。\n\n**当前状态**：实际GDP当季同比5.3%但环比走弱、零售偏强，需求信号分化；制造业PMI 50.3重回扩张线上方；全国城镇调查失业率5.3%平稳；CPI 0.7%温和；M2 9.0%平稳；货物出口当月同比7.4%加快。\n\n**方向判断**：生产与外需偏强，内生增长动能待巩固，整体呈"弱复苏、待扩散"格局。\n\n**下一观察点**：\n* GDP当季同比与季调环比能否同步企稳\n* PMI新订单与PPI价格的传导\n* 社融与政府债券融资节奏\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
   }
-  if(t.includes('解读美国宏观')){
-    return '**解读美国宏观 · AI解读（演示预设）**\n\n**口径说明**：以下基于美国统计制度下的核心指标（实际GDP、ISM PMI、CPI-U、M2、银行信贷等），不与美国以外的统计口径直接比较。\n\n**当前状态**：实际GDP当季同比1.9%且同比环比同落、消费仍有支撑，增长信号分化；ISM制造业PMI 48.9落入收缩区间；U3失业率4.1%呈回落；CPI 3.2%高位趋稳；M2 4.3%平稳；货物出口当月同比7.7%加快。\n\n**方向判断**：增长动能放缓、制造业收缩，通胀回落斜率偏缓，美联储宽松节奏受制于物价与就业数据。\n\n**下一观察点**：\n* 美联储议息决议\n* 非农与CPI数据\n* ISM新订单与耐用品订单\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('解读美国经济')){
+    return '**解读美国经济 · AI解读（演示预设）**\n\n**口径说明**：以下基于美国统计制度下的核心指标（实际GDP、ISM PMI、CPI-U、M2、银行信贷等），不与美国以外的统计口径直接比较。\n\n**当前状态**：实际GDP当季同比1.9%且同比环比同落、消费仍有支撑，增长信号分化；ISM制造业PMI 48.9落入收缩区间；U3失业率4.1%呈回落；CPI 3.2%高位趋稳；M2 4.3%平稳；货物出口当月同比7.7%加快。\n\n**方向判断**：增长动能放缓、制造业收缩，通胀回落斜率偏缓，美联储宽松节奏受制于物价与就业数据。\n\n**下一观察点**：\n* 美联储议息决议\n* 非农与CPI数据\n* ISM新订单与耐用品订单\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
   }
-  if(t.includes('两国差异')||t.includes('解释中美宏观')){
-    return '**中美宏观 · 解释两国差异（演示预设）**\n\n**可比性规则**：\n* GDP 统一实际当季同比；美国环比折年率须先换算为非年化才能对照\n* 零售、工业、进出口按每年 11 个发布期对照，1—2 月合并；美国部分数据滞后一期\n* 失业率对照用非季调并反向编码，不能凭绝对高低判断哪国就业更好\n* M2 中国取月末余额、美国取月均余额，只作增速方向参考\n* PPI、贸易差额、财政仅分国观察，不做中美数值排名\n\n**阅读方式**：同屏只比较"同一经济问题的方向"，不比较不可比的绝对值；方向标签按框架独立配置。\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
+  if(t.includes('两国差异')||t.includes('解释中美经济')){
+    return '**中美经济 · 解释两国差异（演示预设）**\n\n**可比性规则**：\n* GDP 统一实际当季同比；美国环比折年率须先换算为非年化才能对照\n* 零售、工业、进出口按每年 11 个发布期对照，1—2 月合并；美国部分数据滞后一期\n* 失业率对照用非季调并反向编码，不能凭绝对高低判断哪国就业更好\n* M2 中国取月末余额、美国取月均余额，只作增速方向参考\n* PPI、贸易差额、财政仅分国观察，不做中美数值排名\n\n**阅读方式**：同屏只比较"同一经济问题的方向"，不比较不可比的绝对值；方向标签按框架独立配置。\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
   }
   for(let mi=0;mi<MACRO_COMPARE.length;mi++){
     const ma=MACRO_COMPARE[mi];
@@ -13407,11 +13453,11 @@ function demoReply(input){
       return '**'+ma.name+' · AI解读（演示预设）**\n\n**口径说明**：'+(ma.id==='money'?'中国社融与美国银行信贷均回答信用扩张问题，两者统计口径不同，不直接比较数值高低；':'中国与美国各按自身统计制度选择指标，同屏仅比较经济问题与方向，不比较不可比的绝对值；')+'\n\n**当前状态**：中国 '+ma.cn.m+' '+mcFmt(ma.cn.v,ma.cn.unit)+'（'+mcDirText(ma.cn.dir,ma.lab,ma.cn.st)+'）；美国 '+ma.us.m+' '+mcFmt(ma.us.v,ma.us.unit)+'（'+mcDirText(ma.us.dir,ma.lab,ma.us.st)+'）。\n\n**跨国传导**：美元利率是全球资金价格的重要约束——美联储政策影响全球流动性环境，进而约束中国货币政策空间与跨境资本流动。\n\n**下一观察点**：\n* 中美下次数据公布（以正式公告为准）\n* 数据公布后市场对政策路径的重新定价\n\n正式版将结合实时数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
     }
   }
-  if(t.includes('中美宏观')||t.includes('中美对比')){
+  if(t.includes('中美经济')||t.includes('中美对比')){
     const lines=MACRO_COMPARE.map(function(a){
       return '* '+a.name+'：中国 '+a.cn.m+' '+mcFmt(a.cn.v,a.cn.unit)+'（'+mcDirText(a.cn.dir,a.lab,a.cn.st)+'）、美国 '+a.us.m+' '+mcFmt(a.us.v,a.us.unit)+'（'+mcDirText(a.us.dir,a.lab,a.us.st)+'）';
     }).join('\n');
-    return '**中美宏观对比 · AI解读（演示预设）**\n\n**口径说明**：中美同屏只比较经济问题与方向，不直接比较不可比的绝对值；方向标签按框架独立配置（走弱/平稳/改善、上升/平稳/回落、降温/平稳/升温、放缓/平稳/加快），正负信号并存时为分化，阈值按国家和指标独立配置。\n\n**结论判断**：中国增长仍处弱复苏，需求扩散待验证；美国增长温和放缓，通胀约束未解。\n\n**核心逻辑**：\n'+lines+'\n\n**跨国传导**：美元利率是全球资金价格的重要约束，美联储政策节奏影响中美利差、汇率与外资流向。\n\n**关注要点**：\n* 中国价格端能否企稳回升\n* 美国通胀回落斜率与就业韧性\n\n正式版将结合最新公布数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
+    return '**中美经济对比 · AI解读（演示预设）**\n\n**口径说明**：中美同屏只比较经济问题与方向，不直接比较不可比的绝对值；方向标签按框架独立配置（走弱/平稳/改善、上升/平稳/回落、降温/平稳/升温、放缓/平稳/加快），正负信号并存时为分化，阈值按国家和指标独立配置。\n\n**结论判断**：中国增长仍处弱复苏，需求扩散待验证；美国增长温和放缓，通胀约束未解。\n\n**核心逻辑**：\n'+lines+'\n\n**跨国传导**：美元利率是全球资金价格的重要约束，美联储政策节奏影响中美利差、汇率与外资流向。\n\n**关注要点**：\n* 中国价格端能否企稳回升\n* 美国通胀回落斜率与就业韧性\n\n正式版将结合最新公布数据生成完整解读。\n\n以上仅供参考，不构成投资建议。';
   }
   if(t.includes('解释当前分位')) return bbExplainPct();
   if(t.includes('为什么状态不同')||t.includes('状态不同')) return bbWhyDiff();
