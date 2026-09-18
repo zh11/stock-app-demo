@@ -6224,7 +6224,7 @@ body.chat-open{overflow:hidden}
                     · 时间范围可选择：提供"本周 / 未来一月 / 历史"分段切换，默认"本周"。
                     · "历史"指就近一年（最近 12 个月）内的已公布事件，按月份分组（组头 YYYY年M月），组内每张卡片展示完整日期（YYYY-MM-DD）+ 公布时间，按时间倒序展示；卡片内容：在本周和未来一月的卡片内容上，"前值 → 预测值"后增加"公布值"，"待公布"状态取消。
                     · 地区可选择："全部 / 中国 / 美国"，默认"全部"。
-                    · 重要性可选择："全部 / 5星 / 4星 / 3星"（重要性共三档，5星最高），默认"全部"。
+                    · 重要性可选择："5星 / 4星 / 3星"（重要性共三档，5星最高），默认不限星级（星级按钮无高亮）；再次点击当前选中的星级即取消筛选、恢复不限。
                     · 筛选：时间范围 × 地区 × 重要性三个维度可组合使用。
                     · 主界面最多展示 3 条事件，超出部分通过"查看剩余 N 条"进入全部事件页。
                     · 事件按日期分组展示，组头显示"今天 · MM-DD 周X / 明天 · MM-DD 周X / MM-DD 周X"。
@@ -6362,7 +6362,6 @@ body.chat-open{overflow:hidden}
                   <button class="macro-cal-region-tab" type="button" data-cal-region="cn" onclick="switchMacroCalRegion('cn')">中国</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-region="us" onclick="switchMacroCalRegion('us')">美国</button>
                   <span class="macro-cal-filter-sep"></span>
-                  <button class="macro-cal-region-tab active" type="button" data-cal-stars="all" onclick="switchMacroCalStars('all')">全部</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="5" onclick="switchMacroCalStars('5')">5星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="4" onclick="switchMacroCalStars('4')">4星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="3" onclick="switchMacroCalStars('3')">3星</button>
@@ -6425,7 +6424,6 @@ body.chat-open{overflow:hidden}
                   <button class="macro-cal-region-tab" type="button" data-cal-region="cn" onclick="switchMacroCalRegion('cn')">中国</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-region="us" onclick="switchMacroCalRegion('us')">美国</button>
                   <span class="macro-cal-filter-sep"></span>
-                  <button class="macro-cal-region-tab active" type="button" data-cal-stars="all" onclick="switchMacroCalStars('all')">全部</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="5" onclick="switchMacroCalStars('5')">5星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="4" onclick="switchMacroCalStars('4')">4星</button>
                   <button class="macro-cal-region-tab" type="button" data-cal-stars="3" onclick="switchMacroCalStars('3')">3星</button>
@@ -10161,9 +10159,9 @@ function switchMacroCalRegion(region){
 }
 
 function switchMacroCalStars(stars){
-  currentCalStars=stars;
+  currentCalStars=(stars!=='all' && currentCalStars===stars)?'all':stars;   // 再次点击已选星级 → 取消筛选（回到不限星级）
   document.querySelectorAll('.macro-cal-region-tab[data-cal-stars]').forEach(function(tab){
-    tab.classList.toggle('active', tab.getAttribute('data-cal-stars')===stars);
+    tab.classList.toggle('active', tab.getAttribute('data-cal-stars')===currentCalStars);
   });
   renderMacroCalendar();
   const all=document.getElementById('macroCalAll');
