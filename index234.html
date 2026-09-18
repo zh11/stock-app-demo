@@ -495,6 +495,11 @@
       display: block;
     }
 
+    /* 宏观列表视图：macro-page 占满 .page 剩余高度，轨道由 flex 撑满，每个 slide 自身纵向滚动（修复手机端模块内上下滑动失效）；详情视图（列表 hidden）仍走整页滚动 */
+    .page[data-main-tab="macro"] .macro-page:has(#macroReportList:not([hidden])){display:flex;flex-direction:column;flex:1 1 0;min-height:0}
+    .page[data-main-tab="macro"] .macro-page:has(#macroReportList:not([hidden]))>.watchlist-top{flex:none}
+    .page[data-main-tab="macro"] .macro-page:has(#macroReportList:not([hidden]))>#macroReportList{flex:1 1 0;min-height:0;display:flex;flex-direction:column}
+
     .page[data-main-tab="macro"]{overflow-y:auto;scrollbar-width:none}
     .page[data-main-tab="macro"]::-webkit-scrollbar{display:none}
     .macro-float-bar{position:absolute;top:0;bottom:174px;right:2px;width:3px;z-index:26;pointer-events:none;opacity:0;transition:opacity .35s}
@@ -505,9 +510,10 @@
     .macro-module-tabs{display:flex;gap:2px;padding:3px;margin:4px 0 10px;background:#f2f3f7;border-radius:14px}
     .macro-module-tab{flex:1;min-width:0;height:32px;padding:0;border:none;border-radius:11px;background:transparent;color:#8b93a1;font-size:12px;font-weight:600;font-family:inherit;white-space:nowrap;cursor:pointer;transition:background .25s,color .25s,box-shadow .25s}
     .macro-module-tab.active{background:#fff;color:#e8413a;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-    .macro-mod-track{display:flex;width:100%;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;transition:height .35s cubic-bezier(.4,0,.2,1)}
+    .macro-mod-track{display:flex;width:100%;flex:1 1 0;min-height:0;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
     .macro-mod-track::-webkit-scrollbar{display:none}
-    .macro-mod-slide{min-width:100%;max-width:100%;flex:0 0 100%;box-sizing:border-box;scroll-snap-align:start;overflow:hidden}
+    .macro-mod-slide{min-width:100%;max-width:100%;flex:0 0 100%;box-sizing:border-box;scroll-snap-align:start;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;scrollbar-width:none}
+    .macro-mod-slide::-webkit-scrollbar{display:none}
     .macro-mod-slide>.macro-calendar,.macro-mod-slide>.macro-cb,.macro-mod-slide>.macro-mc,.macro-mod-slide>.macro-bb{margin-top:0}
     .macro-report-tabs{display:flex;gap:4px;padding:4px;margin:0 0 12px;background:#f2f3f7;border-radius:21px}
     .macro-report-tab{flex:1;height:42px;border:none;border-radius:17px;background:transparent;color:#8b93a1;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:background .25s,color .25s,box-shadow .25s}
@@ -601,7 +607,7 @@
     .macro-cal-stat{flex:1;background:#fff;border:1px solid #f2ecea;border-radius:10px;padding:8px 10px;text-align:center}
     .macro-cal-stat .k{font-size:11px;color:#8b93a1}
     .macro-cal-stat .v{font-size:15px;font-weight:800;color:#222;margin-top:2px}
-    .macro-cb{margin-top:16px;padding:0 1px 76px}   /* 左右 1px 防裁边；底部为悬浮提问栏留白 */
+    .macro-cb{margin-top:16px;padding:0 1px 96px}   /* 左右 1px 防裁边；底部为悬浮提问栏留白 */
     .macro-cb-title{font-size:16px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-cb-cards{display:flex;gap:10px;margin-bottom:10px}
     .macro-cb-cards[hidden]{display:none}
@@ -681,7 +687,7 @@
     .macro-cb-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2b6ac8;margin-right:4px;vertical-align:middle}
     .macro-cb-legend i.dia{border-radius:0;width:7px;height:7px;background:#e8413a;transform:rotate(45deg)}
 
-    .macro-mc{margin-top:16px;padding-bottom:78px}
+    .macro-mc{margin-top:16px;padding-bottom:96px}
     .macro-mc-title{font-size:16px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .macro-mc-card{background:#fff;border:1px solid #eef0f4;border-radius:10px;overflow:hidden;cursor:pointer}
@@ -775,7 +781,7 @@
     .macro-gdp-raw-plot{position:relative}
     .macro-gdp-raw-tip{position:absolute;display:none;background:rgba(26,34,51,.92);color:#fff;font-size:10px;line-height:1.6;padding:6px 8px;border-radius:6px;pointer-events:none;z-index:5;white-space:nowrap;transform:translate(-50%,-115%)}
 
-    .macro-bb{margin-top:16px;padding-bottom:76px}
+    .macro-bb{margin-top:16px;padding-bottom:96px}
     .macro-bb-title{font-size:16px;font-weight:800;color:#222;margin-bottom:10px}
     .macro-bb-grid{display:flex;flex-direction:column;gap:10px}
     .macro-bb-card{background:#fff;border:1px solid #eef0f4;border-radius:12px;padding:12px 14px;cursor:pointer}
@@ -9812,20 +9818,36 @@ function showMainTab(tab, el){
   const page=document.querySelector('.page');
   if(!bar || !page) return;
   const thumb=bar.querySelector('i');
+  function scroller(){   // 列表视图：纵向滚动发生在当前 slide 内部；详情视图：仍为整页滚动
+    const list=document.getElementById('macroReportList');
+    if(list && !list.hidden){
+      const track=document.getElementById('macroModTrack');
+      if(track){
+        let i=0;
+        document.querySelectorAll('.macro-module-tab').forEach(function(t){
+          if(t.classList.contains('active')) i=parseInt(t.getAttribute('data-macro-mod'),10)||0;
+        });
+        const s=track.querySelectorAll('.macro-mod-slide')[i];
+        if(s) return s;
+      }
+    }
+    return page;
+  }
   let hideTimer=null;
   function update(){
     if(page.getAttribute('data-main-tab')!=='macro'){
       bar.classList.remove('show');
       return;
     }
-    const max=page.scrollHeight-page.clientHeight;
+    const sc=scroller();
+    const max=sc.scrollHeight-sc.clientHeight;
     if(max<=1){
       bar.classList.remove('show');
       return;
     }
     const trackH=bar.clientHeight;
-    const h=Math.max(24, trackH*page.clientHeight/page.scrollHeight);
-    const y=(page.scrollTop/max)*(trackH-h);
+    const h=Math.max(24, trackH*sc.clientHeight/sc.scrollHeight);
+    const y=(sc.scrollTop/max)*(trackH-h);
     thumb.style.height=h+'px';
     thumb.style.transform='translateY('+y+'px)';
     bar.classList.add('show');
@@ -9833,6 +9855,7 @@ function showMainTab(tab, el){
     hideTimer=setTimeout(function(){ bar.classList.remove('show'); },900);
   }
   page.addEventListener('scroll',update,{passive:true});
+  document.querySelectorAll('#macroModTrack .macro-mod-slide').forEach(function(s){ s.addEventListener('scroll',update,{passive:true}); });
   window.addEventListener('resize',update);
   const mo=new MutationObserver(update);
   mo.observe(page,{childList:true,subtree:true,attributes:true,attributeFilter:['data-main-tab']});
@@ -12125,17 +12148,9 @@ function syncMacroAskDockBottom(){   // 让央行/中美/牛熊提问底栏紧�
   });
 }
 
-function macroModResizeHeight(idx){
+function macroModResizeHeight(idx){   // 列表视图高度已改为纯 CSS flex 布局（轨道占满剩余空间、各 slide 自行纵向滚动），此处仅清理历史遗留的内联高度
   const track=document.getElementById('macroModTrack');
-  if(!track) return;
-  const i=(idx===undefined?macroModIdx:idx);
-  const slides=track.querySelectorAll('.macro-mod-slide');
-  const slide=slides[i];
-  if(!slide) return;
-  const mod=slide.firstElementChild;
-  if(!mod) return;
-  const h=mod.offsetHeight;
-  if(h>0) track.style.height=h+'px';
+  if(track && track.style.height) track.style.height='';
 }
 
 function macroModSlideLeft(track,idx){   // 含小数的精确滚动位，避免整数偏差裁掉卡片左边框
