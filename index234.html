@@ -6241,7 +6241,8 @@ body.chat-open{overflow:hidden}
                     · 第一行：公布时间 + 地区徽标（"中国"/"美国"）+ 星级（重要性，3-5星，实心星仅显示对应颗数，不追加空心星）。
                     · 第二行：事件名称。
                     · 第三行：前值 → 预测值 + 公布状态（待公布）+ "走势"按钮 + "AI解读"按钮。【本周事件卡、未来一月事件卡】
-                     或：第三行：前值 → 预测值 → 公布值 + "走势"按钮 + "AI解读"按钮。【历史事件卡】当"预测值"为空时，显示"-"
+                     或：第三行：前值 → 预测值 → 公布值 + "走势"按钮 + "AI解读"按钮。【历史事件卡】
+                     当"预测值"为空时，显示"-"
 
                     3. 交互规则
                     · 点击事件卡片"走势" → 进入历史趋势页：
@@ -6252,8 +6253,8 @@ body.chat-open{overflow:hidden}
                       - 下方展示前值 / 预测值 / 公布值。
                     · 趋势页返回 → 回到来源界面，保持原时间范围、地区、重要性选中状态。
                     · 主界面"本周"、"未来一月"、"历史"的数据分页加载（每次 30 条）；上下滑动查看数据时，三个筛选维度保持不动，只上下滑动事件内容本身。
-                    · 点击"AI解读" → 打开躺客AI对话页（新对话）→ 发送预设问题（含事件名、预测值、前值）。
-                    · ~~【待确认】AI 回复上下文 = 该事件历史数据 + 相关宏观背景。~~
+                    · 点击"AI解读" → 打开躺客AI对话页（新对话）→ 发送预设问题。"本周"和"未来一月"的"AI解读"预设问题（含事件名、预测值、前值；当没有预测值时，则不含）。"历史"的"AI解读"预设问题（含事件名、前值、公布值）。
+                    · AI 回复上下文 = 该事件历史数据 + 相关宏观背景。
 
                     4. 数据来源
                     · 事件数据（公布时间、地区、重要性星级、前值/预测值/公布值）全部直接采用 iFinD，无需自行开发数据逻辑。~~【待确认】历史走势数据源需与金融部商量确定（已推荐数据源：Trading Economics）。~~
@@ -10088,7 +10089,7 @@ function getCalHistEvents(){
     e.hist.forEach(function(h,i){
       if(h.d<CAL_HIST_SINCE||i===0) return;
       const dt=new Date(+h.d.slice(0,4),+h.d.slice(5,7)-1,+h.d.slice(8,10));
-      out.push({id:e.id,fullD:h.d,mo:h.d.slice(0,7),d:h.d.slice(5),
+      out.push({id:e.id,fullD:h.d,hi:i,mo:h.d.slice(0,7),d:h.d.slice(5),
         time:e.time,region:e.region,regionName:e.regionName,name:e.name,stars:e.stars,
         prev:e.hist[i-1].v,fore:calHistFore(h.v,i),act:h.v,pub:'已公布'});
     });
@@ -10123,6 +10124,9 @@ function calEventCard(e, fromAll){
     ? '<span class="macro-cal-btn weak ghost">走势</span>'
     : '<button class="macro-cal-btn weak" type="button" onclick="event.stopPropagation();openCalTrend('+e.id+fromArg+')">走势</button>';
   const status=isHist?'':'<span class="macro-cal-status">'+e.pub+'</span>';
+  const aiBtn=isHist
+    ? '<button class="macro-cal-btn" type="button" onclick="event.stopPropagation();askCalAI('+e.id+','+e.hi+')">AI解读</button>'
+    : '<button class="macro-cal-btn" type="button" onclick="event.stopPropagation();askCalAI('+e.id+')">AI解读</button>';
   return '<div class="macro-cal-item'+(isHist?' hist':'')+'"'+openAttr+'>'
     +'<div class="macro-cal-item-top"><span class="macro-cal-time">'+(isHist?e.fullD+' ':'')+e.time+'</span>'
     +'<span class="macro-cal-badge">'+e.regionName+'</span>'
@@ -10131,7 +10135,7 @@ function calEventCard(e, fromAll){
     +'<div class="macro-cal-foot-row"><span class="macro-cal-values">前值 <b>'+e.prev+'</b> → 预测 <b>'+e.fore+'</b>'+(isHist?' → 公布 <b class="macro-cal-act">'+e.act+'</b>':'')+'</span>'
     +status
     +trendBtn
-    +'<button class="macro-cal-btn" type="button" onclick="event.stopPropagation();askCalAI('+e.id+')">AI解读</button>'
+    +aiBtn
     +'</div></div>';
 }
 
@@ -10599,10 +10603,19 @@ function closeMacroTopView(){
   closeMacroReportDetail();
 }
 
-function askCalAI(id){
+function askCalAI(id, hi){
   const e=getCalEvent(id);
   if(!e) return;
-  const question='请解读「'+e.name+'」：预测值'+e.fore+'、前值'+e.prev+'，公布后对市场可能有什么影响？';
+  let question;
+  if(hi!==undefined && e.hist && e.hist[hi]){
+    const h=e.hist[hi];
+    const prev=e.hist[hi-1]?e.hist[hi-1].v:'';
+    question='请解读「'+e.name+'」：前值'+prev+'、公布值'+h.v+'，公布后对市场可能有什么影响？';
+  }else if(e.fore==null || e.fore==='' || e.fore==='-'){
+    question='请解读「'+e.name+'」：前值'+e.prev+'，公布后对市场可能有什么影响？';
+  }else{
+    question='请解读「'+e.name+'」：预测值'+e.fore+'、前值'+e.prev+'，公布后对市场可能有什么影响？';
+  }
   const returnTarget=getCurrentChatReturnTarget();
   openChat(null, returnTarget);
   setTimeout(function(){
