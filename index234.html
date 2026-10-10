@@ -580,6 +580,9 @@
     .macro-cal-more{display:block;width:100%;height:38px;margin-top:2px;border:1px dashed #e3e6eb;border-radius:12px;background:#fff;color:#8b93a1;font-size:13px;font-weight:400;cursor:pointer}
     .macro-cal-empty{padding:18px 0;font-size:12px;color:#8b93a1;text-align:center}
     .macro-cal-list{margin-top:6px;padding-top:10px;border-top:1px solid #f2f3f7}
+    .macro-mod-slide>.macro-calendar{display:flex;flex-direction:column;height:100%;box-sizing:border-box}
+    .macro-mod-slide>.macro-calendar .macro-cal-head,.macro-mod-slide>.macro-calendar .macro-cal-filters{flex:none}
+    .macro-mod-slide>.macro-calendar .macro-cal-list{flex:1 1 0;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:96px}
     .macro-cal-all{padding-top:14px}
     .macro-cal-all .macro-cal-range{margin-bottom:8px}
     .macro-cal-all[hidden]{display:none}
@@ -6232,7 +6235,7 @@ body.chat-open{overflow:hidden}
                     · 地区可选择："全部 / 中国 / 美国"，默认"全部"。
                     · 重要性可选择："5星 / 4星 / 3星"（重要性共三档，5星最高），默认不限星级（星级按钮无高亮）；再次点击当前选中的星级即取消筛选、恢复不限。
                     · 筛选：时间范围 × 地区 × 重要性三个维度可组合使用。
-                    · 主界面最多展示 3 条事件，超出部分通过"查看剩余 N 条"进入全部事件页。
+                    
                     · 事件按日期分组展示，组头显示"今天 · MM-DD 周X / 明天 · MM-DD 周X / MM-DD 周X"。
 
                     2. 事件卡片排版（三行式）
@@ -6249,7 +6252,7 @@ body.chat-open{overflow:hidden}
                       - 所选区间内数据不足 2 期时，提示扩大日期范围。
                       - 下方展示前值 / 预测值 / 公布值。
                     · 趋势页返回 → 回到来源界面，保持原时间范围、地区、重要性选中状态。
-                    · 点击"查看剩余 N 条" → 进入全部事件页：提供与主界面相同的三个筛选维度，按日期（历史为按月份）平铺展示当前筛选下的全部事件；返回保持筛选状态。
+                    · 主界面"本周"、"未来一月"、"历史"的数据分页加载（每次 30 条）；上下滑动查看数据时，三个筛选维度保持不动，只上下滑动事件内容本身。
                     · 点击"AI解读" → 打开躺客AI对话页（新对话）→ 发送预设问题（含事件名、预测值、前值）。
                     · ~~【待确认】AI 回复上下文 = 该事件历史数据 + 相关宏观背景。~~
 
@@ -10063,6 +10066,8 @@ let currentCalRange='week';
 let currentCalRegion='all';
 let currentCalStars='all';
 let calTrendFromAll=false;
+const CAL_PAGE_SIZE=30;
+let calVisibleCount=30;
 
 /* 历史范围：就近一年（演示 2025-09-01 起），由各指标 hist 序列生成；按月分组、倒序展示 */
 const CAL_HIST_SINCE='2025-09-01';
@@ -10154,16 +10159,27 @@ function renderMacroCalendar(){
     list.innerHTML='<div class="macro-cal-empty">暂无符合筛选的事件</div>';
     return;
   }
-  const MAX=3;
-  let html=calCardsHTML(events.slice(0,MAX), false);
-  if(events.length>MAX){
-    html+='<button class="macro-cal-more" type="button" onclick="openCalAll()">查看剩余 '+(events.length-MAX)+' 条 ›</button>';
+  const shown=Math.min(calVisibleCount, events.length);
+  let html=calCardsHTML(events.slice(0,shown), false);
+  if(events.length>shown){
+    html+='<button class="macro-cal-more" type="button" onclick="loadMoreCal()">加载更多（还剩 '+(events.length-shown)+' 条）›</button>';
   }
   list.innerHTML=html;
 }
 
+function loadMoreCal(){
+  const events=getCalEvents();
+  if(calVisibleCount>=events.length) return;
+  const list=document.getElementById('macroCalList');
+  const st=list?list.scrollTop:0;
+  calVisibleCount=Math.min(calVisibleCount+CAL_PAGE_SIZE, events.length);
+  renderMacroCalendar();
+  if(list) list.scrollTop=st;
+}
+
 function switchMacroCalRange(range){
   currentCalRange=range;
+  calVisibleCount=CAL_PAGE_SIZE;
   document.querySelectorAll('.macro-cal-range-tab').forEach(function(tab){
     tab.classList.toggle('active', tab.getAttribute('data-cal-range')===range);
   });
@@ -10174,6 +10190,7 @@ function switchMacroCalRange(range){
 
 function switchMacroCalRegion(region){
   currentCalRegion=region;
+  calVisibleCount=CAL_PAGE_SIZE;
   document.querySelectorAll('.macro-cal-region-tab[data-cal-region]').forEach(function(tab){
     tab.classList.toggle('active', tab.getAttribute('data-cal-region')===region);
   });
@@ -10184,6 +10201,7 @@ function switchMacroCalRegion(region){
 
 function switchMacroCalStars(stars){
   currentCalStars=(stars!=='all' && currentCalStars===stars)?'all':stars;   // 再次点击已选星级 → 取消筛选（回到不限星级）
+  calVisibleCount=CAL_PAGE_SIZE;
   document.querySelectorAll('.macro-cal-region-tab[data-cal-stars]').forEach(function(tab){
     tab.classList.toggle('active', tab.getAttribute('data-cal-stars')===currentCalStars);
   });
@@ -10594,6 +10612,13 @@ function askCalAI(id){
 }
 
 renderMacroCalendar();
+
+(function(){
+  const calList=document.getElementById('macroCalList');
+  if(calList) calList.addEventListener('scroll', function(){
+    if(calList.scrollTop+calList.clientHeight>=calList.scrollHeight-48) loadMoreCal();
+  }, {passive:true});
+})();
 
 const MACRO_CB={
   cn:{
